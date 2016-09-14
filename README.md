@@ -13,8 +13,15 @@ Please refer to [Getting started with BOT API Trial](https://developers.line.me/
 Build the binary with the following commands:
 
 ```
-go build
-go test
+$ make build
+```
+
+## Testing
+
+Test the package with the following command:
+
+```
+$ make test
 ```
 
 ## Docker
@@ -22,8 +29,7 @@ go test
 Build the docker image with the following commands:
 
 ```
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo
-docker build --rm -t appleboy/drone-line .
+$ make docker
 ```
 
 Please note incorrectly building the image for the correct x64 linux and with
