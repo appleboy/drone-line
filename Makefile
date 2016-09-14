@@ -3,6 +3,12 @@
 install:
 	glide install
 
+test:
+	go test -v -coverprofile=coverage.txt
+
+html:
+	go tool cover -html=coverage.txt
+
 update:
 	glide up
 

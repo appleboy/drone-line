@@ -8,3 +8,4 @@ import:
   - autoload
 - package: github.com/urfave/cli
   version: v1.18.1
+- package: github.com/stretchr/testify

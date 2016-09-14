@@ -1,5 +1,5 @@
-hash: bb46fedf3c53eced89fec821f9b707ebfb34dcdf53198e18d03e4ec637bb4f41
-updated: 2016-09-14T12:27:36.233507835+08:00
+hash: 164ebd6bb4e4b9b5aa5ff002d43692ad35669ad9ce4bfcf092725dd3fa9bc452
+updated: 2016-09-14T21:13:53.368079304+08:00
 imports:
 - name: github.com/joho/godotenv
   version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
@@ -9,6 +9,8 @@ imports:
   version: 8635ae812e60724b61ee9f0f9d9bf5c43a49f306
   subpackages:
   - linebot
+- name: github.com/stretchr/testify
+  version: d77da356e56a7428ad25149ca77381849a6a5232
 - name: github.com/urfave/cli
   version: a14d7d367bc02b1f57d88de97926727f2d936387
 testImports: []

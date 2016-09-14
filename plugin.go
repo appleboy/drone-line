@@ -1,8 +1,8 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -42,15 +42,16 @@ type (
 
 func (p Plugin) Exec() error {
 
-	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
-	if err != nil {
-		log.Fatal("Wrong ChannelID")
+	if len(p.Config.ChannelID) == 0 || len(p.Config.ChannelSecret) == 0 || len(p.Config.MID) == 0 {
+		return errors.New("missing line bot config.")
 	}
 
-	bot, err := linebot.NewClient(ChannelID, p.Config.ChannelSecret, p.Config.MID)
+	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	bot, _ := linebot.NewClient(ChannelID, p.Config.ChannelSecret, p.Config.MID)
 
 	to := strings.Split(p.Config.To, ",")
 
@@ -64,7 +65,7 @@ func (p Plugin) Exec() error {
 	_, err = bot.SendText(to, message)
 
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 
 	return nil
