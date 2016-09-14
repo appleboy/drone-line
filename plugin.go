@@ -10,11 +10,13 @@ import (
 )
 
 type (
+	// Repo is your git repository
 	Repo struct {
 		Owner string
 		Name  string
 	}
 
+	// Build setting is git commit.
 	Build struct {
 		Event  string
 		Number int
@@ -25,6 +27,7 @@ type (
 		Link   string
 	}
 
+	// Config is line bot config
 	Config struct {
 		ChannelID     string
 		ChannelSecret string
@@ -33,6 +36,7 @@ type (
 		Message       string
 	}
 
+	// Plugin include repo, build and config setting
 	Plugin struct {
 		Repo   Repo
 		Build  Build
@@ -40,10 +44,11 @@ type (
 	}
 )
 
+// Exec send message from line bot
 func (p Plugin) Exec() error {
 
 	if len(p.Config.ChannelID) == 0 || len(p.Config.ChannelSecret) == 0 || len(p.Config.MID) == 0 {
-		return errors.New("missing line bot config.")
+		return errors.New("missing line bot config")
 	}
 
 	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
@@ -71,6 +76,7 @@ func (p Plugin) Exec() error {
 	return nil
 }
 
+// Message is line default message.
 func (p Plugin) Message(repo Repo, build Build) string {
 	return fmt.Sprintf("[%s] <%s|%s/%s#%s> (%s) by %s",
 		build.Status,
