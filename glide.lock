@@ -1,0 +1,14 @@
+hash: bb46fedf3c53eced89fec821f9b707ebfb34dcdf53198e18d03e4ec637bb4f41
+updated: 2016-09-14T12:27:36.233507835+08:00
+imports:
+- name: github.com/joho/godotenv
+  version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
+  subpackages:
+  - autoload
+- name: github.com/line/line-bot-sdk-go
+  version: 8635ae812e60724b61ee9f0f9d9bf5c43a49f306
+  subpackages:
+  - linebot
+- name: github.com/urfave/cli
+  version: a14d7d367bc02b1f57d88de97926727f2d936387
+testImports: []

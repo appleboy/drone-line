@@ -1,0 +1,10 @@
+package: github.com/appleboy/drone-line
+import:
+- package: github.com/line/line-bot-sdk-go
+  subpackages:
+  - linebot
+- package: github.com/joho/godotenv
+  subpackages:
+  - autoload
+- package: github.com/urfave/cli
+  version: v1.18.1
