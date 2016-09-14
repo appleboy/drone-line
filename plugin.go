@@ -42,7 +42,6 @@ type (
 
 func (p Plugin) Exec() error {
 
-	log.Print("%v", p.Config)
 	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
 	if err != nil {
 		log.Fatal("Wrong ChannelID")
@@ -55,7 +54,14 @@ func (p Plugin) Exec() error {
 
 	to := strings.Split(p.Config.To, ",")
 
-	_, err = bot.SendText(to, p.Config.Message)
+	var message string
+	if p.Config.Message != "" {
+		message = p.Config.Message
+	} else {
+		message = p.Message(p.Repo, p.Build)
+	}
+
+	_, err = bot.SendText(to, message)
 
 	if err != nil {
 		log.Println(err)
@@ -64,8 +70,8 @@ func (p Plugin) Exec() error {
 	return nil
 }
 
-func message(repo Repo, build Build) string {
-	return fmt.Sprintf("*%s* <%s|%s/%s#%s> (%s) by %s",
+func (p Plugin) Message(repo Repo, build Build) string {
+	return fmt.Sprintf("[%s] <%s|%s/%s#%s> (%s) by %s",
 		build.Status,
 		build.Link,
 		repo.Owner,
@@ -74,33 +80,4 @@ func message(repo Repo, build Build) string {
 		build.Branch,
 		build.Author,
 	)
-}
-
-func fallback(repo Repo, build Build) string {
-	return fmt.Sprintf("%s %s/%s#%s (%s) by %s",
-		build.Status,
-		repo.Owner,
-		repo.Name,
-		build.Commit[:8],
-		build.Branch,
-		build.Author,
-	)
-}
-
-func color(build Build) string {
-	switch build.Status {
-	case "success":
-		return "good"
-	case "failure", "error", "killed":
-		return "danger"
-	default:
-		return "warning"
-	}
-}
-
-func prepend(prefix, s string) string {
-	if !strings.HasPrefix(s, prefix) {
-		return prefix + s
-	}
-	return s
 }

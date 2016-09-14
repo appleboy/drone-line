@@ -2,6 +2,10 @@
 
 Drone plugin for sending line notifications.
 
+## Register Line BOT API Trial
+
+Please refer to [Getting started with BOT API Trial](https://developers.line.me/bot-api/getting-started-with-bot-api-trial).
+
 ## Build
 
 Build the binary with the following commands:
