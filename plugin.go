@@ -10,13 +10,13 @@ import (
 )
 
 type (
-	// Repo is your git repository
+	// Repo information.
 	Repo struct {
 		Owner string
 		Name  string
 	}
 
-	// Build setting is git commit.
+	// Build information.
 	Build struct {
 		Event  string
 		Number int
@@ -27,7 +27,7 @@ type (
 		Link   string
 	}
 
-	// Config is line bot config
+	// Config for the plugin.
 	Config struct {
 		ChannelID     string
 		ChannelSecret string
@@ -36,7 +36,7 @@ type (
 		Message       string
 	}
 
-	// Plugin include repo, build and config setting
+	// Plugin values.
 	Plugin struct {
 		Repo   Repo
 		Build  Build
@@ -44,7 +44,7 @@ type (
 	}
 )
 
-// Exec send message from line bot
+// Exec executes the plugin.
 func (p Plugin) Exec() error {
 
 	if len(p.Config.ChannelID) == 0 || len(p.Config.ChannelSecret) == 0 || len(p.Config.MID) == 0 {
