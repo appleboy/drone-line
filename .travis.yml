@@ -1,6 +1,9 @@
 sudo: required
 language: go
 
+services:
+  - docker
+
 go:
   - 1.5.4
   - 1.6.3
@@ -22,6 +25,11 @@ install:
 
 script:
   - make test
+  - make docker
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) -f coverage.txt
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_GO_VERSION" == "1.7.1" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    make docker_deploy tag=latest;
+    fi
