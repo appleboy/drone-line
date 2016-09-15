@@ -7,18 +7,15 @@ import (
 	"github.com/urfave/cli"
 )
 
-var version string // build number set at compile-time
-
-var (
-	buildCommit string
-)
+// Version for command line
+var Version string
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "line"
-	app.Usage = "line plugin"
+	app.Usage = "drone line plugin"
 	app.Action = run
-	app.Version = version
+	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "channel.id",
