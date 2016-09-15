@@ -26,6 +26,18 @@ func TestWrongChannelID(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
+func TestMissingUserConfig(t *testing.T) {
+	var plugin Plugin
+
+	plugin.Config.ChannelID = "123456789"
+	plugin.Config.ChannelSecret = "test wrong id"
+	plugin.Config.MID = "test wrong id"
+
+	err := plugin.Exec()
+
+	assert.NotNil(t, err)
+}
+
 func TestSendTextError(t *testing.T) {
 	var plugin Plugin
 
@@ -40,6 +52,7 @@ func TestSendTextError(t *testing.T) {
 	plugin.Config.ChannelID = "1465486347"
 	plugin.Config.ChannelSecret = "ChannelSecret"
 	plugin.Config.MID = "MID"
+	plugin.Config.To = []string{"1234567890"}
 	plugin.Config.Message = "Test"
 
 	// enable message
@@ -66,6 +79,7 @@ func TestDefaultMessage(t *testing.T) {
 	plugin.Config.ChannelID = "1465486347"
 	plugin.Config.ChannelSecret = "ChannelSecret"
 	plugin.Config.MID = "MID"
+	plugin.Config.To = []string{"1234567890"}
 	plugin.Config.Message = "Test"
 
 	message := plugin.Message(plugin.Repo, plugin.Build)

@@ -35,7 +35,7 @@ func main() {
 			Usage:  "line mid",
 			EnvVar: "PLUGIN_MID",
 		},
-		cli.StringFlag{
+		cli.StringSliceFlag{
 			Name:   "to",
 			Usage:  "send message to user",
 			EnvVar: "PLUGIN_TO",
@@ -116,7 +116,7 @@ func run(c *cli.Context) error {
 			ChannelID:     c.String("channel.id"),
 			ChannelSecret: c.String("channel.secret"),
 			MID:           c.String("mid"),
-			To:            c.String("to"),
+			To:            c.StringSlice("to"),
 			Message:       c.String("message"),
 		},
 	}
