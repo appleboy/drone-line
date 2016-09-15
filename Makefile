@@ -21,4 +21,4 @@ docker_build:
 docker_image:
 	docker build --rm -t appleboy/drone-line .
 
-docker: build image
+docker: docker_build docker_image

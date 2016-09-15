@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -32,7 +31,7 @@ type (
 		ChannelID     string
 		ChannelSecret string
 		MID           string
-		To            string
+		To            []string
 		Message       string
 	}
 
@@ -58,7 +57,9 @@ func (p Plugin) Exec() error {
 
 	bot, _ := linebot.NewClient(ChannelID, p.Config.ChannelSecret, p.Config.MID)
 
-	to := strings.Split(p.Config.To, ",")
+	if len(p.Config.To) == 0 {
+		return errors.New("missing line user config")
+	}
 
 	var message string
 	if p.Config.Message != "" {
@@ -67,7 +68,7 @@ func (p Plugin) Exec() error {
 		message = p.Message(p.Repo, p.Build)
 	}
 
-	_, err = bot.SendText(to, message)
+	_, err = bot.SendText(p.Config.To, message)
 
 	if err != nil {
 		return err
