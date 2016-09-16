@@ -20,17 +20,17 @@ func main() {
 		cli.StringFlag{
 			Name:   "channel.id",
 			Usage:  "line channel id",
-			EnvVar: "PLUGIN_CHANNEL_ID",
+			EnvVar: "PLUGIN_CHANNEL_ID,LINE_CHANNEL_ID",
 		},
 		cli.StringFlag{
 			Name:   "channel.secret",
 			Usage:  "line channel secret",
-			EnvVar: "PLUGIN_CHANNEL_SECRET",
+			EnvVar: "PLUGIN_CHANNEL_SECRET,LINE_CHANNEL_SECRET",
 		},
 		cli.StringFlag{
 			Name:   "mid",
 			Usage:  "line mid",
-			EnvVar: "PLUGIN_MID",
+			EnvVar: "PLUGIN_MID,LINE_MID",
 		},
 		cli.StringSliceFlag{
 			Name:   "to",
