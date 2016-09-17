@@ -51,13 +51,13 @@ docker run --rm \
   -e PLUGIN_MID=xxxxxxx \
   -e PLUGIN_TO=xxxxxxx \
   -e PLUGIN_MESSAGE=test \
-  -e DRONE_REPO_OWNER=octocat \
-  -e DRONE_REPO_NAME=hello-world \
-  -e DRONE_COMMIT_SHA=7fd1a60b01f91b314f59955a4e4d4e80d8edf11d \
+  -e DRONE_REPO_OWNER=appleboy \
+  -e DRONE_REPO_NAME=go-hello \
+  -e DRONE_COMMIT_SHA=e5e82b5eb3737205c25955dcc3dcacc839b7be52 \
   -e DRONE_COMMIT_BRANCH=master \
-  -e DRONE_COMMIT_AUTHOR=octocat \
+  -e DRONE_COMMIT_AUTHOR=appleboy \
   -e DRONE_BUILD_NUMBER=1 \
   -e DRONE_BUILD_STATUS=success \
-  -e DRONE_BUILD_LINK=http://github.com/octocat/hello-world \
+  -e DRONE_BUILD_LINK=http://github.com/appleboy/go-hello \
   appleboy/drone-line
 ```
