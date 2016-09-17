@@ -1,6 +1,6 @@
 .PHONY: test
 
-VERSION := $(shell git describe --tags | git rev-parse --short HEAD)
+VERSION := $(shell git describe --tags || git rev-parse --short HEAD)
 DEPLOY_ACCOUNT := "appleboy"
 DEPLOY_IMAGE := "drone-line"
 
