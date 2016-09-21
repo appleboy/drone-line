@@ -98,5 +98,5 @@ func TestDefaultMessage(t *testing.T) {
 
 	message := plugin.Message(plugin.Repo, plugin.Build)
 
-	assert.Equal(t, "[success] <https://github.com/appleboy/go-hello|appleboy/go-hello#e7c4f0a6> (master) by Bo-Yi Wu", message)
+	assert.Equal(t, "[success] <https://github.com/appleboy/go-hello> (master) by Bo-Yi Wu", message)
 }

@@ -88,12 +88,9 @@ func (p Plugin) Exec() error {
 
 // Message is line default message.
 func (p Plugin) Message(repo Repo, build Build) string {
-	return fmt.Sprintf("[%s] <%s|%s/%s#%s> (%s) by %s",
+	return fmt.Sprintf("[%s] <%s> (%s) by %s",
 		build.Status,
 		build.Link,
-		repo.Owner,
-		repo.Name,
-		build.Commit[:8],
 		build.Branch,
 		build.Author,
 	)
