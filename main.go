@@ -12,8 +12,8 @@ var Version string
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "line"
-	app.Usage = "drone line plugin"
+	app.Name = "line plugin"
+	app.Usage = "line plugin"
 	app.Action = run
 	app.Version = Version
 	app.Flags = []cli.Flag{
