@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -46,6 +47,20 @@ type (
 	}
 )
 
+func trimElement(keys []string) []string {
+	var newKeys []string
+
+	for _, value := range keys {
+		value = strings.Trim(value, " ")
+		if len(value) == 0 {
+			continue
+		}
+		newKeys = append(newKeys, value)
+	}
+
+	return newKeys
+}
+
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
@@ -81,17 +96,17 @@ func (p Plugin) Exec() error {
 	line := bot.NewMultipleMessage()
 
 	// check message array.
-	for _, value := range message {
+	for _, value := range trimElement(message) {
 		line.AddText(value)
 	}
 
 	// check image array.
-	for _, value := range p.Config.Image {
+	for _, value := range trimElement(p.Config.Image) {
 		line.AddImage(value, value)
 	}
 
 	// check video array.
-	for _, value := range p.Config.Video {
+	for _, value := range trimElement(p.Config.Video) {
 		line.AddVideo(value, "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png")
 	}
 

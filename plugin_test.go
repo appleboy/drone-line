@@ -115,7 +115,7 @@ func TestErrorSendMessage(t *testing.T) {
 			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
 			MID:           os.Getenv("LINE_MID"),
 			To:            []string{os.Getenv("LINE_TO")},
-			Message:       []string{"Test Line Bot From Travis or Local"},
+			Message:       []string{"Test Line Bot From Travis or Local", " "},
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
 			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 		},
@@ -125,4 +125,18 @@ func TestErrorSendMessage(t *testing.T) {
 	// error message: Your ip address [xxx.xxx.xxx.xxx] is not allowed to access this API.
 	// Please add your IP to the IP whitelist in the developer center.
 	assert.NotNil(t, err)
+}
+
+func TestTrimElement(t *testing.T) {
+	var input, result []string
+
+	input = []string{"1", "     ", "3"}
+	result = []string{"1", "3"}
+
+	assert.Equal(t, result, trimElement(input))
+
+	input = []string{"1", "2"}
+	result = []string{"1", "2"}
+
+	assert.Equal(t, result, trimElement(input))
 }
