@@ -37,10 +37,20 @@ func main() {
 			Usage:  "send message to user",
 			EnvVar: "PLUGIN_TO",
 		},
-		cli.StringFlag{
+		cli.StringSliceFlag{
 			Name:   "message",
 			Usage:  "line message",
 			EnvVar: "PLUGIN_MESSAGE",
+		},
+		cli.StringSliceFlag{
+			Name:   "image",
+			Usage:  "line image",
+			EnvVar: "PLUGIN_IMAGE",
+		},
+		cli.StringSliceFlag{
+			Name:   "video",
+			Usage:  "line video",
+			EnvVar: "PLUGIN_VIDEO",
 		},
 		cli.StringFlag{
 			Name:   "repo.owner",
@@ -114,7 +124,9 @@ func run(c *cli.Context) error {
 			ChannelSecret: c.String("channel.secret"),
 			MID:           c.String("mid"),
 			To:            c.StringSlice("to"),
-			Message:       c.String("message"),
+			Message:       c.StringSlice("message"),
+			Image:         c.StringSlice("image"),
+			Video:         c.StringSlice("video"),
 		},
 	}
 
