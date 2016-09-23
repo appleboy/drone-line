@@ -34,6 +34,7 @@ type (
 		MID           string
 		To            []string
 		Message       []string
+		Image         []string
 	}
 
 	// Plugin values.
@@ -81,6 +82,11 @@ func (p Plugin) Exec() error {
 	// check message array.
 	for _, value := range message {
 		line.AddText(value)
+	}
+
+	// check image array.
+	for _, value := range p.Config.Image {
+		line.AddImage(value, value)
 	}
 
 	_, err = line.Send(p.Config.To)

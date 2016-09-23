@@ -42,6 +42,11 @@ func main() {
 			Usage:  "line message",
 			EnvVar: "PLUGIN_MESSAGE",
 		},
+		cli.StringSliceFlag{
+			Name:   "image",
+			Usage:  "line image",
+			EnvVar: "PLUGIN_IMAGE",
+		},
 		cli.StringFlag{
 			Name:   "repo.owner",
 			Usage:  "repository owner",
@@ -115,6 +120,7 @@ func run(c *cli.Context) error {
 			MID:           c.String("mid"),
 			To:            c.StringSlice("to"),
 			Message:       c.StringSlice("message"),
+			Image:         c.StringSlice("image"),
 		},
 	}
 
