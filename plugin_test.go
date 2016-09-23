@@ -116,8 +116,8 @@ func TestErrorSendMessage(t *testing.T) {
 			MID:           os.Getenv("LINE_MID"),
 			To:            []string{os.Getenv("LINE_TO")},
 			Message:       []string{"Test Line Bot From Travis or Local", " "},
-			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
-			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
+			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png", "https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png::https://cdn1.iconfinder.com/data/icons/logotypes/32/youtube-128.png"},
+			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4", "http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4::https://cdn1.iconfinder.com/data/icons/logotypes/32/youtube-128.png"},
 		},
 	}
 
