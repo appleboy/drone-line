@@ -59,7 +59,7 @@ func TestSendTextError(t *testing.T) {
 			ChannelSecret: "ChannelSecret",
 			MID:           "MID",
 			To:            []string{"1234567890"},
-			Message:       "Test",
+			Message:       []string{"Test"},
 		},
 	}
 
@@ -68,7 +68,7 @@ func TestSendTextError(t *testing.T) {
 	assert.NotNil(t, err)
 
 	// disable message
-	plugin.Config.Message = ""
+	plugin.Config.Message = []string{}
 	err = plugin.Exec()
 	assert.NotNil(t, err)
 }
@@ -92,11 +92,11 @@ func TestDefaultMessage(t *testing.T) {
 			ChannelSecret: "ChannelSecret",
 			MID:           "MID",
 			To:            []string{"1234567890"},
-			Message:       "Test",
+			Message:       []string{"Test"},
 		},
 	}
 
 	message := plugin.Message(plugin.Repo, plugin.Build)
 
-	assert.Equal(t, "[success] <https://github.com/appleboy/go-hello> (master) by Bo-Yi Wu", message)
+	assert.Equal(t, []string{"[success] <https://github.com/appleboy/go-hello> (master) by Bo-Yi Wu"}, message)
 }

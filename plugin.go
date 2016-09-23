@@ -33,7 +33,7 @@ type (
 		ChannelSecret string
 		MID           string
 		To            []string
-		Message       string
+		Message       []string
 	}
 
 	// Plugin values.
@@ -68,14 +68,22 @@ func (p Plugin) Exec() error {
 		return errors.New("missing line user config")
 	}
 
-	var message string
-	if p.Config.Message != "" {
+	var message []string
+	if len(p.Config.Message) > 0 {
 		message = p.Config.Message
 	} else {
 		message = p.Message(p.Repo, p.Build)
 	}
 
-	_, err = bot.SendText(p.Config.To, message)
+	// New multiple request instance
+	line := bot.NewMultipleMessage()
+
+	// check message array.
+	for _, value := range message {
+		line.AddText(value)
+	}
+
+	_, err = line.Send(p.Config.To)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -87,11 +95,11 @@ func (p Plugin) Exec() error {
 }
 
 // Message is line default message.
-func (p Plugin) Message(repo Repo, build Build) string {
-	return fmt.Sprintf("[%s] <%s> (%s) by %s",
+func (p Plugin) Message(repo Repo, build Build) []string {
+	return []string{fmt.Sprintf("[%s] <%s> (%s) by %s",
 		build.Status,
 		build.Link,
 		build.Branch,
 		build.Author,
-	)
+	)}
 }
