@@ -35,6 +35,7 @@ type (
 		To            []string
 		Message       []string
 		Image         []string
+		Video         []string
 	}
 
 	// Plugin values.
@@ -87,6 +88,11 @@ func (p Plugin) Exec() error {
 	// check image array.
 	for _, value := range p.Config.Image {
 		line.AddImage(value, value)
+	}
+
+	// check video array.
+	for _, value := range p.Config.Video {
+		line.AddVideo(value, "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png")
 	}
 
 	_, err = line.Send(p.Config.To)

@@ -117,6 +117,7 @@ func TestErrorSendMessage(t *testing.T) {
 			To:            []string{os.Getenv("LINE_TO")},
 			Message:       []string{"Test Line Bot From Travis or Local"},
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
+			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 		},
 	}
 
