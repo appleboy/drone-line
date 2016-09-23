@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/stretchr/testify/assert"
 
+	"os"
 	"testing"
 )
 
@@ -73,7 +74,7 @@ func TestSendTextError(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestDefaultMessage(t *testing.T) {
+func TestDefaultMessageFormat(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
 			Name:  "go-hello",
@@ -87,16 +88,39 @@ func TestDefaultMessage(t *testing.T) {
 			Branch: "master",
 			Commit: "e7c4f0a63ceeb42a39ac7806f7b51f3f0d204fd2",
 		},
-		Config: Config{
-			ChannelID:     "1465486347",
-			ChannelSecret: "ChannelSecret",
-			MID:           "MID",
-			To:            []string{"1234567890"},
-			Message:       []string{"Test"},
-		},
 	}
 
 	message := plugin.Message(plugin.Repo, plugin.Build)
 
 	assert.Equal(t, []string{"[success] <https://github.com/appleboy/go-hello> (master) by Bo-Yi Wu"}, message)
+}
+
+func TestErrorSendMessage(t *testing.T) {
+	plugin := Plugin{
+		Repo: Repo{
+			Name:  "go-hello",
+			Owner: "appleboy",
+		},
+		Build: Build{
+			Number: 101,
+			Status: "success",
+			Link:   "https://github.com/appleboy/go-hello",
+			Author: "Bo-Yi Wu",
+			Branch: "master",
+			Commit: "e7c4f0a63ceeb42a39ac7806f7b51f3f0d204fd2",
+		},
+
+		Config: Config{
+			ChannelID:     os.Getenv("LINE_CHANNEL_ID"),
+			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
+			MID:           os.Getenv("LINE_MID"),
+			To:            []string{os.Getenv("LINE_TO")},
+			Message:       []string{"Test Line Bot From Travis or Local"},
+		},
+	}
+
+	err := plugin.Exec()
+	// error message: Your ip address [xxx.xxx.xxx.xxx] is not allowed to access this API.
+	// Please add your IP to the IP whitelist in the developer center.
+	assert.NotNil(t, err)
 }
