@@ -63,6 +63,26 @@ func trimElement(keys []string) []string {
 	return newKeys
 }
 
+func convertImage(value string) []string {
+	values := trimElement(strings.Split(value, "::"))
+
+	if len(values) < 2 {
+		values = append(values, values[0])
+	}
+
+	return values
+}
+
+func convertVideo(value string) []string {
+	values := trimElement(strings.Split(value, "::"))
+
+	if len(values) < 2 {
+		values = append(values, defaultPreviewImageURL)
+	}
+
+	return values
+}
+
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
@@ -104,22 +124,14 @@ func (p Plugin) Exec() error {
 
 	// check image array.
 	for _, value := range trimElement(p.Config.Image) {
-		values := trimElement(strings.Split(value, "::"))
-
-		if len(values) < 2 {
-			values = append(values, values[0])
-		}
+		values := convertImage(value)
 
 		line.AddImage(values[0], values[1])
 	}
 
 	// check video array.
 	for _, value := range trimElement(p.Config.Video) {
-		values := trimElement(strings.Split(value, "::"))
-
-		if len(values) < 2 {
-			values = append(values, defaultPreviewImageURL)
-		}
+		values := convertVideo(value)
 
 		line.AddVideo(values[0], values[1])
 	}
