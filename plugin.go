@@ -10,6 +10,8 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
+const defaultPreviewImageURL = "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png"
+
 type (
 	// Repo information.
 	Repo struct {
@@ -102,12 +104,24 @@ func (p Plugin) Exec() error {
 
 	// check image array.
 	for _, value := range trimElement(p.Config.Image) {
-		line.AddImage(value, value)
+		values := trimElement(strings.Split(value, "::"))
+
+		if len(values) < 2 {
+			values = append(values, values[0])
+		}
+
+		line.AddImage(values[0], values[1])
 	}
 
 	// check video array.
 	for _, value := range trimElement(p.Config.Video) {
-		line.AddVideo(value, "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png")
+		values := trimElement(strings.Split(value, "::"))
+
+		if len(values) < 2 {
+			values = append(values, defaultPreviewImageURL)
+		}
+
+		line.AddVideo(values[0], values[1])
 	}
 
 	_, err = line.Send(p.Config.To)
