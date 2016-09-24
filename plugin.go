@@ -36,6 +36,7 @@ type (
 		ChannelSecret string
 		MID           string
 		To            []string
+		Delimiter     string
 		Message       []string
 		Image         []string
 		Video         []string
@@ -63,8 +64,8 @@ func trimElement(keys []string) []string {
 	return newKeys
 }
 
-func convertImage(value string) []string {
-	values := trimElement(strings.Split(value, "::"))
+func convertImage(value, delimiter string) []string {
+	values := trimElement(strings.Split(value, delimiter))
 
 	if len(values) < 2 {
 		values = append(values, values[0])
@@ -73,8 +74,8 @@ func convertImage(value string) []string {
 	return values
 }
 
-func convertVideo(value string) []string {
-	values := trimElement(strings.Split(value, "::"))
+func convertVideo(value, delimiter string) []string {
+	values := trimElement(strings.Split(value, delimiter))
 
 	if len(values) < 2 {
 		values = append(values, defaultPreviewImageURL)
@@ -124,14 +125,14 @@ func (p Plugin) Exec() error {
 
 	// check image array.
 	for _, value := range trimElement(p.Config.Image) {
-		values := convertImage(value)
+		values := convertImage(value, p.Config.Delimiter)
 
 		line.AddImage(values[0], values[1])
 	}
 
 	// check video array.
 	for _, value := range trimElement(p.Config.Video) {
-		values := convertVideo(value)
+		values := convertVideo(value, p.Config.Delimiter)
 
 		line.AddVideo(values[0], values[1])
 	}
