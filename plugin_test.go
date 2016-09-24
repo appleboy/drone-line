@@ -115,7 +115,10 @@ func TestErrorSendMessage(t *testing.T) {
 			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
 			MID:           os.Getenv("LINE_MID"),
 			To:            []string{os.Getenv("LINE_TO")},
+			Delimiter:     "::",
 			Message:       []string{"Test Line Bot From Travis or Local", " "},
+			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
+			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 		},
 	}
 
@@ -146,12 +149,17 @@ func TestConvertImage(t *testing.T) {
 	input = "http://example.com/1.png"
 	result = []string{"http://example.com/1.png", "http://example.com/1.png"}
 
-	assert.Equal(t, result, convertImage(input))
+	assert.Equal(t, result, convertImage(input, "::"))
 
 	input = "http://example.com/1.png::http://example.com/2.png"
 	result = []string{"http://example.com/1.png", "http://example.com/2.png"}
 
-	assert.Equal(t, result, convertImage(input))
+	assert.Equal(t, result, convertImage(input, "::"))
+
+	input = "http://example.com/1.png@@http://example.com/2.png"
+	result = []string{"http://example.com/1.png", "http://example.com/2.png"}
+
+	assert.Equal(t, result, convertImage(input, "@@"))
 }
 
 func TestConvertVideo(t *testing.T) {
@@ -161,10 +169,15 @@ func TestConvertVideo(t *testing.T) {
 	input = "http://example.com/1.mp4"
 	result = []string{"http://example.com/1.mp4", defaultPreviewImageURL}
 
-	assert.Equal(t, result, convertVideo(input))
+	assert.Equal(t, result, convertVideo(input, "::"))
 
 	input = "http://example.com/1.mp4::http://example.com/2.png"
 	result = []string{"http://example.com/1.mp4", "http://example.com/2.png"}
 
-	assert.Equal(t, result, convertVideo(input))
+	assert.Equal(t, result, convertVideo(input, "::"))
+
+	input = "http://example.com/1.mp4@@http://example.com/2.png"
+	result = []string{"http://example.com/1.mp4", "http://example.com/2.png"}
+
+	assert.Equal(t, result, convertVideo(input, "@@"))
 }

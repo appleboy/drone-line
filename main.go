@@ -53,6 +53,12 @@ func main() {
 			EnvVar: "PLUGIN_VIDEO",
 		},
 		cli.StringFlag{
+			Name:   "delimiter",
+			Usage:  "line delimiter",
+			Value:  "::",
+			EnvVar: "PLUGIN_DELIMITER",
+		},
+		cli.StringFlag{
 			Name:   "repo.owner",
 			Usage:  "repository owner",
 			EnvVar: "DRONE_REPO_OWNER",
@@ -124,6 +130,7 @@ func run(c *cli.Context) error {
 			ChannelSecret: c.String("channel.secret"),
 			MID:           c.String("mid"),
 			To:            c.StringSlice("to"),
+			Delimiter:     c.String("delimiter"),
 			Message:       c.StringSlice("message"),
 			Image:         c.StringSlice("image"),
 			Video:         c.StringSlice("video"),
