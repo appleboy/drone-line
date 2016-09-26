@@ -42,6 +42,7 @@ type (
 		Video         []string
 		Audio         []string
 		Sticker       []string
+		Location      []string
 	}
 
 	// Plugin values.
@@ -51,10 +52,18 @@ type (
 		Config Config
 	}
 
-	// Audion format
+	// Audio format
 	Audio struct {
 		URL      string
 		Duration int
+	}
+
+	// Location format
+	Location struct {
+		Title     string
+		Address   string
+		Latitude  float64
+		Longitude float64
 	}
 )
 
@@ -133,6 +142,37 @@ func convertSticker(value, delimiter string) ([]int, bool) {
 	return sticker, false
 }
 
+func convertLocation(value, delimiter string) (Location, bool) {
+	var latitude, longitude float64
+	var err error
+	values := trimElement(strings.Split(value, delimiter))
+
+	if len(values) < 4 {
+		return Location{}, true
+	}
+
+	latitude, err = strconv.ParseFloat(values[2], 64)
+
+	if err != nil {
+		log.Println(err.Error())
+		return Location{}, true
+	}
+
+	longitude, err = strconv.ParseFloat(values[3], 64)
+
+	if err != nil {
+		log.Println(err.Error())
+		return Location{}, true
+	}
+
+	return Location{
+		Title:     values[0],
+		Address:   values[1],
+		Latitude:  latitude,
+		Longitude: longitude,
+	}, false
+}
+
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
@@ -206,6 +246,17 @@ func (p Plugin) Exec() error {
 		}
 
 		line.AddSticker(sticker[0], sticker[1], sticker[2])
+	}
+
+	// check Location array.
+	for _, value := range trimElement(p.Config.Location) {
+		location, empty := convertLocation(value, p.Config.Delimiter)
+
+		if empty == true {
+			continue
+		}
+
+		line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
 	}
 
 	_, err = line.Send(p.Config.To)

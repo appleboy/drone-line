@@ -121,6 +121,7 @@ func TestErrorSendMessage(t *testing.T) {
 			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 			Audio:         []string{"http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3::2920000", "http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3"},
 			Sticker:       []string{"1::1::100", "1::1"},
+			Location:      []string{"竹北體育館::新竹縣竹北市::24.834687::120.993368", "1::1"},
 		},
 	}
 
@@ -235,4 +236,41 @@ func TestConvertSticker(t *testing.T) {
 
 	assert.Equal(t, false, empty)
 	assert.Equal(t, []int{1, 1, 100}, result)
+}
+
+func TestConvertLocation(t *testing.T) {
+	var input string
+	var result Location
+	var empty bool
+
+	input = "1::2::3"
+	result, empty = convertLocation(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, Location{}, result)
+
+	// strconv.ParseInt: parsing "測試": invalid syntax
+	input = "竹北體育館::新竹縣竹北市::測試::139.704051"
+	result, empty = convertLocation(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, Location{}, result)
+
+	// strconv.ParseInt: parsing "測試": invalid syntax
+	input = "竹北體育館::新竹縣竹北市::35.661777::測試"
+	result, empty = convertLocation(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, Location{}, result)
+
+	input = "竹北體育館::新竹縣竹北市::35.661777::139.704051"
+	result, empty = convertLocation(input, "::")
+
+	assert.Equal(t, false, empty)
+	assert.Equal(t, Location{
+		Title:     "竹北體育館",
+		Address:   "新竹縣竹北市",
+		Latitude:  float64(35.661777),
+		Longitude: float64(139.704051),
+	}, result)
 }
