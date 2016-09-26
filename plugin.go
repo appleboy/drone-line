@@ -40,9 +40,6 @@ type (
 		Message       []string
 		Image         []string
 		Video         []string
-		Audio         []string
-		Sticker       []string
-		Location      []string
 	}
 
 	// Plugin values.
@@ -50,20 +47,6 @@ type (
 		Repo   Repo
 		Build  Build
 		Config Config
-	}
-
-	// Audio format
-	Audio struct {
-		URL      string
-		Duration int
-	}
-
-	// Location format
-	Location struct {
-		Title     string
-		Address   string
-		Latitude  float64
-		Longitude float64
 	}
 )
 
@@ -99,78 +82,6 @@ func convertVideo(value, delimiter string) []string {
 	}
 
 	return values
-}
-
-func convertAudio(value, delimiter string) (Audio, bool) {
-	values := trimElement(strings.Split(value, delimiter))
-
-	if len(values) < 2 {
-		return Audio{}, true
-	}
-
-	duration, err := strconv.Atoi(values[1])
-
-	if err != nil {
-		log.Println(err.Error())
-		return Audio{}, true
-	}
-
-	return Audio{
-		URL:      values[0],
-		Duration: duration,
-	}, false
-}
-
-func convertSticker(value, delimiter string) ([]int, bool) {
-	var sticker []int
-	values := trimElement(strings.Split(value, delimiter))
-
-	if len(values) < 3 {
-		return []int{}, true
-	}
-
-	for _, value := range values {
-		i, err := strconv.Atoi(value)
-		if err != nil {
-			log.Println(err.Error())
-			return []int{}, true
-		}
-
-		sticker = append(sticker, i)
-	}
-
-	return sticker, false
-}
-
-func convertLocation(value, delimiter string) (Location, bool) {
-	var latitude, longitude float64
-	var err error
-	values := trimElement(strings.Split(value, delimiter))
-
-	if len(values) < 4 {
-		return Location{}, true
-	}
-
-	latitude, err = strconv.ParseFloat(values[2], 64)
-
-	if err != nil {
-		log.Println(err.Error())
-		return Location{}, true
-	}
-
-	longitude, err = strconv.ParseFloat(values[3], 64)
-
-	if err != nil {
-		log.Println(err.Error())
-		return Location{}, true
-	}
-
-	return Location{
-		Title:     values[0],
-		Address:   values[1],
-		Latitude:  latitude,
-		Longitude: longitude,
-	}, false
 }
 
 // Exec executes the plugin.
@@ -224,39 +135,6 @@ func (p Plugin) Exec() error {
 		values := convertVideo(value, p.Config.Delimiter)
 
 		line.AddVideo(values[0], values[1])
-	}
-
-	// check Audio array.
-	for _, value := range trimElement(p.Config.Audio) {
-		audio, empty := convertAudio(value, p.Config.Delimiter)
-
-		if empty == true {
-			continue
-		}
-
-		line.AddAudio(audio.URL, audio.Duration)
-	}
-
-	// check Sticker array.
-	for _, value := range trimElement(p.Config.Sticker) {
-		sticker, empty := convertSticker(value, p.Config.Delimiter)
-
-		if empty == true {
-			continue
-		}
-
-		line.AddSticker(sticker[0], sticker[1], sticker[2])
-	}
-
-	// check Location array.
-	for _, value := range trimElement(p.Config.Location) {
-		location, empty := convertLocation(value, p.Config.Delimiter)
-
-		if empty == true {
-			continue
-		}
-
-		line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
 	}
 
 	_, err = line.Send(p.Config.To)
