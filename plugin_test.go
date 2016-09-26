@@ -119,6 +119,7 @@ func TestErrorSendMessage(t *testing.T) {
 			Message:       []string{"Test Line Bot From Travis or Local", " "},
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
 			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
+			Audio:         []string{"http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3::2920000", "http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3"},
 		},
 	}
 
@@ -180,4 +181,32 @@ func TestConvertVideo(t *testing.T) {
 	result = []string{"http://example.com/1.mp4", "http://example.com/2.png"}
 
 	assert.Equal(t, result, convertVideo(input, "@@"))
+}
+
+func TestConvertAudio(t *testing.T) {
+	var input string
+	var result Audio
+	var empty bool
+
+	input = "http://example.com/1.mp3"
+	result, empty = convertAudio(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, Audio{}, result)
+
+	// strconv.ParseInt: parsing "我": invalid syntax
+	input = "http://example.com/1.mp3::我"
+	result, empty = convertAudio(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, Audio{}, result)
+
+	input = "http://example.com/1.mp3::1000"
+	result, empty = convertAudio(input, "::")
+
+	assert.Equal(t, false, empty)
+	assert.Equal(t, Audio{
+		URL:      "http://example.com/1.mp3",
+		Duration: 1000,
+	}, result)
 }

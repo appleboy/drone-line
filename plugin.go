@@ -40,6 +40,7 @@ type (
 		Message       []string
 		Image         []string
 		Video         []string
+		Audio         []string
 	}
 
 	// Plugin values.
@@ -47,6 +48,12 @@ type (
 		Repo   Repo
 		Build  Build
 		Config Config
+	}
+
+	// Audion format
+	Audio struct {
+		URL      string
+		Duration int
 	}
 )
 
@@ -82,6 +89,26 @@ func convertVideo(value, delimiter string) []string {
 	}
 
 	return values
+}
+
+func convertAudio(value, delimiter string) (Audio, bool) {
+	values := trimElement(strings.Split(value, delimiter))
+
+	if len(values) < 2 {
+		return Audio{}, true
+	}
+
+	duration, err := strconv.Atoi(values[1])
+
+	if err != nil {
+		log.Println(err.Error())
+		return Audio{}, true
+	}
+
+	return Audio{
+		URL:      values[0],
+		Duration: duration,
+	}, false
 }
 
 // Exec executes the plugin.
@@ -135,6 +162,17 @@ func (p Plugin) Exec() error {
 		values := convertVideo(value, p.Config.Delimiter)
 
 		line.AddVideo(values[0], values[1])
+	}
+
+	// check Audio array.
+	for _, value := range trimElement(p.Config.Audio) {
+		audio, empty := convertAudio(value, p.Config.Delimiter)
+
+		if empty == true {
+			continue
+		}
+
+		line.AddAudio(audio.URL, audio.Duration)
 	}
 
 	_, err = line.Send(p.Config.To)
