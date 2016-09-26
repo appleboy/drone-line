@@ -120,6 +120,7 @@ func TestErrorSendMessage(t *testing.T) {
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
 			Video:         []string{"http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 			Audio:         []string{"http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3::2920000", "http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3"},
+			Sticker:       []string{"1::1::100", "1::1"},
 		},
 	}
 
@@ -209,4 +210,29 @@ func TestConvertAudio(t *testing.T) {
 		URL:      "http://example.com/1.mp3",
 		Duration: 1000,
 	}, result)
+}
+
+func TestConvertSticker(t *testing.T) {
+	var input string
+	var result []int
+	var empty bool
+
+	input = "1,1"
+	result, empty = convertSticker(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, []int{}, result)
+
+	// strconv.ParseInt: parsing "我": invalid syntax
+	input = "1::我::100"
+	result, empty = convertSticker(input, "::")
+
+	assert.Equal(t, true, empty)
+	assert.Equal(t, []int{}, result)
+
+	input = "1::1::100"
+	result, empty = convertSticker(input, "::")
+
+	assert.Equal(t, false, empty)
+	assert.Equal(t, []int{1, 1, 100}, result)
 }

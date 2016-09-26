@@ -41,6 +41,7 @@ type (
 		Image         []string
 		Video         []string
 		Audio         []string
+		Sticker       []string
 	}
 
 	// Plugin values.
@@ -111,6 +112,27 @@ func convertAudio(value, delimiter string) (Audio, bool) {
 	}, false
 }
 
+func convertSticker(value, delimiter string) ([]int, bool) {
+	var sticker []int
+	values := trimElement(strings.Split(value, delimiter))
+
+	if len(values) < 3 {
+		return []int{}, true
+	}
+
+	for _, value := range values {
+		i, err := strconv.Atoi(value)
+		if err != nil {
+			log.Println(err.Error())
+			return []int{}, true
+		}
+
+		sticker = append(sticker, i)
+	}
+
+	return sticker, false
+}
+
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
@@ -173,6 +195,17 @@ func (p Plugin) Exec() error {
 		}
 
 		line.AddAudio(audio.URL, audio.Duration)
+	}
+
+	// check Sticker array.
+	for _, value := range trimElement(p.Config.Sticker) {
+		sticker, empty := convertSticker(value, p.Config.Delimiter)
+
+		if empty == true {
+			continue
+		}
+
+		line.AddSticker(sticker[0], sticker[1], sticker[2])
 	}
 
 	_, err = line.Send(p.Config.To)

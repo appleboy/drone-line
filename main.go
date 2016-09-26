@@ -57,6 +57,11 @@ func main() {
 			Usage:  "line audio",
 			EnvVar: "PLUGIN_AUDIO",
 		},
+		cli.StringSliceFlag{
+			Name:   "sticker",
+			Usage:  "line sticker",
+			EnvVar: "PLUGIN_STICKER",
+		},
 		cli.StringFlag{
 			Name:   "delimiter",
 			Usage:  "line delimiter",
@@ -140,6 +145,7 @@ func run(c *cli.Context) error {
 			Image:         c.StringSlice("image"),
 			Video:         c.StringSlice("video"),
 			Audio:         c.StringSlice("audio"),
+			Sticker:       c.StringSlice("sticker"),
 		},
 	}
 
