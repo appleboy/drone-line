@@ -8,6 +8,15 @@ Drone plugin for sending line notifications.
 
 Please refer to [Getting started with BOT API Trial](https://developers.line.me/bot-api/getting-started-with-bot-api-trial).
 
+## Feature
+
+* [x] Send multiple Message.
+* [x] Send Text Message.
+* [x] Send Video Message.
+* [x] Send Audio Message.
+* [x] Send Sticker Message.
+* [x] Send Location Message.
+
 ## Build
 
 Build the binary with the following commands:
@@ -51,8 +60,11 @@ docker run --rm \
   -e PLUGIN_MID=xxxxxxx \
   -e PLUGIN_TO=xxxxxxx \
   -e PLUGIN_MESSAGE=test \
-  -e PLUGIN_IMAGE=https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png \
-  -e PLUGIN_VIDEO=http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4 \
+  -e PLUGIN_IMAGE=https://example.com/1.png \
+  -e PLUGIN_VIDEO=http://example.com/1.mp4 \
+  -e PLUGIN_Audio=http://example.com/1.mp3::1000 \
+  -e PLUGIN_Sticker=1::1::100 \
+  -e PLUGIN_Location=title::address::latitude::longitude \
   -e PLUGIN_DELIMITER=:: \
   -e DRONE_REPO_OWNER=appleboy \
   -e DRONE_REPO_NAME=go-hello \
