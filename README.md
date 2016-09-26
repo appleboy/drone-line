@@ -53,6 +53,7 @@ docker run --rm \
   -e PLUGIN_MESSAGE=test \
   -e PLUGIN_IMAGE=https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png \
   -e PLUGIN_VIDEO=http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4 \
+  -e PLUGIN_DELIMITER=:: \
   -e DRONE_REPO_OWNER=appleboy \
   -e DRONE_REPO_NAME=go-hello \
   -e DRONE_COMMIT_SHA=e5e82b5eb3737205c25955dcc3dcacc839b7be52 \
