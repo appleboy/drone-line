@@ -100,6 +100,11 @@ func main() {
 			EnvVar: "DRONE_COMMIT_AUTHOR",
 		},
 		cli.StringFlag{
+			Name:   "commit.message",
+			Usage:  "commit message",
+			EnvVar: "DRONE_COMMIT_MESSAGE",
+		},
+		cli.StringFlag{
 			Name:   "build.event",
 			Value:  "push",
 			Usage:  "build event",
@@ -132,13 +137,14 @@ func run(c *cli.Context) error {
 			Name:  c.String("repo.name"),
 		},
 		Build: Build{
-			Number: c.Int("build.number"),
-			Event:  c.String("build.event"),
-			Status: c.String("build.status"),
-			Commit: c.String("commit.sha"),
-			Branch: c.String("commit.branch"),
-			Author: c.String("commit.author"),
-			Link:   c.String("build.link"),
+			Number:  c.Int("build.number"),
+			Event:   c.String("build.event"),
+			Status:  c.String("build.status"),
+			Commit:  c.String("commit.sha"),
+			Branch:  c.String("commit.branch"),
+			Author:  c.String("commit.author"),
+			Message: c.String("commit.message"),
+			Link:    c.String("build.link"),
 		},
 		Config: Config{
 			ChannelID:     c.String("channel.id"),

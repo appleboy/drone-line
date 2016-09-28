@@ -21,13 +21,14 @@ type (
 
 	// Build information.
 	Build struct {
-		Event  string
-		Number int
-		Commit string
-		Branch string
-		Author string
-		Status string
-		Link   string
+		Event   string
+		Number  int
+		Commit  string
+		Branch  string
+		Author  string
+		Message string
+		Status  string
+		Link    string
 	}
 
 	// Config for the plugin.
@@ -272,10 +273,11 @@ func (p Plugin) Exec() error {
 
 // Message is line default message.
 func (p Plugin) Message(repo Repo, build Build) []string {
-	return []string{fmt.Sprintf("[%s] <%s> (%s) by %s",
+	return []string{fmt.Sprintf("[%s] <%s> (%s)『%s』by %s",
 		build.Status,
 		build.Link,
 		build.Branch,
+		build.Message,
 		build.Author,
 	)}
 }
