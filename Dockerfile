@@ -1,8 +1,5 @@
-FROM alpine:3.4
+FROM centurylink/ca-certs
 
-RUN apk update && \
-  apk add ca-certificates && \
-  rm -rf /var/cache/apk/*
+ADD drone-line /
 
-ADD drone-line /bin/
-ENTRYPOINT ["/bin/drone-line"]
+ENTRYPOINT ["/drone-line"]
