@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/appleboy/drone-line.svg?branch=master)](https://travis-ci.org/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line)
 
-Drone plugin for sending line notifications.
+[Drone](https://github.com/drone/drone) plugin for sending line notifications.
 
 ## Register Line BOT API Trial
 
