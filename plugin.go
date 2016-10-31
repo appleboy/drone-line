@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/appleboy/drone-facebook/template"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
@@ -21,14 +22,16 @@ type (
 
 	// Build information.
 	Build struct {
-		Event   string
-		Number  int
-		Commit  string
-		Branch  string
-		Author  string
-		Message string
-		Status  string
-		Link    string
+		Event    string
+		Number   int
+		Commit   string
+		Branch   string
+		Author   string
+		Message  string
+		Status   string
+		Link     string
+		Started  float64
+		Finished float64
 	}
 
 	// Config for the plugin.
@@ -210,7 +213,12 @@ func (p Plugin) Exec() error {
 
 	// check message array.
 	for _, value := range trimElement(message) {
-		line.AddText(value)
+		txt, err := template.RenderTrim(value, p)
+		if err != nil {
+			return err
+		}
+
+		line.AddText(txt)
 	}
 
 	// check image array.
