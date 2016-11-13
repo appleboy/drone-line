@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/urfave/cli"
 )
@@ -135,6 +136,11 @@ func main() {
 			Name:   "job.finished",
 			Usage:  "job finished",
 			EnvVar: "DRONE_JOB_FINISHED",
+		},
+		cli.StringFlag{
+			Name:   "env-file",
+			Usage:  "source env file",
+			EnvVar: "ENV_FILE",
 		},
 	}
 	app.Run(os.Args)
