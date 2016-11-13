@@ -19,19 +19,14 @@ func main() {
 	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   "channel.id",
-			Usage:  "line channel id",
-			EnvVar: "PLUGIN_CHANNEL_ID,LINE_CHANNEL_ID",
-		},
-		cli.StringFlag{
 			Name:   "channel.secret",
 			Usage:  "line channel secret",
 			EnvVar: "PLUGIN_CHANNEL_SECRET,LINE_CHANNEL_SECRET",
 		},
 		cli.StringFlag{
-			Name:   "mid",
-			Usage:  "line mid",
-			EnvVar: "PLUGIN_MID,LINE_MID",
+			Name:   "channel.token",
+			Usage:  "line channel access token",
+			EnvVar: "PLUGIN_CHANNEL_TOKEN,LINE_CHANNEL_TOKEN",
 		},
 		cli.StringSliceFlag{
 			Name:   "to",
@@ -169,9 +164,8 @@ func run(c *cli.Context) error {
 			Finished: c.Float64("job.finished"),
 		},
 		Config: Config{
-			ChannelID:     c.String("channel.id"),
 			ChannelSecret: c.String("channel.secret"),
-			MID:           c.String("mid"),
+			ChannelToken:  c.String("channel.token"),
 			To:            c.StringSlice("to"),
 			Delimiter:     c.String("delimiter"),
 			Message:       c.StringSlice("message"),

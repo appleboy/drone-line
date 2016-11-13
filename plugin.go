@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strconv"
+	// "strconv"
 	"strings"
 
 	"github.com/appleboy/drone-facebook/template"
@@ -36,9 +36,8 @@ type (
 
 	// Config for the plugin.
 	Config struct {
-		ChannelID     string
+		ChannelToken  string
 		ChannelSecret string
-		MID           string
 		To            []string
 		Delimiter     string
 		Message       []string
@@ -85,115 +84,108 @@ func trimElement(keys []string) []string {
 	return newKeys
 }
 
-func convertImage(value, delimiter string) []string {
-	values := trimElement(strings.Split(value, delimiter))
+// func convertImage(value, delimiter string) []string {
+// 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 2 {
-		values = append(values, values[0])
-	}
+// 	if len(values) < 2 {
+// 		values = append(values, values[0])
+// 	}
 
-	return values
-}
+// 	return values
+// }
 
-func convertVideo(value, delimiter string) []string {
-	values := trimElement(strings.Split(value, delimiter))
+// func convertVideo(value, delimiter string) []string {
+// 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 2 {
-		values = append(values, defaultPreviewImageURL)
-	}
+// 	if len(values) < 2 {
+// 		values = append(values, defaultPreviewImageURL)
+// 	}
 
-	return values
-}
+// 	return values
+// }
 
-func convertAudio(value, delimiter string) (Audio, bool) {
-	values := trimElement(strings.Split(value, delimiter))
+// func convertAudio(value, delimiter string) (Audio, bool) {
+// 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 2 {
-		return Audio{}, true
-	}
+// 	if len(values) < 2 {
+// 		return Audio{}, true
+// 	}
 
-	duration, err := strconv.Atoi(values[1])
+// 	duration, err := strconv.Atoi(values[1])
 
-	if err != nil {
-		log.Println(err.Error())
-		return Audio{}, true
-	}
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 		return Audio{}, true
+// 	}
 
-	return Audio{
-		URL:      values[0],
-		Duration: duration,
-	}, false
-}
+// 	return Audio{
+// 		URL:      values[0],
+// 		Duration: duration,
+// 	}, false
+// }
 
-func convertSticker(value, delimiter string) ([]int, bool) {
-	var sticker []int
-	values := trimElement(strings.Split(value, delimiter))
+// func convertSticker(value, delimiter string) ([]int, bool) {
+// 	var sticker []int
+// 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 3 {
-		return []int{}, true
-	}
+// 	if len(values) < 3 {
+// 		return []int{}, true
+// 	}
 
-	for _, value := range values {
-		i, err := strconv.Atoi(value)
-		if err != nil {
-			log.Println(err.Error())
-			return []int{}, true
-		}
+// 	for _, value := range values {
+// 		i, err := strconv.Atoi(value)
+// 		if err != nil {
+// 			log.Println(err.Error())
+// 			return []int{}, true
+// 		}
 
-		sticker = append(sticker, i)
-	}
+// 		sticker = append(sticker, i)
+// 	}
 
-	return sticker, false
-}
+// 	return sticker, false
+// }
 
-func convertLocation(value, delimiter string) (Location, bool) {
-	var latitude, longitude float64
-	var err error
-	values := trimElement(strings.Split(value, delimiter))
+// func convertLocation(value, delimiter string) (Location, bool) {
+// 	var latitude, longitude float64
+// 	var err error
+// 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 4 {
-		return Location{}, true
-	}
+// 	if len(values) < 4 {
+// 		return Location{}, true
+// 	}
 
-	latitude, err = strconv.ParseFloat(values[2], 64)
+// 	latitude, err = strconv.ParseFloat(values[2], 64)
 
-	if err != nil {
-		log.Println(err.Error())
-		return Location{}, true
-	}
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 		return Location{}, true
+// 	}
 
-	longitude, err = strconv.ParseFloat(values[3], 64)
+// 	longitude, err = strconv.ParseFloat(values[3], 64)
 
-	if err != nil {
-		log.Println(err.Error())
-		return Location{}, true
-	}
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 		return Location{}, true
+// 	}
 
-	return Location{
-		Title:     values[0],
-		Address:   values[1],
-		Latitude:  latitude,
-		Longitude: longitude,
-	}, false
-}
+// 	return Location{
+// 		Title:     values[0],
+// 		Address:   values[1],
+// 		Latitude:  latitude,
+// 		Longitude: longitude,
+// 	}, false
+// }
 
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
-	if len(p.Config.ChannelID) == 0 || len(p.Config.ChannelSecret) == 0 || len(p.Config.MID) == 0 {
+	if len(p.Config.ChannelToken) == 0 || len(p.Config.ChannelSecret) == 0 {
 		log.Println("missing line bot config")
 
 		return errors.New("missing line bot config")
 	}
 
-	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
-	if err != nil {
-		log.Println("wrong channel id")
-
-		return err
-	}
-
-	bot, _ := linebot.NewClient(ChannelID, p.Config.ChannelSecret, p.Config.MID)
+	bot, _ := linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
 
 	if len(p.Config.To) == 0 {
 		log.Println("missing line user config")
@@ -208,9 +200,6 @@ func (p Plugin) Exec() error {
 		message = p.Message(p.Repo, p.Build)
 	}
 
-	// New multiple request instance
-	line := bot.NewMultipleMessage()
-
 	// check message array.
 	for _, value := range trimElement(message) {
 		txt, err := template.RenderTrim(value, p)
@@ -218,63 +207,67 @@ func (p Plugin) Exec() error {
 			return err
 		}
 
-		line.AddText(txt)
-	}
-
-	// check image array.
-	for _, value := range trimElement(p.Config.Image) {
-		values := convertImage(value, p.Config.Delimiter)
-
-		line.AddImage(values[0], values[1])
-	}
-
-	// check video array.
-	for _, value := range trimElement(p.Config.Video) {
-		values := convertVideo(value, p.Config.Delimiter)
-
-		line.AddVideo(values[0], values[1])
-	}
-
-	// check Audio array.
-	for _, value := range trimElement(p.Config.Audio) {
-		audio, empty := convertAudio(value, p.Config.Delimiter)
-
-		if empty == true {
-			continue
+		for _, id := range trimElement(p.Config.To) {
+			if _, err = bot.PushMessage(id, linebot.NewTextMessage(txt)).Do(); err != nil {
+				log.Println(err.Error())
+			}
 		}
-
-		line.AddAudio(audio.URL, audio.Duration)
 	}
 
-	// check Sticker array.
-	for _, value := range trimElement(p.Config.Sticker) {
-		sticker, empty := convertSticker(value, p.Config.Delimiter)
+	// // check image array.
+	// for _, value := range trimElement(p.Config.Image) {
+	// 	values := convertImage(value, p.Config.Delimiter)
 
-		if empty == true {
-			continue
-		}
+	// 	line.AddImage(values[0], values[1])
+	// }
 
-		line.AddSticker(sticker[0], sticker[1], sticker[2])
-	}
+	// // check video array.
+	// for _, value := range trimElement(p.Config.Video) {
+	// 	values := convertVideo(value, p.Config.Delimiter)
 
-	// check Location array.
-	for _, value := range trimElement(p.Config.Location) {
-		location, empty := convertLocation(value, p.Config.Delimiter)
+	// 	line.AddVideo(values[0], values[1])
+	// }
 
-		if empty == true {
-			continue
-		}
+	// // check Audio array.
+	// for _, value := range trimElement(p.Config.Audio) {
+	// 	audio, empty := convertAudio(value, p.Config.Delimiter)
 
-		line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
-	}
+	// 	if empty == true {
+	// 		continue
+	// 	}
 
-	_, err = line.Send(p.Config.To)
+	// 	line.AddAudio(audio.URL, audio.Duration)
+	// }
 
-	if err != nil {
-		log.Println(err.Error())
+	// // check Sticker array.
+	// for _, value := range trimElement(p.Config.Sticker) {
+	// 	sticker, empty := convertSticker(value, p.Config.Delimiter)
 
-		return err
-	}
+	// 	if empty == true {
+	// 		continue
+	// 	}
+
+	// 	line.AddSticker(sticker[0], sticker[1], sticker[2])
+	// }
+
+	// // check Location array.
+	// for _, value := range trimElement(p.Config.Location) {
+	// 	location, empty := convertLocation(value, p.Config.Delimiter)
+
+	// 	if empty == true {
+	// 		continue
+	// 	}
+
+	// 	line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
+	// }
+
+	// _, err = line.Send(p.Config.To)
+
+	// if err != nil {
+	// 	log.Println(err.Error())
+
+	// 	return err
+	// }
 
 	return nil
 }
