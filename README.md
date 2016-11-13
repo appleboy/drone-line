@@ -80,3 +80,13 @@ docker run --rm \
   -w $(pwd) \
   appleboy/drone-line
 ```
+
+Load all environments from file.
+
+```bash
+docker run --rm \
+  -e ENV_FILE=your_env_file_path \
+  -v $(pwd):$(pwd) \
+  -w $(pwd) \
+  appleboy/drone-facebook
+```
