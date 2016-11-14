@@ -114,15 +114,17 @@ func TestErrorSendMessage(t *testing.T) {
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
 			Video:         []string{"https://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_5mb.mp4"},
 			Audio:         []string{"https://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3::2920000", "http://feeds-tmp.soundcloud.com/stream/270161326-gotimefm-5-sarah-adams-on-test2doc-and-women-who-go.mp3"},
-			Sticker:       []string{"1::1::100", "1::1"},
+			Sticker:       []string{"1::1::100", "1"},
 			Location:      []string{"竹北體育館::新竹縣竹北市::24.834687::120.993368", "1::1"},
 		},
 	}
 
 	err := plugin.Exec()
-	// error message: Your ip address [xxx.xxx.xxx.xxx] is not allowed to access this API.
-	// Please add your IP to the IP whitelist in the developer center.
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
+
+	plugin.Config.Message = []string{}
+	err = plugin.Exec()
+	assert.Nil(t, err)
 }
 
 func TestTrimElement(t *testing.T) {
