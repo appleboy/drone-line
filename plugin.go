@@ -124,26 +124,15 @@ func convertAudio(value, delimiter string) (Audio, bool) {
 	}, false
 }
 
-// func convertSticker(value, delimiter string) ([]int, bool) {
-// 	var sticker []int
-// 	values := trimElement(strings.Split(value, delimiter))
+func convertSticker(value, delimiter string) ([]string, bool) {
+	values := trimElement(strings.Split(value, delimiter))
 
-// 	if len(values) < 3 {
-// 		return []int{}, true
-// 	}
+	if len(values) < 2 {
+		return []string{}, true
+	}
 
-// 	for _, value := range values {
-// 		i, err := strconv.Atoi(value)
-// 		if err != nil {
-// 			log.Println(err.Error())
-// 			return []int{}, true
-// 		}
-
-// 		sticker = append(sticker, i)
-// 	}
-
-// 	return sticker, false
-// }
+	return values, false
+}
 
 // func convertLocation(value, delimiter string) (Location, bool) {
 // 	var latitude, longitude float64
@@ -226,7 +215,7 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewVideoMessage(values[0], values[1]))
 	}
 
-	// check Audio array.
+	// Add Audio message.
 	for _, value := range trimElement(p.Config.Audio) {
 		audio, empty := convertAudio(value, p.Config.Delimiter)
 
@@ -237,16 +226,16 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewAudioMessage(audio.URL, audio.Duration))
 	}
 
-	// // check Sticker array.
-	// for _, value := range trimElement(p.Config.Sticker) {
-	// 	sticker, empty := convertSticker(value, p.Config.Delimiter)
+	// Add Sticker message.
+	for _, value := range trimElement(p.Config.Sticker) {
+		sticker, empty := convertSticker(value, p.Config.Delimiter)
 
-	// 	if empty == true {
-	// 		continue
-	// 	}
+		if empty == true {
+			continue
+		}
 
-	// 	line.AddSticker(sticker[0], sticker[1], sticker[2])
-	// }
+		messages = append(messages, linebot.NewStickerMessage(sticker[0], sticker[1]))
+	}
 
 	// // check Location array.
 	// for _, value := range trimElement(p.Config.Location) {
