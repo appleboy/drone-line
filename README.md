@@ -6,7 +6,7 @@
 
 ## Register Line BOT API Trial
 
-Please refer to [Getting started with BOT API Trial](https://developers.line.me/bot-api/getting-started-with-bot-api-trial).
+Please refer to [LINE Business Center](https://business.line.me/en/services/bot).
 
 ## Feature
 
@@ -62,8 +62,8 @@ docker run --rm \
   -e PLUGIN_MESSAGE=test \
   -e PLUGIN_IMAGE=https://example.com/1.png \
   -e PLUGIN_VIDEO=https://example.com/1.mp4 \
-  -e PLUGIN_Audio=http://example.com/1.mp3::1000 \
-  -e PLUGIN_Sticker=1::1::100 \
+  -e PLUGIN_Audio=https://example.com/1.mp3::1000 \
+  -e PLUGIN_Sticker=1::1 \
   -e PLUGIN_Location=title::address::latitude::longitude \
   -e PLUGIN_DELIMITER=:: \
   -e DRONE_REPO_OWNER=appleboy \
