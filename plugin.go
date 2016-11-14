@@ -134,36 +134,36 @@ func convertSticker(value, delimiter string) ([]string, bool) {
 	return values, false
 }
 
-// func convertLocation(value, delimiter string) (Location, bool) {
-// 	var latitude, longitude float64
-// 	var err error
-// 	values := trimElement(strings.Split(value, delimiter))
+func convertLocation(value, delimiter string) (Location, bool) {
+	var latitude, longitude float64
+	var err error
+	values := trimElement(strings.Split(value, delimiter))
 
-// 	if len(values) < 4 {
-// 		return Location{}, true
-// 	}
+	if len(values) < 4 {
+		return Location{}, true
+	}
 
-// 	latitude, err = strconv.ParseFloat(values[2], 64)
+	latitude, err = strconv.ParseFloat(values[2], 64)
 
-// 	if err != nil {
-// 		log.Println(err.Error())
-// 		return Location{}, true
-// 	}
+	if err != nil {
+		log.Println(err.Error())
+		return Location{}, true
+	}
 
-// 	longitude, err = strconv.ParseFloat(values[3], 64)
+	longitude, err = strconv.ParseFloat(values[3], 64)
 
-// 	if err != nil {
-// 		log.Println(err.Error())
-// 		return Location{}, true
-// 	}
+	if err != nil {
+		log.Println(err.Error())
+		return Location{}, true
+	}
 
-// 	return Location{
-// 		Title:     values[0],
-// 		Address:   values[1],
-// 		Latitude:  latitude,
-// 		Longitude: longitude,
-// 	}, false
-// }
+	return Location{
+		Title:     values[0],
+		Address:   values[1],
+		Latitude:  latitude,
+		Longitude: longitude,
+	}, false
+}
 
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
@@ -237,16 +237,16 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewStickerMessage(sticker[0], sticker[1]))
 	}
 
-	// // check Location array.
-	// for _, value := range trimElement(p.Config.Location) {
-	// 	location, empty := convertLocation(value, p.Config.Delimiter)
+	// check Location array.
+	for _, value := range trimElement(p.Config.Location) {
+		location, empty := convertLocation(value, p.Config.Delimiter)
 
-	// 	if empty == true {
-	// 		continue
-	// 	}
+		if empty == true {
+			continue
+		}
 
-	// 	line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
-	// }
+		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
+	}
 
 	// send message to user
 	for _, id := range trimElement(p.Config.To) {
