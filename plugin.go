@@ -84,15 +84,15 @@ func trimElement(keys []string) []string {
 	return newKeys
 }
 
-// func convertImage(value, delimiter string) []string {
-// 	values := trimElement(strings.Split(value, delimiter))
+func convertImage(value, delimiter string) []string {
+	values := trimElement(strings.Split(value, delimiter))
 
-// 	if len(values) < 2 {
-// 		values = append(values, values[0])
-// 	}
+	if len(values) < 2 {
+		values = append(values, values[0])
+	}
 
-// 	return values
-// }
+	return values
+}
 
 // func convertVideo(value, delimiter string) []string {
 // 	values := trimElement(strings.Split(value, delimiter))
@@ -200,26 +200,24 @@ func (p Plugin) Exec() error {
 		message = p.Message(p.Repo, p.Build)
 	}
 
-	// check message array.
+	// Initial messages array.
+	var messages []linebot.Message
+
 	for _, value := range trimElement(message) {
 		txt, err := template.RenderTrim(value, p)
 		if err != nil {
 			return err
 		}
 
-		for _, id := range trimElement(p.Config.To) {
-			if _, err = bot.PushMessage(id, linebot.NewTextMessage(txt)).Do(); err != nil {
-				log.Println(err.Error())
-			}
-		}
+		messages = append(messages, linebot.NewTextMessage(txt))
 	}
 
-	// // check image array.
-	// for _, value := range trimElement(p.Config.Image) {
-	// 	values := convertImage(value, p.Config.Delimiter)
+	// Add image message
+	for _, value := range trimElement(p.Config.Image) {
+		values := convertImage(value, p.Config.Delimiter)
 
-	// 	line.AddImage(values[0], values[1])
-	// }
+		messages = append(messages, linebot.NewImageMessage(values[0], values[1]))
+	}
 
 	// // check video array.
 	// for _, value := range trimElement(p.Config.Video) {
@@ -261,13 +259,12 @@ func (p Plugin) Exec() error {
 	// 	line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
 	// }
 
-	// _, err = line.Send(p.Config.To)
-
-	// if err != nil {
-	// 	log.Println(err.Error())
-
-	// 	return err
-	// }
+	// send message to user
+	for _, id := range trimElement(p.Config.To) {
+		if _, err := bot.PushMessage(id, messages...).Do(); err != nil {
+			log.Println(err.Error())
+		}
+	}
 
 	return nil
 }
