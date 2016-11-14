@@ -94,15 +94,15 @@ func convertImage(value, delimiter string) []string {
 	return values
 }
 
-// func convertVideo(value, delimiter string) []string {
-// 	values := trimElement(strings.Split(value, delimiter))
+func convertVideo(value, delimiter string) []string {
+	values := trimElement(strings.Split(value, delimiter))
 
-// 	if len(values) < 2 {
-// 		values = append(values, defaultPreviewImageURL)
-// 	}
+	if len(values) < 2 {
+		values = append(values, defaultPreviewImageURL)
+	}
 
-// 	return values
-// }
+	return values
+}
 
 // func convertAudio(value, delimiter string) (Audio, bool) {
 // 	values := trimElement(strings.Split(value, delimiter))
@@ -219,12 +219,12 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewImageMessage(values[0], values[1]))
 	}
 
-	// // check video array.
-	// for _, value := range trimElement(p.Config.Video) {
-	// 	values := convertVideo(value, p.Config.Delimiter)
+	// Add image message.
+	for _, value := range trimElement(p.Config.Video) {
+		values := convertVideo(value, p.Config.Delimiter)
 
-	// 	line.AddVideo(values[0], values[1])
-	// }
+		messages = append(messages, linebot.NewVideoMessage(values[0], values[1]))
+	}
 
 	// // check Audio array.
 	// for _, value := range trimElement(p.Config.Audio) {

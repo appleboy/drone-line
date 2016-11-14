@@ -61,7 +61,7 @@ docker run --rm \
   -e PLUGIN_TO=xxxxxxx \
   -e PLUGIN_MESSAGE=test \
   -e PLUGIN_IMAGE=https://example.com/1.png \
-  -e PLUGIN_VIDEO=http://example.com/1.mp4 \
+  -e PLUGIN_VIDEO=https://example.com/1.mp4 \
   -e PLUGIN_Audio=http://example.com/1.mp3::1000 \
   -e PLUGIN_Sticker=1::1::100 \
   -e PLUGIN_Location=title::address::latitude::longitude \
