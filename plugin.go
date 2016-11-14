@@ -36,9 +36,8 @@ type (
 
 	// Config for the plugin.
 	Config struct {
-		ChannelID     string
+		ChannelToken  string
 		ChannelSecret string
-		MID           string
 		To            []string
 		Delimiter     string
 		Message       []string
@@ -125,25 +124,14 @@ func convertAudio(value, delimiter string) (Audio, bool) {
 	}, false
 }
 
-func convertSticker(value, delimiter string) ([]int, bool) {
-	var sticker []int
+func convertSticker(value, delimiter string) ([]string, bool) {
 	values := trimElement(strings.Split(value, delimiter))
 
-	if len(values) < 3 {
-		return []int{}, true
+	if len(values) < 2 {
+		return []string{}, true
 	}
 
-	for _, value := range values {
-		i, err := strconv.Atoi(value)
-		if err != nil {
-			log.Println(err.Error())
-			return []int{}, true
-		}
-
-		sticker = append(sticker, i)
-	}
-
-	return sticker, false
+	return values, false
 }
 
 func convertLocation(value, delimiter string) (Location, bool) {
@@ -180,20 +168,13 @@ func convertLocation(value, delimiter string) (Location, bool) {
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
-	if len(p.Config.ChannelID) == 0 || len(p.Config.ChannelSecret) == 0 || len(p.Config.MID) == 0 {
+	if len(p.Config.ChannelToken) == 0 || len(p.Config.ChannelSecret) == 0 {
 		log.Println("missing line bot config")
 
 		return errors.New("missing line bot config")
 	}
 
-	ChannelID, err := strconv.ParseInt(p.Config.ChannelID, 10, 64)
-	if err != nil {
-		log.Println("wrong channel id")
-
-		return err
-	}
-
-	bot, _ := linebot.NewClient(ChannelID, p.Config.ChannelSecret, p.Config.MID)
+	bot, _ := linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
 
 	if len(p.Config.To) == 0 {
 		log.Println("missing line user config")
@@ -208,34 +189,33 @@ func (p Plugin) Exec() error {
 		message = p.Message(p.Repo, p.Build)
 	}
 
-	// New multiple request instance
-	line := bot.NewMultipleMessage()
+	// Initial messages array.
+	var messages []linebot.Message
 
-	// check message array.
 	for _, value := range trimElement(message) {
 		txt, err := template.RenderTrim(value, p)
 		if err != nil {
 			return err
 		}
 
-		line.AddText(txt)
+		messages = append(messages, linebot.NewTextMessage(txt))
 	}
 
-	// check image array.
+	// Add image message
 	for _, value := range trimElement(p.Config.Image) {
 		values := convertImage(value, p.Config.Delimiter)
 
-		line.AddImage(values[0], values[1])
+		messages = append(messages, linebot.NewImageMessage(values[0], values[1]))
 	}
 
-	// check video array.
+	// Add image message.
 	for _, value := range trimElement(p.Config.Video) {
 		values := convertVideo(value, p.Config.Delimiter)
 
-		line.AddVideo(values[0], values[1])
+		messages = append(messages, linebot.NewVideoMessage(values[0], values[1]))
 	}
 
-	// check Audio array.
+	// Add Audio message.
 	for _, value := range trimElement(p.Config.Audio) {
 		audio, empty := convertAudio(value, p.Config.Delimiter)
 
@@ -243,10 +223,10 @@ func (p Plugin) Exec() error {
 			continue
 		}
 
-		line.AddAudio(audio.URL, audio.Duration)
+		messages = append(messages, linebot.NewAudioMessage(audio.URL, audio.Duration))
 	}
 
-	// check Sticker array.
+	// Add Sticker message.
 	for _, value := range trimElement(p.Config.Sticker) {
 		sticker, empty := convertSticker(value, p.Config.Delimiter)
 
@@ -254,7 +234,7 @@ func (p Plugin) Exec() error {
 			continue
 		}
 
-		line.AddSticker(sticker[0], sticker[1], sticker[2])
+		messages = append(messages, linebot.NewStickerMessage(sticker[0], sticker[1]))
 	}
 
 	// check Location array.
@@ -265,15 +245,14 @@ func (p Plugin) Exec() error {
 			continue
 		}
 
-		line.AddLocation(location.Title, location.Address, location.Latitude, location.Longitude)
+		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
 	}
 
-	_, err = line.Send(p.Config.To)
-
-	if err != nil {
-		log.Println(err.Error())
-
-		return err
+	// send message to user
+	for _, id := range trimElement(p.Config.To) {
+		if _, err := bot.PushMessage(id, messages...).Do(); err != nil {
+			log.Println(err.Error())
+		}
 	}
 
 	return nil
