@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	// "strconv"
+	"strconv"
 	"strings"
 
 	"github.com/appleboy/drone-facebook/template"
@@ -104,25 +104,25 @@ func convertVideo(value, delimiter string) []string {
 	return values
 }
 
-// func convertAudio(value, delimiter string) (Audio, bool) {
-// 	values := trimElement(strings.Split(value, delimiter))
+func convertAudio(value, delimiter string) (Audio, bool) {
+	values := trimElement(strings.Split(value, delimiter))
 
-// 	if len(values) < 2 {
-// 		return Audio{}, true
-// 	}
+	if len(values) < 2 {
+		return Audio{}, true
+	}
 
-// 	duration, err := strconv.Atoi(values[1])
+	duration, err := strconv.Atoi(values[1])
 
-// 	if err != nil {
-// 		log.Println(err.Error())
-// 		return Audio{}, true
-// 	}
+	if err != nil {
+		log.Println(err.Error())
+		return Audio{}, true
+	}
 
-// 	return Audio{
-// 		URL:      values[0],
-// 		Duration: duration,
-// 	}, false
-// }
+	return Audio{
+		URL:      values[0],
+		Duration: duration,
+	}, false
+}
 
 // func convertSticker(value, delimiter string) ([]int, bool) {
 // 	var sticker []int
@@ -226,16 +226,16 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewVideoMessage(values[0], values[1]))
 	}
 
-	// // check Audio array.
-	// for _, value := range trimElement(p.Config.Audio) {
-	// 	audio, empty := convertAudio(value, p.Config.Delimiter)
+	// check Audio array.
+	for _, value := range trimElement(p.Config.Audio) {
+		audio, empty := convertAudio(value, p.Config.Delimiter)
 
-	// 	if empty == true {
-	// 		continue
-	// 	}
+		if empty == true {
+			continue
+		}
 
-	// 	line.AddAudio(audio.URL, audio.Duration)
-	// }
+		messages = append(messages, linebot.NewAudioMessage(audio.URL, audio.Duration))
+	}
 
 	// // check Sticker array.
 	// for _, value := range trimElement(p.Config.Sticker) {
