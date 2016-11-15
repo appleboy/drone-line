@@ -53,7 +53,7 @@ docker: Error response from daemon: Container command
 
 Execute from the working directory:
 
-```
+```bash
 docker run --rm \
   -e PLUGIN_CHANNEL_SECRET=xxxxxxx \
   -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
