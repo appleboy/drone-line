@@ -27,8 +27,9 @@ $ docker build -t line .
 Start service.
 
 ```bash
-$ docker run \
+$ docker run --rm \
   -e CHANNEL_SECRET=xxxx \
   -e CHANNEL_TOKEN=xxxx \
+  -p 8089:8089 \
   line
 ```

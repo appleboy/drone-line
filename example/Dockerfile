@@ -12,4 +12,6 @@ ADD server.go $app/
 WORKDIR $app
 RUN go get -t -v ./...
 
+EXPOSE $PORT
+
 CMD go run server.go
