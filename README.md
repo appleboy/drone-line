@@ -55,9 +55,8 @@ Execute from the working directory:
 
 ```
 docker run --rm \
-  -e PLUGIN_CHANNEL_ID=xxxxxxx \
   -e PLUGIN_CHANNEL_SECRET=xxxxxxx \
-  -e PLUGIN_MID=xxxxxxx \
+  -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
   -e PLUGIN_TO=xxxxxxx \
   -e PLUGIN_MESSAGE=test \
   -e PLUGIN_IMAGE=https://example.com/1.png \
@@ -89,5 +88,5 @@ docker run --rm \
   -e ENV_FILE=your_env_file_path \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
-  appleboy/drone-facebook
+  appleboy/drone-line
 ```
