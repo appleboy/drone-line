@@ -186,7 +186,6 @@ func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string)
 			continue
 		}
 
-		log.Println(idArray[0])
 		ids = append(ids, idArray[0])
 	}
 

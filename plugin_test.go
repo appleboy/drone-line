@@ -278,4 +278,8 @@ func TestParseTo(t *testing.T) {
 
 	ids = parseTo(input, "a@gmail.com", true, "::")
 	assert.Equal(t, []string{"a", "e", "f"}, ids)
+
+	// test empty ids
+	ids = parseTo([]string{"", " ", "   "}, "a@gmail.com", true, "::")
+	assert.Equal(t, 0, len(ids))
 }
