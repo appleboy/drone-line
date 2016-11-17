@@ -263,3 +263,19 @@ func TestConvertLocation(t *testing.T) {
 		Longitude: float64(139.704051),
 	}, result)
 }
+
+func TestParseTo(t *testing.T) {
+	input := []string{"a", "b::1@gmail.com", "c::2@gmail.com", "d::3@gmail.com", "e", "f"}
+
+	ids := parseTo(input, "1@gmail.com", false, "::")
+	assert.Equal(t, []string{"a", "e", "f", "b"}, ids)
+
+	ids = parseTo(input, "1@gmail.com", true, "::")
+	assert.Equal(t, []string{"b"}, ids)
+
+	ids = parseTo(input, "a@gmail.com", false, "::")
+	assert.Equal(t, []string{"a", "e", "f"}, ids)
+
+	ids = parseTo(input, "a@gmail.com", true, "::")
+	assert.Equal(t, []string{"a", "e", "f"}, ids)
+}

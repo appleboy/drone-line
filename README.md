@@ -65,11 +65,13 @@ docker run --rm \
   -e PLUGIN_Sticker=1::1 \
   -e PLUGIN_Location=title::address::latitude::longitude \
   -e PLUGIN_DELIMITER=:: \
+  -e PLUGIN_ONLY_MATCH_EMAIL=false \
   -e DRONE_REPO_OWNER=appleboy \
   -e DRONE_REPO_NAME=go-hello \
   -e DRONE_COMMIT_SHA=e5e82b5eb3737205c25955dcc3dcacc839b7be52 \
   -e DRONE_COMMIT_BRANCH=master \
   -e DRONE_COMMIT_AUTHOR=appleboy \
+  -e DRONE_COMMIT_AUTHOR_EMAIL=appleboy@gmail.com \
   -e DRONE_COMMIT_MESSAGE=test commit \
   -e DRONE_BUILD_NUMBER=1 \
   -e DRONE_BUILD_STATUS=success \

@@ -27,6 +27,7 @@ type (
 		Commit   string
 		Branch   string
 		Author   string
+		Email    string
 		Message  string
 		Status   string
 		Link     string
@@ -46,6 +47,7 @@ type (
 		Audio         []string
 		Sticker       []string
 		Location      []string
+		MatchEmail    bool
 	}
 
 	// Plugin values.
@@ -165,6 +167,40 @@ func convertLocation(value, delimiter string) (Location, bool) {
 	}, false
 }
 
+func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string) []string {
+	var emails []string
+	var ids []string
+	attachEmail := true
+
+	for _, value := range trimElement(to) {
+		idArray := trimElement(strings.Split(value, delimiter))
+
+		// check match author email
+		if len(idArray) > 1 {
+			if email := idArray[1]; email != authorEmail {
+				continue
+			}
+
+			emails = append(emails, idArray[0])
+			attachEmail = false
+			continue
+		}
+
+		log.Println(idArray[0])
+		ids = append(ids, idArray[0])
+	}
+
+	if matchEmail == true && attachEmail == false {
+		return emails
+	}
+
+	for _, value := range emails {
+		ids = append(ids, value)
+	}
+
+	return ids
+}
+
 // Exec executes the plugin.
 func (p Plugin) Exec() error {
 
@@ -248,8 +284,10 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
 	}
 
+	ids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
+
 	// send message to user
-	for _, id := range trimElement(p.Config.To) {
+	for _, id := range ids {
 		if _, err := bot.PushMessage(id, messages...).Do(); err != nil {
 			log.Println(err.Error())
 		}

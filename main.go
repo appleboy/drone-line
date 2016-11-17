@@ -69,6 +69,11 @@ func main() {
 			Value:  "::",
 			EnvVar: "PLUGIN_DELIMITER",
 		},
+		cli.BoolFlag{
+			Name:   "match.email",
+			Usage:  "send message when only match email",
+			EnvVar: "PLUGIN_ONLY_MATCH_EMAIL",
+		},
 		cli.StringFlag{
 			Name:   "repo.owner",
 			Usage:  "repository owner",
@@ -94,6 +99,11 @@ func main() {
 			Name:   "commit.author",
 			Usage:  "git author name",
 			EnvVar: "DRONE_COMMIT_AUTHOR",
+		},
+		cli.StringFlag{
+			Name:   "commit.author.email",
+			Usage:  "git author email",
+			EnvVar: "DRONE_COMMIT_AUTHOR_EMAIL",
 		},
 		cli.StringFlag{
 			Name:   "commit.message",
@@ -158,6 +168,7 @@ func run(c *cli.Context) error {
 			Commit:   c.String("commit.sha"),
 			Branch:   c.String("commit.branch"),
 			Author:   c.String("commit.author"),
+			Email:    c.String("commit.author.email"),
 			Message:  c.String("commit.message"),
 			Link:     c.String("build.link"),
 			Started:  c.Float64("job.started"),
@@ -168,6 +179,7 @@ func run(c *cli.Context) error {
 			ChannelToken:  c.String("channel.token"),
 			To:            c.StringSlice("to"),
 			Delimiter:     c.String("delimiter"),
+			MatchEmail:    c.Bool("match.email"),
 			Message:       c.StringSlice("message"),
 			Image:         c.StringSlice("image"),
 			Video:         c.StringSlice("video"),
