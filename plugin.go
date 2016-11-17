@@ -167,13 +167,13 @@ func convertLocation(value, delimiter string) (Location, bool) {
 	}, false
 }
 
-func parseTo(to []string, authorEmail string, matchEmail bool) []string {
+func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string) []string {
 	var emails []string
 	var ids []string
 	attachEmail := true
 
 	for _, value := range to {
-		idArray := trimElement(strings.Split(value, ":"))
+		idArray := trimElement(strings.Split(value, delimiter))
 
 		// check match author email
 		if len(idArray) > 1 {
@@ -283,7 +283,7 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
 	}
 
-	ids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail)
+	ids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
 
 	// send message to user
 	for _, id := range ids {
