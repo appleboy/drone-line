@@ -2,7 +2,7 @@
 
 There are two ways to start line boot webhook service.
 
-## Start by Golang
+## Start with Golang
 
 Download dependency packages.
 
@@ -16,7 +16,7 @@ $ export CHANNEL_TOKEN=xxxxx
 $ go run server.go
 ```
 
-## Start by Docker
+## Start with Docker
 
 Build docker image
 
