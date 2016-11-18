@@ -1,6 +1,6 @@
 .PHONY: test
 
-VERSION := $(shell git describe --tags || git rev-parse --short HEAD)
+VERSION := $(shell git describe --tags --always || git rev-parse --short HEAD)
 DEPLOY_ACCOUNT := "appleboy"
 DEPLOY_IMAGE := "drone-line"
 
@@ -40,3 +40,6 @@ ifeq ($(tag),)
 endif
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
+
+version:
+	@echo $(VERSION)
