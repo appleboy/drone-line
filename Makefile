@@ -41,5 +41,8 @@ endif
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 
+clean:
+	rm -rf coverage.txt ${DEPLOY_IMAGE}
+
 version:
 	@echo $(VERSION)
