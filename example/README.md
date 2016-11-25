@@ -21,20 +21,26 @@ $ go run server.go
 
 ### Start with Docker
 
-Build docker image
+Build your own docker image.
 
 ```bash
-$ docker build -t line .
+$ docker build -t appleboy/drone-line-webhook .
 ```
 
-Start service on host port `8089`.
+or download image from [docker hub](https://hub.docker.com/r/appleboy/drone-line-webhook/).
+
+```bash
+$ docker pull appleboy/drone-line-webhook
+```
+
+then start service on host port `8089`.
 
 ```bash
 $ docker run --rm \
   -e CHANNEL_SECRET=xxxx \
   -e CHANNEL_TOKEN=xxxx \
   -p 8089:8089 \
-  line
+  appleboy/drone-line-webhook
 ```
 
 ## Use ngrok
