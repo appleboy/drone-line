@@ -3,6 +3,7 @@
 VERSION := $(shell git describe --tags --always || git rev-parse --short HEAD)
 DEPLOY_ACCOUNT := "appleboy"
 DEPLOY_IMAGE := "drone-line"
+DEPLOY_WEBHOOK_IMAGE := "drone-line-webhook"
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
@@ -29,17 +30,24 @@ docker_build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags="-X main.Version=$(VERSION)"
 
 docker_image:
-	docker build --rm -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
+	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
 
-docker: docker_build docker_image
+docker_webhook_image:
+	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) example
+
+docker: docker_build docker_image docker_webhook_image
 
 docker_deploy:
 ifeq ($(tag),)
 	@echo "Usage: make $@ tag=<tag>"
 	@exit 1
 endif
+	# deploy line image
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
+	# deploy line webhook image
+	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):$(tag)
+	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):$(tag)
 
 clean:
 	rm -rf coverage.txt $(DEPLOY_IMAGE)
