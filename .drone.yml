@@ -28,25 +28,27 @@ pipeline:
       GOPATH: /srv/app
     commands:
       - make release
+      # build binary for docker
+      - make docker_build
     when:
       event: [ push, tag ]
       branch: [ master, refs/tags/* ]
 
-  # docker:
-  #   image: plugins/docker
-  #   repo: appleboy/drone-line
-  #   tags: [ '${TAG}' ]
-  #   when:
-  #     event: [ tag ]
-  #     branch: [ refs/tags/* ]
+  docker:
+    image: plugins/docker
+    repo: appleboy/drone-line
+    tags: [ '${TAG}' ]
+    when:
+      event: [ tag ]
+      branch: [ refs/tags/* ]
 
-  # docker:
-  #   image: plugins/docker
-  #   repo: appleboy/drone-line
-  #   tags: [ 'latest' ]
-  #   when:
-  #     event: [ push ]
-  #     branch: [ master ]
+  docker:
+    image: plugins/docker
+    repo: appleboy/drone-line
+    tags: [ 'latest' ]
+    when:
+      event: [ push ]
+      branch: [ master ]
 
   # github:
   #   image: plugins/github-release
