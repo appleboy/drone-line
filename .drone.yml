@@ -7,7 +7,6 @@ pipeline:
     image: appleboy/golang-testing
     pull: true
     environment:
-      CGO_ENABLED: 1
       TAGS: netgo
       GOPATH: /srv/app
     commands:
@@ -16,28 +15,27 @@ pipeline:
       - make lint
       - make test
       - make build
+      # build binary for docker hub
+      - make docker_build
     when:
       event: [ push, tag, pull_request ]
 
-  updater:
-    image: karalabe/xgo-latest:latest
+  release:
+    image: appleboy/golang-testing
     pull: true
     environment:
-      CGO_ENABLED: 1
       TAGS: netgo
       GOPATH: /srv/app
     commands:
       - make release
-      # build binary for docker
-      - make docker_build
     when:
-      event: [ push, tag ]
-      branch: [ master, refs/tags/* ]
+      event: [ tag ]
+      branch: [ refs/tags/* ]
 
   docker:
     image: plugins/docker
     repo: appleboy/drone-line
-    tags: [ '${TAG}' ]
+    tags: [ '${DRONE_TAG}' ]
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]

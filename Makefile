@@ -1,25 +1,34 @@
-.PHONY: test build fmt vet errcheck lint install update
+.PHONY: test build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release
 
 DIST := dist
 EXECUTABLE := drone-line
-VERSION := $(shell git describe --tags --always || git rev-parse --short HEAD)
-IMPORT := github.com/appleboy/$(EXECUTABLE)
 
 # for dockerhub
 DEPLOY_ACCOUNT := "appleboy"
 DEPLOY_IMAGE := $(EXECUTABLE)
 DEPLOY_WEBHOOK_IMAGE := "$(EXECUTABLE)-webhook"
 
+SHA := $(shell git rev-parse --short HEAD)
 TARGETS ?= linux/*,darwin/*,windows/*
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
-LDFLAGS += -X "main.Version=$(VERSION)"
+LDFLAGS += -X 'main.Version=$(VERSION)'
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
 else
 	EXTLDFLAGS =
+endif
+
+ifneq ($(DRONE_TAG),)
+	VERSION ?= $(DRONE_TAG)
+else
+	ifneq ($(DRONE_BRANCH),)
+		VERSION ?= $(DRONE_BRANCH)
+	else
+		VERSION ?= $(shell git describe --tags --always || git rev-parse --short HEAD)
+	endif
 endif
 
 all: build
@@ -62,25 +71,20 @@ build: $(EXECUTABLE)
 $(EXECUTABLE): $(SOURCES)
 	go build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $@
 
-.PHONY: release
 release: release-dirs release-build release-copy release-check
 
-.PHONY: release-dirs
 release-dirs:
 	mkdir -p $(DIST)/binaries $(DIST)/release
 
-.PHONY: release-build
 release-build:
-	@which xgo > /dev/null; if [ $$? -ne 0 ]; then \
-		go get -u github.com/karalabe/xgo; \
+	@which gox > /dev/null; if [ $$? -ne 0 ]; then \
+		go get -u github.com/mitchellh/gox; \
 	fi
-	xgo -dest $(DIST)/binaries -tags '$(TAGS)' -ldflags '-s -w $(LDFLAGS)' -targets '$(TARGETS)' -out $(EXECUTABLE)-$(VERSION) $(IMPORT)
+	gox -os="windows linux darwin" -arch="amd64 386" -tags="$(TAGS)" -ldflags="-s -w $(LDFLAGS)" -output="$(DIST)/binaries/$(EXECUTABLE)-$(VERSION)-{{.OS}}-{{.Arch}}"
 
-.PHONY: release-copy
 release-copy:
 	$(foreach file,$(wildcard $(DIST)/binaries/$(EXECUTABLE)-*),cp $(file) $(DIST)/release/$(notdir $(file));)
 
-.PHONY: release-check
 release-check:
 	cd $(DIST)/release; $(foreach file,$(wildcard $(DIST)/release/$(EXECUTABLE)-*),sha256sum $(notdir $(file)) > $(notdir $(file)).sha256;)
 
