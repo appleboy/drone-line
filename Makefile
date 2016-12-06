@@ -43,7 +43,7 @@ lint:
 	for PKG in $(PACKAGES); do golint -set_exit_status $$PKG || exit 1; done;
 
 test:
-	go test -v -coverprofile=coverage.txt
+	for PKG in $(PACKAGES); do go test -cover -coverprofile $$GOPATH/src/$$PKG/coverage.txt $$PKG || exit 1; done;
 
 html:
 	go tool cover -html=coverage.txt
