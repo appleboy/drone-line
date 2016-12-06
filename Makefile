@@ -108,8 +108,8 @@ endif
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):$(tag)
 
 clean:
-	go clean -i ./...
-	rm -rf coverage.txt $(EXECUTABLE) $(DIST)
+	go clean -x -i ./...
+	rm -rf coverage.txt $(EXECUTABLE) $(DIST) vendor
 
 version:
 	@echo $(VERSION)
