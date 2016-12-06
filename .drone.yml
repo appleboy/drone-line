@@ -1,0 +1,58 @@
+workspace:
+  base: /srv/app
+  path: src/github.com/appleboy/drone-line
+
+pipeline:
+  test:
+    image: webhippie/golang:edge
+    pull: true
+    environment:
+      CGO_ENABLED: 1
+      TAGS: line
+      GOPATH: /srv/app
+    commands:
+      - apk -U add openssh-client
+      - make clean
+      - make vet
+      - make lint
+      - make test
+      - make build
+    when:
+      event: [ push, tag, pull_request ]
+
+  updater:
+    image: karalabe/xgo-latest:latest
+    pull: true
+    environment:
+      CGO_ENABLED: 1
+      TAGS: line
+      GOPATH: /srv/app
+    commands:
+      - make release
+    when:
+      event: [ push, tag ]
+      branch: [ master, refs/tags/* ]
+
+  # docker:
+  #   image: plugins/docker
+  #   repo: appleboy/drone-line
+  #   tags: [ '${TAG}' ]
+  #   when:
+  #     event: [ tag ]
+  #     branch: [ refs/tags/* ]
+
+  # docker:
+  #   image: plugins/docker
+  #   repo: appleboy/drone-line
+  #   tags: [ 'latest' ]
+  #   when:
+  #     event: [ push ]
+  #     branch: [ master ]
+
+  # github:
+  #   image: plugins/github-release
+  #   files:
+  #     - dist/release/*
+  #   when:
+  #     event: [ tag ]
+  #     branch: [ refs/tags/* ]
