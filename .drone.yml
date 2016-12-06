@@ -13,6 +13,7 @@ pipeline:
     commands:
       - apk -U add openssh-client
       - make clean
+      - make dep_install
       - make vet
       - make lint
       - make test
