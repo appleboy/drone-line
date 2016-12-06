@@ -27,10 +27,14 @@ before_install:
 
 install:
   - export GO15VENDOREXPERIMENT=1
-  - make install
+  - make clean
+  - make dep_install
 
 script:
+  - make vet
+  - make lint
   - make test
+  - make build
   - make docker
   - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     mkdir -p $(dirname ${DOCKER_CACHE_FILE});
