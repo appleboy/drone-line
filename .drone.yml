@@ -48,6 +48,24 @@ pipeline:
       event: [ push ]
       branch: [ master ]
 
+  docker_webhook:
+    image: plugins/docker
+    repo: appleboy/drone-line-webhook
+    tags: [ '${DRONE_TAG}' ]
+    dockerfile: example/Dockerfile
+    when:
+      event: [ tag ]
+      branch: [ refs/tags/* ]
+
+  docker_webhook:
+    image: plugins/docker
+    repo: appleboy/drone-line-webhook
+    tags: [ 'latest' ]
+    dockerfile: example/Dockerfile
+    when:
+      event: [ push ]
+      branch: [ master ]
+
   github:
     image: plugins/github-release
     files:
