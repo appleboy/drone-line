@@ -8,7 +8,6 @@ DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
 DEPLOY_WEBHOOK_IMAGE := $(EXECUTABLE)-webhook
 
-SHA := $(shell git rev-parse --short HEAD)
 TARGETS ?= linux/*,darwin/*
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
 SOURCES ?= $(shell find . -name "*.go" -type f)
