@@ -95,7 +95,7 @@ docker_image:
 	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
 
 docker_webhook_image:
-	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) example
+	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) -f example/Dockerfile .
 
 docker: docker_build docker_image docker_webhook_image
 

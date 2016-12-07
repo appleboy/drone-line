@@ -6,9 +6,10 @@ ENV CHANNEL_TOKEN $CHANNEL_TOKEN
 ENV PORT 8089
 
 RUN apk update && apk upgrade && \
-  apk add --no-cache git
+  apk add --no-cache git && \
+  rm -rf /var/cache/apk/*
 
-ADD server.go $app/
+ADD example/server.go $app/
 WORKDIR $app
 RUN go get -t -v ./...
 

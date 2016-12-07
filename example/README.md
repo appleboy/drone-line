@@ -24,7 +24,7 @@ $ go run server.go
 Build your own docker image.
 
 ```bash
-$ docker build -t appleboy/drone-line-webhook .
+$ docker build -t appleboy/drone-line-webhook -f example/Dockerfile .
 ```
 
 or download image from [docker hub](https://hub.docker.com/r/appleboy/drone-line-webhook/).
