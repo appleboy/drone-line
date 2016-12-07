@@ -4,9 +4,9 @@ DIST := dist
 EXECUTABLE := drone-line
 
 # for dockerhub
-DEPLOY_ACCOUNT := "appleboy"
+DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
-DEPLOY_WEBHOOK_IMAGE := "$(EXECUTABLE)-webhook"
+DEPLOY_WEBHOOK_IMAGE := $(EXECUTABLE)-webhook
 
 SHA := $(shell git rev-parse --short HEAD)
 TARGETS ?= linux/*,darwin/*
@@ -88,16 +88,22 @@ release-copy:
 release-check:
 	cd $(DIST)/release; $(foreach file,$(wildcard $(DIST)/release/$(EXECUTABLE)-*),sha256sum $(notdir $(file)) > $(notdir $(file)).sha256;)
 
-docker_build:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '$(LDFLAGS)'
+# for docker.
+static_build: line_build line_webhook_build
+
+line_build:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $(DEPLOY_IMAGE)
+
+line_webhook_build:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $(DEPLOY_WEBHOOK_IMAGE) example/server.go
 
 docker_image:
 	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
 
 docker_webhook_image:
-	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) -f example/Dockerfile .
+	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) -f example/Dockerfile.webhook .
 
-docker: docker_build docker_image docker_webhook_image
+docker: static_build docker_image docker_webhook_image
 
 docker_deploy:
 ifeq ($(tag),)
@@ -113,7 +119,7 @@ endif
 
 clean:
 	go clean -x -i ./...
-	rm -rf coverage.txt $(EXECUTABLE) $(DIST) vendor
+	rm -rf coverage.txt $(EXECUTABLE) $(DIST) vendor $(DEPLOY_WEBHOOK_IMAGE)
 
 version:
 	@echo $(VERSION)

@@ -1,31 +1,30 @@
 sudo: required
 language: go
 
-services:
-  - docker
+# services:
+#   - docker
 
 go:
   - 1.6.4
   - 1.7.4
   - tip
 
-env:
-  global:
-    - DOCKER_CACHE_FILE=${HOME}/docker/cache.tar.gz
+# env:
+#   global:
+#     - DOCKER_CACHE_FILE=${HOME}/docker/cache.tar.gz
 
 cache:
   directories:
     - vendor
     - ${HOME}/.glide
-    - ${HOME}/docker
+    # - ${HOME}/docker
 
 before_install:
   - mkdir -p $GOPATH/bin
   - curl https://glide.sh/get | sh
-  - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
+  # - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
 
 install:
-  - export GO15VENDOREXPERIMENT=1
   - make clean
   - make dep_install
 
@@ -33,12 +32,12 @@ script:
   - make vet
   - make lint
   - make test
-  - make build
-  - make docker
-  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    mkdir -p $(dirname ${DOCKER_CACHE_FILE});
-    docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
-    fi
+  # - make build
+  # - make docker
+  # - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  #   mkdir -p $(dirname ${DOCKER_CACHE_FILE});
+  #   docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
+  #   fi
 
 after_success:
   # ignore main.go coverage

@@ -15,8 +15,8 @@ pipeline:
       - make lint
       - make test
       - make build
-      # build binary for docker hub
-      - make docker_build
+      # build binary for docker image
+      - make static_build
     when:
       event: [ push, tag, pull_request ]
 
@@ -52,7 +52,7 @@ pipeline:
     image: plugins/docker
     repo: appleboy/drone-line-webhook
     tags: [ '${DRONE_TAG}' ]
-    dockerfile: example/Dockerfile
+    dockerfile: example/Dockerfile.webhook
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]
@@ -61,7 +61,7 @@ pipeline:
     image: plugins/docker
     repo: appleboy/drone-line-webhook
     tags: [ 'latest' ]
-    dockerfile: example/Dockerfile
+    dockerfile: example/Dockerfile.webhook
     when:
       event: [ push ]
       branch: [ master ]

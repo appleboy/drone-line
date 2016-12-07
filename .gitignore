@@ -27,3 +27,4 @@ drone-line
 coverage.txt
 .env
 dist
+drone-line-webhook
