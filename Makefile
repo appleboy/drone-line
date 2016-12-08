@@ -8,7 +8,7 @@ DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
 DEPLOY_WEBHOOK_IMAGE := $(EXECUTABLE)-webhook
 
-TARGETS ?= linux/*,darwin/*
+TARGETS ?= linux darwin
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
@@ -79,7 +79,7 @@ release-build:
 	@which gox > /dev/null; if [ $$? -ne 0 ]; then \
 		go get -u github.com/mitchellh/gox; \
 	fi
-	gox -os="windows linux darwin" -arch="amd64 386" -tags="$(TAGS)" -ldflags="-s -w $(LDFLAGS)" -output="$(DIST)/binaries/$(EXECUTABLE)-$(VERSION)-{{.OS}}-{{.Arch}}"
+	gox -os="$(TARGETS)" -arch="amd64 386" -tags="$(TAGS)" -ldflags="-s -w $(LDFLAGS)" -output="$(DIST)/binaries/$(EXECUTABLE)-$(VERSION)-{{.OS}}-{{.Arch}}"
 
 release-copy:
 	$(foreach file,$(wildcard $(DIST)/binaries/$(EXECUTABLE)-*),cp $(file) $(DIST)/release/$(notdir $(file));)
