@@ -1,4 +1,4 @@
-.PHONY: test build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release
+.PHONY: test drone-line build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release
 
 DIST := dist
 EXECUTABLE := drone-line

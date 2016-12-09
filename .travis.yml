@@ -25,14 +25,13 @@ before_install:
   # - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
 
 install:
-  - make clean
   - make dep_install
 
 script:
   - make vet
   - make lint
   - make test
-  # - make build
+  - make build
   # - make docker
   # - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   #   mkdir -p $(dirname ${DOCKER_CACHE_FILE});
