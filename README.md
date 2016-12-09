@@ -1,6 +1,6 @@
 # drone-line
 
-[![Build Status](https://travis-ci.org/appleboy/drone-line.svg?branch=master)](https://travis-ci.org/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line)
+[![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-line/status.svg)](http://drone.wu-boy.com/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line) [![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
 
 [Drone](https://github.com/drone/drone) plugin for sending line notifications.
 
