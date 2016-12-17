@@ -10,7 +10,7 @@ import (
 func TestMissingLineConfig(t *testing.T) {
 	var plugin Plugin
 
-	_, err := plugin.Bot()
+	err := plugin.Webhook()
 
 	assert.NotNil(t, err)
 }
