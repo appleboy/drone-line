@@ -19,18 +19,18 @@ func main() {
 	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   "channel.secret",
+			Name:   "secret",
 			Usage:  "line channel secret",
 			EnvVar: "PLUGIN_CHANNEL_SECRET,LINE_CHANNEL_SECRET",
 		},
 		cli.StringFlag{
-			Name:   "channel.token",
+			Name:   "token",
 			Usage:  "line channel access token",
 			EnvVar: "PLUGIN_CHANNEL_TOKEN,LINE_CHANNEL_TOKEN",
 		},
 		cli.StringSliceFlag{
 			Name:   "to",
-			Usage:  "send message to user",
+			Usage:  "line user ID",
 			EnvVar: "PLUGIN_TO",
 		},
 		cli.StringSliceFlag{
@@ -73,6 +73,12 @@ func main() {
 			Name:   "match.email",
 			Usage:  "send message when only match email",
 			EnvVar: "PLUGIN_ONLY_MATCH_EMAIL",
+		},
+		cli.IntFlag{
+			Name:   "port",
+			Usage:  "webhook port",
+			EnvVar: "PLUGIN_PORT",
+			Value:  8088,
 		},
 		cli.StringFlag{
 			Name:   "repo.owner",
@@ -181,8 +187,8 @@ func run(c *cli.Context) error {
 			Finished: c.Float64("job.finished"),
 		},
 		Config: Config{
-			ChannelSecret: c.String("channel.secret"),
-			ChannelToken:  c.String("channel.token"),
+			ChannelSecret: c.String("secret"),
+			ChannelToken:  c.String("token"),
 			To:            c.StringSlice("to"),
 			Delimiter:     c.String("delimiter"),
 			MatchEmail:    c.Bool("match.email"),
@@ -192,7 +198,14 @@ func run(c *cli.Context) error {
 			Audio:         c.StringSlice("audio"),
 			Sticker:       c.StringSlice("sticker"),
 			Location:      c.StringSlice("location"),
+			Port:          c.Int("port"),
 		},
+	}
+
+	command := c.Args().Get(0)
+
+	if command == "webhook" {
+		return plugin.Webhook()
 	}
 
 	return plugin.Exec()

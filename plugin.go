@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -49,6 +50,7 @@ type (
 		Sticker       []string
 		Location      []string
 		MatchEmail    bool
+		Port          int
 	}
 
 	// Plugin values.
@@ -201,16 +203,65 @@ func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string)
 	return ids
 }
 
-// Exec executes the plugin.
-func (p Plugin) Exec() error {
-
+func (p Plugin) Bot() (*linebot.Client, error) {
 	if len(p.Config.ChannelToken) == 0 || len(p.Config.ChannelSecret) == 0 {
 		log.Println("missing line bot config")
 
-		return errors.New("missing line bot config")
+		return nil, errors.New("missing line bot config")
 	}
 
-	bot, _ := linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
+	return linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
+}
+
+func (p Plugin) Webhook() error {
+
+	bot, err := p.Bot()
+
+	if err != nil {
+		return err
+	}
+
+	// Setup HTTP Server for receiving requests from LINE platform
+	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
+		events, err := bot.ParseRequest(req)
+		if err != nil {
+			if err == linebot.ErrInvalidSignature {
+				w.WriteHeader(400)
+			} else {
+				w.WriteHeader(500)
+			}
+			return
+		}
+		for _, event := range events {
+			if event.Type == linebot.EventTypeMessage {
+				switch message := event.Message.(type) {
+				case *linebot.TextMessage:
+					log.Printf("User ID is %v\n", event.Source.UserID)
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+						log.Print(err)
+					}
+				}
+			}
+		}
+	})
+	// This is just sample code.
+	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
+	log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port")
+	if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), nil); err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
+}
+
+// Exec executes the plugin.
+func (p Plugin) Exec() error {
+
+	bot, err := p.Bot()
+
+	if err != nil {
+		return err
+	}
 
 	if len(p.Config.To) == 0 {
 		log.Println("missing line user config")
