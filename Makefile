@@ -6,7 +6,6 @@ EXECUTABLE := drone-line
 # for dockerhub
 DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
-DEPLOY_WEBHOOK_IMAGE := $(EXECUTABLE)-webhook
 
 TARGETS ?= linux darwin
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
@@ -84,21 +83,15 @@ release-check:
 	cd $(DIST)/release; $(foreach file,$(wildcard $(DIST)/release/$(EXECUTABLE)-*),sha256sum $(notdir $(file)) > $(notdir $(file)).sha256;)
 
 # for docker.
-static_build: line_build line_webhook_build
+static_build: line_build
 
 line_build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $(DEPLOY_IMAGE)
 
-line_webhook_build:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $(DEPLOY_WEBHOOK_IMAGE) example/server.go
-
 docker_image:
 	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
 
-docker_webhook_image:
-	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE) -f example/Dockerfile.webhook .
-
-docker: static_build docker_image docker_webhook_image
+docker: static_build docker_image
 
 docker_deploy:
 ifeq ($(tag),)
@@ -108,13 +101,10 @@ endif
 	# deploy line image
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
-	# deploy line webhook image
-	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):$(tag)
-	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_WEBHOOK_IMAGE):$(tag)
 
 clean:
 	go clean -x -i ./...
-	rm -rf coverage.txt $(EXECUTABLE) $(DIST) vendor $(DEPLOY_WEBHOOK_IMAGE)
+	rm -rf coverage.txt $(EXECUTABLE) $(DIST) vendor
 
 version:
 	@echo $(VERSION)

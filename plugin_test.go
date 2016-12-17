@@ -10,16 +10,16 @@ import (
 func TestMissingLineConfig(t *testing.T) {
 	var plugin Plugin
 
-	err := plugin.Exec()
+	err := plugin.Webhook()
 
 	assert.NotNil(t, err)
 }
 
-func TestWrongChannelID(t *testing.T) {
+func TestMissingChannelID(t *testing.T) {
 	var plugin Plugin
 
-	plugin.Config.ChannelToken = "test wrong id"
-	plugin.Config.ChannelSecret = "test wrong id"
+	plugin.Config.ChannelToken = ""
+	plugin.Config.ChannelSecret = ""
 
 	err := plugin.Exec()
 
