@@ -203,6 +203,7 @@ func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string)
 	return ids
 }
 
+// Bot is new Line Bot clien.
 func (p Plugin) Bot() (*linebot.Client, error) {
 	if len(p.Config.ChannelToken) == 0 || len(p.Config.ChannelSecret) == 0 {
 		log.Println("missing line bot config")
@@ -213,6 +214,7 @@ func (p Plugin) Bot() (*linebot.Client, error) {
 	return linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
 }
 
+// Webhook support line callback service.
 func (p Plugin) Webhook() error {
 
 	bot, err := p.Bot()
