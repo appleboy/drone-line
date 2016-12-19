@@ -49,9 +49,9 @@ docker: Error response from daemon: Container command
 '/bin/drone-line' not found or does not exist..
 ```
 
-## Usage
+## Usage as Docker
 
-### Run as Docker
+### Send Notification
 
 Execute from the working directory:
 
@@ -85,6 +85,8 @@ docker run --rm \
   appleboy/drone-line
 ```
 
+### Load `env` from file
+
 Load all environments from file.
 
 ```bash
@@ -95,7 +97,9 @@ docker run --rm \
   appleboy/drone-line
 ```
 
-Enable Webhook services as default port `8088`.
+### Setup Webhook service
+
+Setup Webhook service as default port `8088`.
 
 ```bash
 docker run --rm \
@@ -112,4 +116,62 @@ docker run --rm \
   -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
   -e PLUGIN_PORT=8089 \
   appleboy/drone-line webhook
+```
+
+## Usage as command line
+
+### Download a binary 
+
+The pre-compiled binaries can be downloaded from [release page](https://github.com/appleboy/drone-line/releases). Support the followin OS type.
+
+* Windows amd64/386
+* Linux amd64/386
+* Darwin amd64/386
+
+With `Go` installed
+
+```
+$ go get -u -v github.com/appleboy/drone-line
+```
+
+### Setup Webhook service
+
+Setup Webhook service as default port `8088`.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --secret xxxx \
+  --token xxxx \
+  webhook
+```
+
+Change default webhook port to `8089`.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --port 8089 \
+  --secret xxxx \
+  --token xxxx \
+  webhook
+```
+
+### Send Notification
+
+Setup the `--to` flag after fetch user id from webhook service.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --secret xxxx \
+  --token xxxx \
+  --to xxxx \
+  --message "Test Message"
+```
+
+### Load `env` from file
+
+Load all environments from file.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --env-file your_env_file_path.
 ```
