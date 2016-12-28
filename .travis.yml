@@ -5,8 +5,8 @@ language: go
 #   - docker
 
 go:
-  - 1.6.4
-  - 1.7.4
+  - 1.6.x
+  - 1.7.x
   - tip
 
 # env:
@@ -38,10 +38,10 @@ script:
   #   docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
   #   fi
 
-after_success:
+# after_success:
   # ignore main.go coverage
-  - sed -i '/main.go/d' coverage.txt
-  - bash <(curl -s https://codecov.io/bash) -f coverage.txt
+  # - sed -i '/main.go/d' coverage.txt
+  # - bash <(curl -s https://codecov.io/bash) -f coverage.txt
   # # deploy from master
   # - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_GO_VERSION" == "1.7.4" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   #   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";

@@ -1,4 +1,4 @@
-.PHONY: test drone-line build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release
+.PHONY: test drone-line build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release coverage
 
 DIST := dist
 EXECUTABLE := drone-line
@@ -100,7 +100,11 @@ endif
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 
-
+coverage:
+	sed -i '/main.go/d' coverage.txt
+	curl -s https://codecov.io/bash > .codecov && \
+	chmod +x .codecov && \
+	./.codecov -f coverage.txt
 
 clean:
 	go clean -x -i ./...
