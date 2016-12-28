@@ -154,9 +154,8 @@ func main() {
 			EnvVar: "DRONE_JOB_FINISHED",
 		},
 		cli.StringFlag{
-			Name:   "env-file",
-			Usage:  "source env file",
-			EnvVar: "ENV_FILE",
+			Name:  "env-file",
+			Usage: "source env file",
 		},
 	}
 	app.Run(os.Args)
