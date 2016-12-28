@@ -83,9 +83,7 @@ release-check:
 	cd $(DIST)/release; $(foreach file,$(wildcard $(DIST)/release/$(EXECUTABLE)-*),sha256sum $(notdir $(file)) > $(notdir $(file)).sha256;)
 
 # for docker.
-static_build: line_build
-
-line_build:
+static_build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o $(DEPLOY_IMAGE)
 
 docker_image:
@@ -98,9 +96,11 @@ ifeq ($(tag),)
 	@echo "Usage: make $@ tag=<tag>"
 	@exit 1
 endif
-	# deploy line image
+	# deploy image
 	docker tag $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):latest $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
 	docker push $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE):$(tag)
+
+
 
 clean:
 	go clean -x -i ./...

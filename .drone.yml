@@ -3,6 +3,13 @@ workspace:
   path: src/github.com/appleboy/drone-line
 
 pipeline:
+  # restore the cache from an sftp server
+  restore_cache:
+    image: appleboy/drone-sftp-cache
+    restore: true
+    mount: [ .glide, vendor ]
+    ignore_branch: true
+
   test:
     image: appleboy/golang-testing
     pull: true
@@ -34,7 +41,7 @@ pipeline:
 
   docker:
     image: plugins/docker
-    repo: appleboy/drone-line
+    repo: ${DRONE_REPO}
     tags: [ '${DRONE_TAG}' ]
     when:
       event: [ tag ]
@@ -42,7 +49,7 @@ pipeline:
 
   docker:
     image: plugins/docker
-    repo: appleboy/drone-line
+    repo: ${DRONE_REPO}
     tags: [ 'latest' ]
     when:
       event: [ push ]
@@ -55,3 +62,12 @@ pipeline:
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]
+
+  # rebuild the cache on the sftp server
+  rebuild_cache:
+    image: appleboy/drone-sftp-cache
+    rebuild: true
+    mount: [ .glide, vendor ]
+    ignore_branch: true
+    when:
+      branch: master
