@@ -31,43 +31,43 @@ func main() {
 		cli.StringSliceFlag{
 			Name:   "to",
 			Usage:  "line user ID",
-			EnvVar: "PLUGIN_TO",
+			EnvVar: "PLUGIN_TO,LINE_TO",
 		},
 		cli.StringSliceFlag{
 			Name:   "message",
 			Usage:  "line message",
-			EnvVar: "PLUGIN_MESSAGE",
+			EnvVar: "PLUGIN_MESSAGE,LINE_MESSAGE",
 		},
 		cli.StringSliceFlag{
 			Name:   "image",
 			Usage:  "line image",
-			EnvVar: "PLUGIN_IMAGE",
+			EnvVar: "PLUGIN_IMAGE,LINE_IMAGE",
 		},
 		cli.StringSliceFlag{
 			Name:   "video",
 			Usage:  "line video",
-			EnvVar: "PLUGIN_VIDEO",
+			EnvVar: "PLUGIN_VIDEO,LINE_VIDEO",
 		},
 		cli.StringSliceFlag{
 			Name:   "audio",
 			Usage:  "line audio",
-			EnvVar: "PLUGIN_AUDIO",
+			EnvVar: "PLUGIN_AUDIO,LINE_AUDIO",
 		},
 		cli.StringSliceFlag{
 			Name:   "sticker",
 			Usage:  "line sticker",
-			EnvVar: "PLUGIN_STICKER",
+			EnvVar: "PLUGIN_STICKER,LINE_STICKER",
 		},
 		cli.StringSliceFlag{
 			Name:   "location",
 			Usage:  "line location",
-			EnvVar: "PLUGIN_LOCATION",
+			EnvVar: "PLUGIN_LOCATION,LINE_LOCATION",
 		},
 		cli.StringFlag{
 			Name:   "delimiter",
 			Usage:  "line delimiter",
 			Value:  "::",
-			EnvVar: "PLUGIN_DELIMITER",
+			EnvVar: "PLUGIN_DELIMITER,LINE_DELIMITER",
 		},
 		cli.BoolFlag{
 			Name:   "match.email",
@@ -77,7 +77,7 @@ func main() {
 		cli.IntFlag{
 			Name:   "port",
 			Usage:  "webhook port",
-			EnvVar: "PLUGIN_PORT",
+			EnvVar: "LINE_WEBHOOK_PORT",
 			Value:  8088,
 		},
 		cli.StringFlag{

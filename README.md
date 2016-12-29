@@ -2,7 +2,7 @@
 
 [![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-line/status.svg)](http://drone.wu-boy.com/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line) [![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
 
-[Drone](https://github.com/drone/drone) plugin for sending line notifications.
+Sending line notifications using a binary, docker or [Drone CI](http://readme.drone.io/0.5/).
 
 ## Register Line BOT API Trial
 
@@ -17,20 +17,24 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 * [x] Send Sticker Message.
 * [x] Send Location Message.
 
-## Build
+## Build or Download a binary
 
-Build the binary with the following commands:
+The pre-compiled binaries can be downloaded from [release page](https://github.com/appleboy/drone-line/releases). Support the followin OS type.
+
+* Windows amd64/386
+* Linux amd64/386
+* Darwin amd64/386
+
+With `Go` installed
+
+```
+$ go get -u -v github.com/appleboy/drone-line
+``` 
+
+or build the binary with the following command:
 
 ```
 $ make build
-```
-
-## Testing
-
-Test the package with the following command:
-
-```
-$ make test
 ```
 
 ## Docker
@@ -42,16 +46,102 @@ $ make docker
 ```
 
 Please note incorrectly building the image for the correct x64 linux and with
-GCO disabled will result in an error when running the Docker image:
+CGO disabled will result in an error when running the Docker image:
 
 ```
 docker: Error response from daemon: Container command
 '/bin/drone-line' not found or does not exist..
 ```
 
-## Usage as Docker
+## Usage
 
-### Send Notification
+There are three ways to send notification.
+
+* [usage from binary](#usage-from-binary)
+* [usage from docker](#usage-from-docker)
+* [usage from drone ci](#usage-from-drone-ci)
+
+<a name="usage-from-binary"></a>
+### Usage from binary
+
+#### Setup Webhook service
+
+Setup Webhook service as default port `8088`.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --secret xxxx \
+  --token xxxx \
+  webhook
+```
+
+Change default webhook port to `8089`.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --port 8089 \
+  --secret xxxx \
+  --token xxxx \
+  webhook
+```
+
+#### Send Notification
+
+Setup the `--to` flag after fetch user id from webhook service.
+
+```bash
+drone-line-v1.4.0-windows-amd64.exe \
+  --secret xxxx \
+  --token xxxx \
+  --to xxxx \
+  --message "Test Message"
+```
+
+<a name="usage-from-docker"></a>
+### Usage from docker
+
+### Setup Webhook service
+
+Setup Webhook service as default port `8088`.
+
+```bash
+docker run --rm \
+  -e LINE_CHANNEL_SECRET=xxxxxxx \
+  -e LINE_CHANNEL_TOKEN=xxxxxxx \
+  appleboy/drone-line webhook
+```
+
+Change default webhook port to `8089`.
+
+```bash
+docker run --rm \
+  -e LINE_CHANNEL_SECRET=xxxxxxx \
+  -e LINE_CHANNEL_TOKEN=xxxxxxx \
+  -e LINE_PORT=8089 \
+  appleboy/drone-line webhook
+```
+
+#### Send Notification
+
+```bash
+docker run --rm \
+  -e LINE_CHANNEL_SECRET=xxxxxxx \
+  -e LINE_CHANNEL_TOKEN=xxxxxxx \
+  -e LINE_TO=xxxxxxx \
+  -e LINE_MESSAGE=test \
+  -e LINE_IMAGE=https://example.com/1.png \
+  -e LINE_VIDEO=https://example.com/1.mp4 \
+  -e LINE_Audio=https://example.com/1.mp3::1000 \
+  -e LINE_Sticker=1::1 \
+  -e LINE_Location=title::address::latitude::longitude \
+  -e LINE_DELIMITER=:: \
+  appleboy/drone-line
+```
+
+<a name="usage-from-drone-ci"></a>
+### Usage from drone ci
+
+#### Send Notification
 
 Execute from the working directory:
 
@@ -85,93 +175,10 @@ docker run --rm \
   appleboy/drone-line
 ```
 
-### Load `env` from file
+## Testing
 
-Load all environments from file.
-
-```bash
-docker run --rm \
-  -e ENV_FILE=your_env_file_path \
-  -v $(pwd):$(pwd) \
-  -w $(pwd) \
-  appleboy/drone-line
-```
-
-### Setup Webhook service
-
-Setup Webhook service as default port `8088`.
-
-```bash
-docker run --rm \
-  -e PLUGIN_CHANNEL_SECRET=xxxxxxx \
-  -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
-  appleboy/drone-line webhook
-```
-
-Change default webhook port to `8089`.
-
-```bash
-docker run --rm \
-  -e PLUGIN_CHANNEL_SECRET=xxxxxxx \
-  -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
-  -e PLUGIN_PORT=8089 \
-  appleboy/drone-line webhook
-```
-
-## Usage as command line
-
-### Download a binary 
-
-The pre-compiled binaries can be downloaded from [release page](https://github.com/appleboy/drone-line/releases). Support the followin OS type.
-
-* Windows amd64/386
-* Linux amd64/386
-* Darwin amd64/386
-
-With `Go` installed
+Test the package with the following command:
 
 ```
-$ go get -u -v github.com/appleboy/drone-line
-```
-
-### Setup Webhook service
-
-Setup Webhook service as default port `8088`.
-
-```bash
-drone-line-v1.4.0-windows-amd64.exe \
-  --secret xxxx \
-  --token xxxx \
-  webhook
-```
-
-Change default webhook port to `8089`.
-
-```bash
-drone-line-v1.4.0-windows-amd64.exe \
-  --port 8089 \
-  --secret xxxx \
-  --token xxxx \
-  webhook
-```
-
-### Send Notification
-
-Setup the `--to` flag after fetch user id from webhook service.
-
-```bash
-drone-line-v1.4.0-windows-amd64.exe \
-  --secret xxxx \
-  --token xxxx \
-  --to xxxx \
-  --message "Test Message"
-```
-
-### Load `env` from file
-
-Load all environments from file.
-
-```bash
-drone-line-v1.4.0-windows-amd64.exe \
-  --env-file your_env_file_path.
+$ make test
 ```
