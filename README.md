@@ -1,6 +1,6 @@
 # drone-line
 
-[![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-line/status.svg)](http://drone.wu-boy.com/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line) [![GoDoc](https://godoc.org/github.com/appleboy/drone-line?status.svg)](https://godoc.org/github.com/appleboy/drone-line) [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/drone-line.svg)](https://hub.docker.com/r/appleboy/drone-line/) [![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
+[![GoDoc](https://godoc.org/github.com/appleboy/drone-line?status.svg)](https://godoc.org/github.com/appleboy/drone-line) [![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-line/status.svg)](http://drone.wu-boy.com/appleboy/drone-line) [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line) [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line) [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/drone-line.svg)](https://hub.docker.com/r/appleboy/drone-line/) [![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
 
 Sending line notifications using a binary, docker or [Drone CI](http://readme.drone.io/0.5/).
 
@@ -19,7 +19,7 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 
 ## Build or Download a binary
 
-The pre-compiled binaries can be downloaded from [release page](https://github.com/appleboy/drone-line/releases). Support the followin OS type.
+The pre-compiled binaries can be downloaded from [release page](https://github.com/appleboy/drone-line/releases). Support the following OS type.
 
 * Windows amd64/386
 * Linux amd64/386
