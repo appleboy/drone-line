@@ -13,28 +13,35 @@ var Version string
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "line plugin"
-	app.Usage = "line plugin"
+	app.Name = "Drone LINE"
+	app.Usage = "Send LINE notification"
+	app.Copyright = "Copyright (c) 2017 Bo-Yi Wu"
+	app.Authors = []cli.Author{
+		cli.Author{
+			Name:  "Bo-Yi Wu",
+			Email: "appleboy.tw@gmail.com",
+		},
+	}
 	app.Action = run
 	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   "secret",
+			Name:   "secret, s",
 			Usage:  "line channel secret",
 			EnvVar: "PLUGIN_CHANNEL_SECRET,LINE_CHANNEL_SECRET",
 		},
 		cli.StringFlag{
-			Name:   "token",
+			Name:   "token, t",
 			Usage:  "line channel access token",
 			EnvVar: "PLUGIN_CHANNEL_TOKEN,LINE_CHANNEL_TOKEN",
 		},
 		cli.StringSliceFlag{
-			Name:   "to",
+			Name:   "to, u",
 			Usage:  "line user ID",
 			EnvVar: "PLUGIN_TO,LINE_TO",
 		},
 		cli.StringSliceFlag{
-			Name:   "message",
+			Name:   "message, m",
 			Usage:  "line message",
 			EnvVar: "PLUGIN_MESSAGE,LINE_MESSAGE",
 		},
@@ -75,7 +82,7 @@ func main() {
 			EnvVar: "PLUGIN_ONLY_MATCH_EMAIL",
 		},
 		cli.IntFlag{
-			Name:   "port",
+			Name:   "port, P",
 			Usage:  "webhook port",
 			EnvVar: "LINE_WEBHOOK_PORT",
 			Value:  8088,
@@ -158,6 +165,39 @@ func main() {
 			Usage: "source env file",
 		},
 	}
+
+	// Override a template
+	cli.AppHelpTemplate = `
+________                                       .____    .___ _______  ___________
+\______ \_______  ____   ____   ____           |    |   |   |\      \ \_   _____/
+ |    |  \_  __ \/  _ \ /    \_/ __ \   ______ |    |   |   |/   |   \ |    __)_
+ |    |   \  | \(  <_> )   |  \  ___/  /_____/ |    |___|   /    |    \|        \
+/_______  /__|   \____/|___|  /\___  >         |_______ \___\____|__  /_______  /
+        \/                  \/     \/                  \/           \/        \/
+                                                              version: {{.Version}}
+NAME:
+   {{.Name}} - {{.Usage}}
+
+USAGE:
+   {{.HelpName}} {{if .VisibleFlags}}[global options]{{end}}{{if .Commands}} command [command options]{{end}} {{if .ArgsUsage}}{{.ArgsUsage}}{{else}}[arguments...]{{end}}
+   {{if len .Authors}}
+AUTHOR:
+   {{range .Authors}}{{ . }}{{end}}
+   {{end}}{{if .Commands}}
+COMMANDS:
+{{range .Commands}}{{if not .HideHelp}}   {{join .Names ", "}}{{ "\t"}}{{.Usage}}{{ "\n" }}{{end}}{{end}}{{end}}{{if .VisibleFlags}}
+GLOBAL OPTIONS:
+   {{range .VisibleFlags}}{{.}}
+   {{end}}{{end}}{{if .Copyright }}
+COPYRIGHT:
+   {{.Copyright}}
+   {{end}}{{if .Version}}
+VERSION:
+   {{.Version}}
+   {{end}}
+REPOSITORY:
+    Github: https://github.com/appleboy/drone-line
+`
 	app.Run(os.Args)
 }
 
