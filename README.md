@@ -129,11 +129,11 @@ docker run --rm \
   -e LINE_CHANNEL_TOKEN=xxxxxxx \
   -e LINE_TO=xxxxxxx \
   -e LINE_MESSAGE=test \
-  -e LINE_IMAGE=https://example.com/1.png \
-  -e LINE_VIDEO=https://example.com/1.mp4 \
-  -e LINE_Audio=https://example.com/1.mp3::1000 \
-  -e LINE_Sticker=1::1 \
-  -e LINE_Location=title::address::latitude::longitude \
+  -e LINE_IMAGES=https://example.com/1.png \
+  -e LINE_VIDEOS=https://example.com/1.mp4 \
+  -e LINE_AUDIOS=https://example.com/1.mp3::1000 \
+  -e LINE_STICKERS=1::1 \
+  -e LINE_LOCATIONS=title::address::latitude::longitude \
   -e LINE_DELIMITER=:: \
   appleboy/drone-line
 ```
@@ -175,7 +175,7 @@ docker run --rm \
   appleboy/drone-line
 ```
 
-You can get more [information](DOCS.md) about how to use scp in drone.
+You can get more [information](DOCS.md) about how to use scp plugin in drone.
 
 ## Testing
 
