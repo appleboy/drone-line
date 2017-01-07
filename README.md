@@ -151,11 +151,11 @@ docker run --rm \
   -e PLUGIN_CHANNEL_TOKEN=xxxxxxx \
   -e PLUGIN_TO=xxxxxxx \
   -e PLUGIN_MESSAGE=test \
-  -e PLUGIN_IMAGE=https://example.com/1.png \
-  -e PLUGIN_VIDEO=https://example.com/1.mp4 \
-  -e PLUGIN_Audio=https://example.com/1.mp3::1000 \
-  -e PLUGIN_Sticker=1::1 \
-  -e PLUGIN_Location=title::address::latitude::longitude \
+  -e PLUGIN_IMAGES=https://example.com/1.png \
+  -e PLUGIN_VIDEOS=https://example.com/1.mp4 \
+  -e PLUGIN_AUDIOS=https://example.com/1.mp3::1000 \
+  -e PLUGIN_STICKERS=1::1 \
+  -e PLUGIN_LOCATIONS=title::address::latitude::longitude \
   -e PLUGIN_DELIMITER=:: \
   -e PLUGIN_ONLY_MATCH_EMAIL=false \
   -e DRONE_REPO_OWNER=appleboy \

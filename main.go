@@ -48,27 +48,27 @@ func main() {
 		cli.StringSliceFlag{
 			Name:   "image",
 			Usage:  "line image",
-			EnvVar: "PLUGIN_IMAGE,LINE_IMAGE",
+			EnvVar: "PLUGIN_IMAGES,LINE_IMAGES",
 		},
 		cli.StringSliceFlag{
 			Name:   "video",
 			Usage:  "line video",
-			EnvVar: "PLUGIN_VIDEO,LINE_VIDEO",
+			EnvVar: "PLUGIN_VIDEOS,LINE_VIDEOS",
 		},
 		cli.StringSliceFlag{
 			Name:   "audio",
 			Usage:  "line audio",
-			EnvVar: "PLUGIN_AUDIO,LINE_AUDIO",
+			EnvVar: "PLUGIN_AUDIOS,LINE_AUDIOS",
 		},
 		cli.StringSliceFlag{
 			Name:   "sticker",
 			Usage:  "line sticker",
-			EnvVar: "PLUGIN_STICKER,LINE_STICKER",
+			EnvVar: "PLUGIN_STICKERS,LINE_STICKERS",
 		},
 		cli.StringSliceFlag{
 			Name:   "location",
 			Usage:  "line location",
-			EnvVar: "PLUGIN_LOCATION,LINE_LOCATION",
+			EnvVar: "PLUGIN_LOCATIONS,LINE_LOCATIONS",
 		},
 		cli.StringFlag{
 			Name:   "delimiter",
