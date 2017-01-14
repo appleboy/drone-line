@@ -85,6 +85,8 @@ drone-line-v1.4.0-windows-amd64.exe \
   webhook
 ```
 
+**Tips:** Use [ngrok](https://ngrok.com/) to tunnel your locally running bot so that Line can reach the webhook.
+
 #### Send Notification
 
 Setup the `--to` flag after fetch user id from webhook service.
@@ -100,7 +102,7 @@ drone-line-v1.4.0-windows-amd64.exe \
 <a name="usage-from-docker"></a>
 ### Usage from docker
 
-### Setup Webhook service
+#### Setup Webhook service
 
 Setup Webhook service as default port `8088`.
 
@@ -120,6 +122,8 @@ docker run --rm \
   -e LINE_PORT=8089 \
   appleboy/drone-line webhook
 ```
+
+**Tips:** Use [ngrok](https://ngrok.com/) to tunnel your locally running bot so that Line can reach the webhook.
 
 #### Send Notification
 
