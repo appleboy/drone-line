@@ -339,11 +339,9 @@ func (p Plugin) Exec() error {
 
 	ids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
 
-	// send message to user
-	for _, id := range ids {
-		if _, err := bot.PushMessage(id, messages...).Do(); err != nil {
-			log.Println(err.Error())
-		}
+	// Send messages to multiple users at any time.
+	if _, err := bot.Multicast(ids, messages...).Do(); err != nil {
+		log.Println(err.Error())
 	}
 
 	return nil

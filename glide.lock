@@ -1,26 +1,26 @@
 hash: cb431bb6923ce0ff70a2b95e64c15faf0f0a8354099b831fc64473f67de55a63
-updated: 2016-12-17T15:58:52.282820765+08:00
+updated: 2017-01-24T08:57:42.987401924+08:00
 imports:
 - name: github.com/appleboy/drone-facebook
   version: abda8124c404d424b150cf2a9935e3e108519c6e
   subpackages:
   - template
 - name: github.com/aymerick/raymond
-  version: a2232af10b53ef1ae5a767f5178db3a6c1dab655
+  version: 72acac2207479d21dd45898c2a4264246c818148
   subpackages:
   - ast
   - lexer
   - parser
 - name: github.com/joho/godotenv
-  version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
+  version: a01a834e1654b4c9ca5b3ad05159445cc9c7ad08
   subpackages:
   - autoload
 - name: github.com/line/line-bot-sdk-go
-  version: b7e1bd128fef0e6a532d1afce049cbcd8dc5f4c8
+  version: c87b736869c5b513726a60407afa5c31d4a94aa4
   subpackages:
   - linebot
 - name: github.com/stretchr/testify
-  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
 - name: github.com/urfave/cli
@@ -32,7 +32,7 @@ imports:
   - context/ctxhttp
 testImports:
 - name: github.com/davecgh/go-spew
-  version: 2df174808ee097f90d259e432cc04442cf60be21
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib
