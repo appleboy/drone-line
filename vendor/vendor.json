@@ -51,6 +51,12 @@
 			"revisionTime": "2016-10-29T20:57:26Z"
 		},
 		{
+			"checksumSHA1": "16fWSep+3jUx8wADdbiTxSHjW14=",
+			"path": "github.com/fatih/color",
+			"revision": "9131ab34cf20d2f6d83fdc67168a5430d1c7dc23",
+			"revisionTime": "2017-03-07T19:28:53Z"
+		},
+		{
 			"checksumSHA1": "qzl/TNo4WnfR+PZRfk3iFHg68sM=",
 			"path": "github.com/joho/godotenv",
 			"revision": "325433c502d409f3c3dc820098fb0cfe38d98dc7",
@@ -67,6 +73,18 @@
 			"path": "github.com/line/line-bot-sdk-go/linebot",
 			"revision": "b52b3bb5f30e629d59bf099e46f0cef2714c643f",
 			"revisionTime": "2017-03-17T07:33:38Z"
+		},
+		{
+			"checksumSHA1": "uAVg4Tj5Fxi62z7/ScDEkHr6Ue8=",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "ded68f7a9561c023e790de24279db7ebf473ea80",
+			"revisionTime": "2017-03-27T08:33:44Z"
+		},
+		{
+			"checksumSHA1": "U6lX43KDDlNOn+Z0Yyww+ZzHfFo=",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "fc9e8d8ef48496124e79ae0df75490096eccf6fe",
+			"revisionTime": "2017-03-22T23:44:13Z"
 		},
 		{
 			"checksumSHA1": "LuFv4/jlrmFNnDb/5SCSEPAM9vU=",
@@ -97,6 +115,12 @@
 			"path": "golang.org/x/net/context/ctxhttp",
 			"revision": "05d3205156cb1bdc096578d6457fa161cd950aa2",
 			"revisionTime": "2017-03-29T00:59:59Z"
+		},
+		{
+			"checksumSHA1": "mIZhS4hXW3qVQxsJ6tqztjJoJ8A=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "9a7256cb28ed514b4e1e5f68959914c4c28a92e0",
+			"revisionTime": "2017-03-29T05:31:33Z"
 		}
 	],
 	"rootPath": "github.com/appleboy/drone-line"
