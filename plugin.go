@@ -12,6 +12,7 @@ import (
 	"github.com/NoahShen/gotunnelme/src/gotunnelme"
 	"github.com/appleboy/com/random"
 	"github.com/appleboy/drone-facebook/template"
+	"github.com/fatih/color"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
@@ -282,7 +283,8 @@ func (p Plugin) Webhook() error {
 			for !readyToListen {
 				time.Sleep(1 * time.Second)
 			}
-			log.Println("Tunnel URL:", url)
+			c := color.New(color.FgYellow)
+			c.Println("Tunnel URL:", url)
 			err := tunnel.CreateTunnel(p.Config.Port)
 			if err != nil {
 				panic("Could not create tunnel. " + err.Error())
