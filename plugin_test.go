@@ -283,3 +283,27 @@ func TestParseTo(t *testing.T) {
 	ids = parseTo([]string{"", " ", "   "}, "a@gmail.com", true, "::")
 	assert.Equal(t, 0, len(ids))
 }
+
+func TestTunnelDomain(t *testing.T) {
+	plugin := Plugin{
+		Config: Config{
+			Domain: "abc",
+		},
+	}
+
+	domain, err := plugin.getTunnelDomain()
+	assert.Empty(t, domain)
+	assert.Error(t, err)
+
+	plugin.Config.Domain = "newtunnel"
+
+	domain, err = plugin.getTunnelDomain()
+	assert.Equal(t, "newtunnel", domain)
+	assert.Nil(t, err)
+
+	plugin.Config.Domain = ""
+
+	domain, err = plugin.getTunnelDomain()
+	assert.Equal(t, 10, len(domain))
+	assert.Nil(t, err)
+}
