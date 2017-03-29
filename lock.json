@@ -1,5 +1,5 @@
 {
-    "memo": "ef2852bd75e5a2407b82f759bf3afef4c82c1b643e17e20c7e1466de1af54925",
+    "memo": "46dde328e07292b89d2894312385e643ecb4d7d06a9c416487f6c8894dd7b909",
     "projects": [
         {
             "name": "github.com/appleboy/drone-facebook",
@@ -11,8 +11,8 @@
         },
         {
             "name": "github.com/aymerick/raymond",
-            "branch": "master",
-            "revision": "72acac2207479d21dd45898c2a4264246c818148",
+            "version": "v2.0.1",
+            "revision": "a2232af10b53ef1ae5a767f5178db3a6c1dab655",
             "packages": [
                 ".",
                 "ast",
@@ -22,8 +22,8 @@
         },
         {
             "name": "github.com/davecgh/go-spew",
-            "branch": "master",
-            "revision": "6d212800a42e8ab5c146b8ace3490ee17e5225f9",
+            "version": "v1.1.0",
+            "revision": "346938d642f2ec3594ed81d874461961cd0faa76",
             "packages": [
                 "spew"
             ]
@@ -31,7 +31,7 @@
         {
             "name": "github.com/joho/godotenv",
             "branch": "master",
-            "revision": "726cc8b906e3d31c70a9671c90a13716a8d3f50d",
+            "revision": "325433c502d409f3c3dc820098fb0cfe38d98dc7",
             "packages": [
                 ".",
                 "autoload"
@@ -40,7 +40,7 @@
         {
             "name": "github.com/line/line-bot-sdk-go",
             "branch": "master",
-            "revision": "c6a434596b2b11dbd64a363b0bd34a5ad056c940",
+            "revision": "b52b3bb5f30e629d59bf099e46f0cef2714c643f",
             "packages": [
                 "linebot"
             ]
@@ -56,7 +56,7 @@
         {
             "name": "github.com/stretchr/testify",
             "branch": "master",
-            "revision": "976c720a22c8eb4eb6a0b4348ad85ad12491a506",
+            "revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
             "packages": [
                 "assert"
             ]
@@ -64,7 +64,7 @@
         {
             "name": "github.com/urfave/cli",
             "branch": "master",
-            "revision": "0bdeddeeb0f650497d603c4ad7b20cfe685682f6",
+            "revision": "8ba6f23b6e36d03666a14bd9421f5e3efcb59aca",
             "packages": [
                 "."
             ]
@@ -72,7 +72,7 @@
         {
             "name": "golang.org/x/net",
             "branch": "master",
-            "revision": "6b27048ae5e6ad1ef927e72e437531493de612fe",
+            "revision": "c4f37062e123971566edb19fb0554351464f8a98",
             "packages": [
                 "context",
                 "context/ctxhttp"
