@@ -17,7 +17,7 @@ func main() {
 	app.Usage = "Send LINE notification"
 	app.Copyright = "Copyright (c) 2017 Bo-Yi Wu"
 	app.Authors = []cli.Author{
-		cli.Author{
+		{
 			Name:  "Bo-Yi Wu",
 			Email: "appleboy.tw@gmail.com",
 		},
