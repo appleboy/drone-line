@@ -221,6 +221,20 @@ func (p Plugin) Bot() (*linebot.Client, error) {
 	return linebot.New(p.Config.ChannelSecret, p.Config.ChannelToken)
 }
 
+func (p Plugin) getTunnelDomain() (string, error) {
+	var domain string
+	if p.Config.Domain != "" {
+		if len(p.Config.Domain) < 4 || len(p.Config.Domain) > 63 {
+			return "", errors.New("tunnel host name must be lowercase and between 4 and 63 alphanumeric characters")
+		}
+		domain = p.Config.Domain
+	} else {
+		domain = strings.ToLower(random.String(10))
+	}
+
+	return domain, nil
+}
+
 // Webhook support line callback service.
 func (p Plugin) Webhook() error {
 	readyToListen := false
@@ -260,21 +274,16 @@ func (p Plugin) Webhook() error {
 	})
 
 	if p.Config.Tunnel {
-		var domain string
 		if p.Config.Debug {
 			gotunnelme.Debug = true
 		}
 
-		tunnel := gotunnelme.NewTunnel()
-		if p.Config.Domain != "" {
-			if len(p.Config.Domain) < 4 || len(p.Config.Domain) > 63 {
-				panic("tunnel host name must be lowercase and between 4 and 63 alphanumeric characters.")
-			}
-			domain = p.Config.Domain
-		} else {
-			domain = strings.ToLower(random.String(10))
+		domain, err := p.getTunnelDomain()
+		if err != nil {
+			panic(err)
 		}
 
+		tunnel := gotunnelme.NewTunnel()
 		url, err := tunnel.GetUrl(domain)
 		if err != nil {
 			panic("Could not get localtunnel.me URL. " + err.Error())
