@@ -7,7 +7,10 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/NoahShen/gotunnelme/src/gotunnelme"
+	"github.com/appleboy/com/random"
 	"github.com/appleboy/drone-facebook/template"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -51,6 +54,9 @@ type (
 		Location      []string
 		MatchEmail    bool
 		Port          int
+		Tunnel        bool
+		Debug         bool
+		Domain        string
 	}
 
 	// Plugin values.
@@ -216,7 +222,7 @@ func (p Plugin) Bot() (*linebot.Client, error) {
 
 // Webhook support line callback service.
 func (p Plugin) Webhook() error {
-
+	readyToListen := false
 	bot, err := p.Bot()
 
 	if err != nil {
@@ -246,8 +252,45 @@ func (p Plugin) Webhook() error {
 			}
 		}
 	})
-	// This is just sample code.
-	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
+
+	// Setup HTTP Server for receiving requests from LINE platform
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintln(w, "Welcome to Line webhook page.")
+	})
+
+	if p.Config.Tunnel {
+		var domain string
+		if p.Config.Debug {
+			gotunnelme.Debug = true
+		}
+
+		tunnel := gotunnelme.NewTunnel()
+		if p.Config.Domain != "" {
+			if len(p.Config.Domain) < 4 || len(p.Config.Domain) > 63 {
+				panic("tunnel host name must be lowercase and between 4 and 63 alphanumeric characters.")
+			}
+			domain = p.Config.Domain
+		} else {
+			domain = strings.ToLower(random.String(10))
+		}
+
+		url, err := tunnel.GetUrl(domain)
+		if err != nil {
+			panic("Could not get localtunnel.me URL. " + err.Error())
+		}
+		go func() {
+			for !readyToListen {
+				time.Sleep(1 * time.Second)
+			}
+			log.Println("Tunnel URL:", url)
+			err := tunnel.CreateTunnel(p.Config.Port)
+			if err != nil {
+				panic("Could not create tunnel. " + err.Error())
+			}
+		}()
+	}
+
+	readyToListen = true
 	log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port")
 	if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), nil); err != nil {
 		log.Fatal(err)

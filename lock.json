@@ -1,6 +1,22 @@
 {
-    "memo": "46dde328e07292b89d2894312385e643ecb4d7d06a9c416487f6c8894dd7b909",
+    "memo": "c1915cc5b512942021de28568958838a4ea1ea4085196219bcb40e912cd55a45",
     "projects": [
+        {
+            "name": "github.com/NoahShen/gotunnelme",
+            "branch": "master",
+            "revision": "880261a05606f5b6fa25ddb628b31771ec7b546c",
+            "packages": [
+                "src/gotunnelme"
+            ]
+        },
+        {
+            "name": "github.com/appleboy/com",
+            "branch": "master",
+            "revision": "c660fb542b269931e11955b12d14322508e633fb",
+            "packages": [
+                "random"
+            ]
+        },
         {
             "name": "github.com/appleboy/drone-facebook",
             "branch": "master",
