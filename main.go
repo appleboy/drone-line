@@ -164,6 +164,21 @@ func main() {
 			Name:  "env-file",
 			Usage: "source env file",
 		},
+		cli.BoolFlag{
+			Name:   "tunnel",
+			Usage:  "Enable tunnel host for webhook",
+			EnvVar: "PLUGIN_TUNNEL,TUNNEL",
+		},
+		cli.BoolFlag{
+			Name:   "debug",
+			Usage:  "debug mode",
+			EnvVar: "PLUGIN_DEBUG,DEBUG",
+		},
+		cli.StringFlag{
+			Name:   "domain",
+			Usage:  "tunnel host name must be lowercase and between 4 and 63 alphanumeric characters.",
+			EnvVar: "DRONE_JOB_FINISHED",
+		},
 	}
 
 	// Override a template
@@ -238,6 +253,9 @@ func run(c *cli.Context) error {
 			Sticker:       c.StringSlice("sticker"),
 			Location:      c.StringSlice("location"),
 			Port:          c.Int("port"),
+			Tunnel:        c.Bool("tunnel"),
+			Debug:         c.Bool("debug"),
+			Domain:        c.String("domain"),
 		},
 	}
 

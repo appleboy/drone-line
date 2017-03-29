@@ -1,5 +1,8 @@
 {
     "dependencies": {
+        "github.com/NoahShen/gotunnelme": {
+            "branch": "master"
+        },
         "github.com/appleboy/drone-facebook": {
             "branch": "master"
         },
