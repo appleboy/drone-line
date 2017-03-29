@@ -1,0 +1,19 @@
+{
+    "dependencies": {
+        "github.com/appleboy/drone-facebook": {
+            "branch": "master"
+        },
+        "github.com/joho/godotenv": {
+            "branch": "master"
+        },
+        "github.com/line/line-bot-sdk-go": {
+            "branch": "master"
+        },
+        "github.com/stretchr/testify": {
+            "branch": "master"
+        },
+        "github.com/urfave/cli": {
+            "branch": "master"
+        }
+    }
+}

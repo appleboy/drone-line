@@ -1,0 +1,82 @@
+{
+    "memo": "46dde328e07292b89d2894312385e643ecb4d7d06a9c416487f6c8894dd7b909",
+    "projects": [
+        {
+            "name": "github.com/appleboy/drone-facebook",
+            "branch": "master",
+            "revision": "c05c0e519ae69581cbc2351fbd269a7388edc8d9",
+            "packages": [
+                "template"
+            ]
+        },
+        {
+            "name": "github.com/aymerick/raymond",
+            "version": "v2.0.1",
+            "revision": "a2232af10b53ef1ae5a767f5178db3a6c1dab655",
+            "packages": [
+                ".",
+                "ast",
+                "lexer",
+                "parser"
+            ]
+        },
+        {
+            "name": "github.com/davecgh/go-spew",
+            "version": "v1.1.0",
+            "revision": "346938d642f2ec3594ed81d874461961cd0faa76",
+            "packages": [
+                "spew"
+            ]
+        },
+        {
+            "name": "github.com/joho/godotenv",
+            "branch": "master",
+            "revision": "325433c502d409f3c3dc820098fb0cfe38d98dc7",
+            "packages": [
+                ".",
+                "autoload"
+            ]
+        },
+        {
+            "name": "github.com/line/line-bot-sdk-go",
+            "branch": "master",
+            "revision": "b52b3bb5f30e629d59bf099e46f0cef2714c643f",
+            "packages": [
+                "linebot"
+            ]
+        },
+        {
+            "name": "github.com/pmezard/go-difflib",
+            "version": "v1.0.0",
+            "revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+            "packages": [
+                "difflib"
+            ]
+        },
+        {
+            "name": "github.com/stretchr/testify",
+            "branch": "master",
+            "revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
+            "packages": [
+                "assert"
+            ]
+        },
+        {
+            "name": "github.com/urfave/cli",
+            "branch": "master",
+            "revision": "8ba6f23b6e36d03666a14bd9421f5e3efcb59aca",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "golang.org/x/net",
+            "branch": "master",
+            "revision": "c4f37062e123971566edb19fb0554351464f8a98",
+            "packages": [
+                "context",
+                "context/ctxhttp"
+            ]
+        }
+    ]
+}
