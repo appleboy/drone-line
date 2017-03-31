@@ -80,7 +80,7 @@ There are three ways to send notification.
 Setup Webhook service as default port `8088`.
 
 ```bash
-drone-line-v1.4.0-windows-amd64.exe \
+drone-line \
   --secret xxxx \
   --token xxxx \
   webhook
@@ -89,21 +89,32 @@ drone-line-v1.4.0-windows-amd64.exe \
 Change default webhook port to `8089`.
 
 ```bash
-drone-line-v1.4.0-windows-amd64.exe \
+drone-line \
   --port 8089 \
   --secret xxxx \
   --token xxxx \
   webhook
 ```
 
-**Tips:** Use [ngrok](https://ngrok.com/) to tunnel your locally running bot so that Line can reach the webhook.
+Use [localtunnel](https://localtunnel.github.io/www/) to tunnel your locally running bot so that Line can reach the webhook.
+
+```bash
+drone-line \
+  -s secret \
+  -t token \
+  --tunnel \
+  --port 2002 \
+  webhook
+```
+
+**Tips:** Another way to use [ngrok](https://ngrok.com/) to tunnel your locally running bot so that Line can reach the webhook.
 
 #### Send Notification
 
 Setup the `--to` flag after fetch user id from webhook service.
 
 ```bash
-drone-line-v1.4.0-windows-amd64.exe \
+drone-line \
   --secret xxxx \
   --token xxxx \
   --to xxxx \
