@@ -2,6 +2,7 @@
 
 DIST := dist
 EXECUTABLE := drone-line
+GOFMT ?= gofmt "-s"
 
 # for dockerhub
 DEPLOY_ACCOUNT := appleboy
@@ -9,6 +10,7 @@ DEPLOY_IMAGE := $(EXECUTABLE)
 
 TARGETS ?= linux darwin windows
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
+GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
 LDFLAGS ?= -X 'main.Version=$(VERSION)'
@@ -28,7 +30,7 @@ endif
 all: build
 
 fmt:
-	find . -name "*.go" -type f -not -path "./vendor/*" | xargs gofmt -s -w
+	$(GOFILES) | xargs $(GOFMT) -w
 
 vet:
 	go vet $(PACKAGES)
@@ -53,19 +55,12 @@ unconvert:
 
 .PHONY: fmt-check
 fmt-check:
-	@if git diff --quiet --exit-code; then \
-		$(MAKE) fmt && git diff --exit-code || { \
-			git checkout .; \
-			echo; \
-			echo "Please run 'make fmt' and commit the result"; \
-			echo; \
-			false; } >&2; \
-	else { \
-		echo; \
-		echo "'make fmt-check' cannot be run with unstaged changes"; \
-		echo; \
-		false; } >&2; \
-	fi
+	# get all go files and run go fmt on them
+	@files=$$($(GOFILES) | xargs $(GOFMT) -l); if [ -n "$$files" ]; then \
+		echo "Please run 'make fmt' and commit the result:"; \
+		echo "$${files}"; \
+		exit 1; \
+		fi;
 
 test: fmt-check
 	for PKG in $(PACKAGES); do go test -cover -coverprofile $$GOPATH/src/$$PKG/coverage.txt $$PKG || exit 1; done;
