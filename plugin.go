@@ -62,6 +62,7 @@ type (
 		Domain        string
 		AutoTLS       bool
 		Host          string
+		Cache         string
 	}
 
 	// Plugin values.
@@ -319,6 +320,11 @@ func (p Plugin) Webhook() error {
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(p.Config.Host),
 		}
+
+		if p.Config.Cache != "" {
+			m.Cache = autocert.DirCache(p.Config.Cache)
+		}
+
 		s := &http.Server{
 			Addr:      ":https",
 			TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
