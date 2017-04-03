@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"log"
@@ -14,6 +15,7 @@ import (
 	"github.com/appleboy/drone-facebook/template"
 	"github.com/fatih/color"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 const defaultPreviewImageURL = "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png"
@@ -58,6 +60,8 @@ type (
 		Tunnel        bool
 		Debug         bool
 		Domain        string
+		AutoTLS       bool
+		Host          string
 	}
 
 	// Plugin values.
@@ -302,9 +306,24 @@ func (p Plugin) Webhook() error {
 	}
 
 	readyToListen = true
-	log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port")
-	if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), nil); err != nil {
-		log.Fatal(err)
+	if p.Config.Port != 443 && !p.Config.AutoTLS {
+		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port")
+		if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), nil); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	if p.Config.Port == 443 && !p.Config.AutoTLS && p.Config.Host != "" {
+		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port, hostname: " + p.Config.Host)
+		m := autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			HostPolicy: autocert.HostWhitelist(p.Config.Host),
+		}
+		s := &http.Server{
+			Addr:      ":https",
+			TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
+		}
+		s.ListenAndServeTLS("", "")
 	}
 
 	return nil
