@@ -179,6 +179,16 @@ func main() {
 			Usage:  "tunnel host name must be lowercase and between 4 and 63 alphanumeric characters.",
 			EnvVar: "DRONE_JOB_FINISHED",
 		},
+		cli.BoolFlag{
+			Name:   "autotls",
+			Usage:  "Auto tls mode",
+			EnvVar: "PLUGIN_AUTOTLS,AUTOTLS",
+		},
+		cli.StringFlag{
+			Name:   "host",
+			Usage:  "Auto tls host name",
+			EnvVar: "PLUGIN_HOSTNAME,HOSTNAME",
+		},
 	}
 
 	// Override a template
@@ -256,6 +266,8 @@ func run(c *cli.Context) error {
 			Tunnel:        c.Bool("tunnel"),
 			Debug:         c.Bool("debug"),
 			Domain:        c.String("domain"),
+			AutoTLS:       c.Bool("AutoTLS"),
+			Host:          c.String("host"),
 		},
 	}
 
