@@ -193,6 +193,7 @@ func main() {
 			Name:   "cache",
 			Usage:  "folder for storing certificates",
 			EnvVar: "PLUGIN_CACHE,CACHE",
+			Value:  ".cache",
 		},
 	}
 
