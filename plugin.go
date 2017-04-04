@@ -61,7 +61,7 @@ type (
 		Debug         bool
 		Domain        string
 		AutoTLS       bool
-		Host          string
+		Host          []string
 		Cache         string
 	}
 
@@ -314,11 +314,11 @@ func (p Plugin) Webhook() error {
 		}
 	}
 
-	if p.Config.Port == 443 && !p.Config.AutoTLS && p.Config.Host != "" {
-		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port, hostname: " + p.Config.Host)
+	if p.Config.Port == 443 && !p.Config.AutoTLS && len(p.Config.Host) != 0 {
+		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port, hostname: " + strings.Join(p.Config.Host, ", "))
 		m := autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(p.Config.Host),
+			HostPolicy: autocert.HostWhitelist(p.Config.Host...),
 		}
 
 		if p.Config.Cache != "" {
