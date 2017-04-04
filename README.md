@@ -116,6 +116,7 @@ drone-line \
   -t token \
   -autotls \
   -host example.com \
+  -cache /var/www/.cache \
   --port 443 \
   webhook
 ```
