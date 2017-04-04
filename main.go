@@ -184,7 +184,7 @@ func main() {
 			Usage:  "Auto tls mode",
 			EnvVar: "PLUGIN_AUTOTLS,AUTOTLS",
 		},
-		cli.StringFlag{
+		cli.StringSliceFlag{
 			Name:   "host",
 			Usage:  "Auto tls host name",
 			EnvVar: "PLUGIN_HOSTNAME,HOSTNAME",
@@ -272,7 +272,7 @@ func run(c *cli.Context) error {
 			Debug:         c.Bool("debug"),
 			Domain:        c.String("domain"),
 			AutoTLS:       c.Bool("AutoTLS"),
-			Host:          c.String("host"),
+			Host:          c.StringSlice("host"),
 			Cache:         c.String("cache"),
 		},
 	}
