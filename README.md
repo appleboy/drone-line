@@ -24,6 +24,7 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 * [x] Send Audio Message.
 * [x] Send Sticker Message.
 * [x] Send Location Message.
+* [x] Support [Let's Encrypt](https://letsencrypt.org/).
 * [x] Support [Localtunnel](https://localtunnel.github.io/www/) for webhook tunnel.
 
 > Localtunnel allows you to easily share a web service on your local development machine without messing with DNS and firewall settings.
@@ -104,6 +105,18 @@ drone-line \
   -t token \
   --tunnel \
   --port 2002 \
+  webhook
+```
+
+Use [Let's Encrypt](https://letsencrypt.org/). Please make sure you have permission to listen on `443` port.
+
+```bash
+drone-line \
+  -s secret \
+  -t token \
+  -autotls \
+  -host example.com \
+  --port 443 \
   webhook
 ```
 
