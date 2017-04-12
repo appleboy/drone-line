@@ -238,15 +238,9 @@ func (p Plugin) getTunnelDomain() (string, error) {
 	return domain, nil
 }
 
-// Webhook support line callback service.
-func (p Plugin) Webhook() error {
-	readyToListen := false
-	bot, err := p.Bot()
+// Handler is http handler.
+func (p Plugin) Handler(bot *linebot.Client) *http.ServeMux {
 	mux := http.NewServeMux()
-
-	if err != nil {
-		return err
-	}
 
 	// Setup HTTP Server for receiving requests from LINE platform
 	mux.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
@@ -276,6 +270,19 @@ func (p Plugin) Webhook() error {
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w, "Welcome to Line webhook page.")
 	})
+
+	return mux
+}
+
+// Webhook support line callback service.
+func (p Plugin) Webhook() error {
+	readyToListen := false
+	bot, err := p.Bot()
+
+	if err != nil {
+		return err
+	}
+	mux := p.Handler(bot)
 
 	if p.Config.Tunnel {
 		if p.Config.Debug {
