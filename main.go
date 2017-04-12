@@ -189,12 +189,6 @@ func main() {
 			Usage:  "Auto tls host name",
 			EnvVar: "PLUGIN_HOSTNAME,HOSTNAME",
 		},
-		cli.StringFlag{
-			Name:   "cache",
-			Usage:  "folder for storing certificates",
-			EnvVar: "PLUGIN_CACHE,CACHE",
-			Value:  ".cache",
-		},
 	}
 
 	// Override a template
@@ -274,7 +268,6 @@ func run(c *cli.Context) error {
 			Domain:        c.String("domain"),
 			AutoTLS:       c.Bool("AutoTLS"),
 			Host:          c.StringSlice("host"),
-			Cache:         c.String("cache"),
 		},
 	}
 

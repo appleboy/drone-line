@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
 	"log"
@@ -62,7 +61,6 @@ type (
 		Domain        string
 		AutoTLS       bool
 		Host          []string
-		Cache         string
 	}
 
 	// Plugin values.
@@ -244,13 +242,14 @@ func (p Plugin) getTunnelDomain() (string, error) {
 func (p Plugin) Webhook() error {
 	readyToListen := false
 	bot, err := p.Bot()
+	mux := http.NewServeMux()
 
 	if err != nil {
 		return err
 	}
 
 	// Setup HTTP Server for receiving requests from LINE platform
-	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
+	mux.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
 		events, err := bot.ParseRequest(req)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
@@ -274,7 +273,7 @@ func (p Plugin) Webhook() error {
 	})
 
 	// Setup HTTP Server for receiving requests from LINE platform
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w, "Welcome to Line webhook page.")
 	})
 
@@ -309,27 +308,14 @@ func (p Plugin) Webhook() error {
 	readyToListen = true
 	if p.Config.Port != 443 && !p.Config.AutoTLS {
 		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port")
-		if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), nil); err != nil {
+		if err := http.ListenAndServe(":"+strconv.Itoa(p.Config.Port), mux); err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	if p.Config.Port == 443 && !p.Config.AutoTLS && len(p.Config.Host) != 0 {
-		log.Println("Line Webhook Server Listin on " + strconv.Itoa(p.Config.Port) + " port, hostname: " + strings.Join(p.Config.Host, ", "))
-		m := autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(p.Config.Host...),
-		}
-
-		if p.Config.Cache != "" {
-			m.Cache = autocert.DirCache(p.Config.Cache)
-		}
-
-		s := &http.Server{
-			Addr:      ":https",
-			TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
-		}
-		s.ListenAndServeTLS("", "")
+	if !p.Config.AutoTLS && len(p.Config.Host) != 0 {
+		log.Println("Line Webhook Server Listin on 443 port, hostname: " + strings.Join(p.Config.Host, ", "))
+		return http.Serve(autocert.NewListener(p.Config.Host...), mux)
 	}
 
 	return nil
