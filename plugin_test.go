@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/stretchr/testify/assert"
 
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 )
@@ -306,4 +308,32 @@ func TestTunnelDomain(t *testing.T) {
 	domain, err = plugin.getTunnelDomain()
 	assert.Equal(t, 10, len(domain))
 	assert.Nil(t, err)
+}
+
+func performRequest(r http.Handler, method string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, "/", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func TestDefaultRouter(t *testing.T) {
+	p := Plugin{
+		Config: Config{
+			ChannelToken:  os.Getenv("LINE_CHANNEL_TOKEN"),
+			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
+			To:            []string{os.Getenv("LINE_TO")},
+		},
+	}
+
+	bot, err := p.Bot()
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	router := p.Handler(bot)
+	w := performRequest(router, "GET")
+
+	assert.Equal(t, "Welcome to Line webhook page.\n", w.Body.String())
 }
