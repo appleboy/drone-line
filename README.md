@@ -24,10 +24,19 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 * [x] Send Audio Message.
 * [x] Send Sticker Message.
 * [x] Send Location Message.
+* [x] Support [prometheus](https://prometheus.io) metrics API.
 * [x] Automatically install TLS certificates from [Let's Encrypt](https://letsencrypt.org/).
 * [x] Support [Localtunnel](https://localtunnel.github.io/www/) for webhook tunnel.
 
 > Localtunnel allows you to easily share a web service on your local development machine without messing with DNS and firewall settings.
+
+Memory Usage:
+
+![Memory Usage](./screenshots/memory_usage.png)
+
+Notification Count Usage:
+
+![Notification Count Usage](./screenshots/notification.png)
 
 ## Build or Download a binary
 
