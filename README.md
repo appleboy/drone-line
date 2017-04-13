@@ -32,11 +32,11 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 
 Memory Usage:
 
-[![Memory Usage](./screenshots/memory.png)]
+![Memory Usage](./screenshots/memory.png)
 
 Notification Count Usage:
 
-[![Notification Count Usage](./screenshots/notification.png)]
+![Notification Count Usage](./screenshots/notification.png)
 
 ## Build or Download a binary
 
