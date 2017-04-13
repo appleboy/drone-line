@@ -14,6 +14,8 @@ import (
 	"github.com/appleboy/drone-facebook/template"
 	"github.com/fatih/color"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -84,6 +86,19 @@ type (
 		Longitude float64
 	}
 )
+
+var (
+	// ReceiveCount is receive notification count
+	ReceiveCount int64
+	// SendCount is send notification count
+	SendCount int64
+)
+
+func init() {
+	// Support metrics
+	m := NewMetrics()
+	prometheus.MustRegister(m)
+}
 
 func trimElement(keys []string) []string {
 	var newKeys []string
@@ -258,12 +273,23 @@ func (p Plugin) Handler(bot *linebot.Client) *http.ServeMux {
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
 					log.Printf("User ID is %v\n", event.Source.UserID)
+					ReceiveCount++
+					if message.Text == "test" {
+						SendCount++
+						if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("count + 1")).Do(); err != nil {
+							log.Print(err)
+						}
+					}
 					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
 						log.Print(err)
 					}
 				}
 			}
 		}
+	})
+
+	mux.HandleFunc("/metrics", func(w http.ResponseWriter, req *http.Request) {
+		promhttp.Handler().ServeHTTP(w, req)
 	})
 
 	// Setup HTTP Server for receiving requests from LINE platform

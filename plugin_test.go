@@ -310,8 +310,8 @@ func TestTunnelDomain(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func performRequest(r http.Handler, method string) *httptest.ResponseRecorder {
-	req, _ := http.NewRequest(method, "/", nil)
+func performRequest(r http.Handler, method, url string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, url, nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w
@@ -333,7 +333,9 @@ func TestDefaultRouter(t *testing.T) {
 	}
 
 	router := p.Handler(bot)
-	w := performRequest(router, "GET")
-
+	w := performRequest(router, "GET", "/")
 	assert.Equal(t, "Welcome to Line webhook page.\n", w.Body.String())
+
+	w = performRequest(router, "GET", "/metrics")
+	assert.Equal(t, 200, w.Code)
 }
