@@ -346,7 +346,7 @@ func (p Plugin) Webhook() error {
 		}
 	}
 
-	if !p.Config.AutoTLS && len(p.Config.Host) != 0 {
+	if p.Config.AutoTLS && len(p.Config.Host) != 0 {
 		log.Println("Line Webhook Server Listin on 443 port, hostname: " + strings.Join(p.Config.Host, ", "))
 		return http.Serve(autocert.NewListener(p.Config.Host...), mux)
 	}
