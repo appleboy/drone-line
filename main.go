@@ -266,7 +266,7 @@ func run(c *cli.Context) error {
 			Tunnel:        c.Bool("tunnel"),
 			Debug:         c.Bool("debug"),
 			Domain:        c.String("domain"),
-			AutoTLS:       c.Bool("AutoTLS"),
+			AutoTLS:       c.Bool("autotls"),
 			Host:          c.StringSlice("host"),
 		},
 	}
