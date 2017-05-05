@@ -2,18 +2,20 @@ workspace:
   base: /srv/app
   path: src/github.com/appleboy/drone-line
 
-pipeline:
-  clone:
+clone:
+  git:
     image: plugins/git
     depth: 50
     tags: true
 
+pipeline:
   test:
     image: appleboy/golang-testing
     pull: true
     environment:
       TAGS: netgo
       GOPATH: /srv/app
+    secrets: [ codecov_token, line_to, line_channel_secret, line_channel_token ]
     commands:
       - make vet
       - make lint
@@ -41,6 +43,7 @@ pipeline:
     image: plugins/docker
     repo: ${DRONE_REPO}
     tags: [ '${DRONE_TAG}' ]
+    secrets: [ docker_username, docker_password ]
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]
@@ -49,12 +52,14 @@ pipeline:
     image: plugins/docker
     repo: ${DRONE_REPO}
     tags: [ 'latest' ]
+    secrets: [ docker_username, docker_password ]
     when:
       event: [ push ]
       branch: [ master ]
 
   github:
     image: plugins/github-release
+    secrets: [ github_token ]
     files:
       - dist/release/*
     when:
