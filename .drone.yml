@@ -15,7 +15,7 @@ pipeline:
     environment:
       TAGS: netgo
       GOPATH: /srv/app
-    secrets: [ codecov_token ]
+    secrets: [ codecov_token, line_to, line_channel_secret, line_channel_token ]
     commands:
       - make vet
       - make lint
