@@ -10,7 +10,7 @@ DEPLOY_IMAGE := $(EXECUTABLE)
 
 TARGETS ?= linux darwin windows
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
-GOFILES := find . -name "*.go" -type f -not -path "./vendor/*"
+GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
 LDFLAGS ?= -X 'main.Version=$(VERSION)'
@@ -30,7 +30,7 @@ endif
 all: build
 
 fmt:
-	$(GOFILES) | xargs $(GOFMT) -w
+	$(GOFMT) -w $(GOFILES)
 
 vet:
 	go vet $(PACKAGES)
