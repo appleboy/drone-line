@@ -19,6 +19,7 @@ pipeline:
     commands:
       - make vet
       - make lint
+      - make test-vendor
       - make test
       - make coverage
       - make build
