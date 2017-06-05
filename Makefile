@@ -54,6 +54,20 @@ unconvert:
 	fi
 	for PKG in $(PACKAGES); do unconvert -v $$PKG || exit 1; done;
 
+.PHONY: misspell-check
+misspell-check:
+	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		go get -u github.com/client9/misspell/cmd/misspell; \
+	fi
+	misspell -error $(GOFILES)
+
+.PHONY: misspell
+misspell:
+	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		go get -u github.com/client9/misspell/cmd/misspell; \
+	fi
+	misspell -w $(GOFILES)
+
 .PHONY: fmt-check
 fmt-check:
 	# get all go files and run go fmt on them

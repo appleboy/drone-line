@@ -19,6 +19,7 @@ pipeline:
       - make vet
       - make lint
       - make test-vendor
+      - make misspell-check
       - make test
       - make coverage
       - make build
