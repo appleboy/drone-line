@@ -1,5 +1,5 @@
 workspace:
-  base: /srv/app
+  base: /go
   path: src/github.com/appleboy/drone-line
 
 clone:
@@ -14,12 +14,12 @@ pipeline:
     pull: true
     environment:
       TAGS: netgo
-      GOPATH: /srv/app
     secrets: [ codecov_token, line_to, line_channel_secret, line_channel_token ]
     commands:
       - make vet
       - make lint
       - make test-vendor
+      - make misspell-check
       - make test
       - make coverage
       - make build
