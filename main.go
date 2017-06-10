@@ -177,7 +177,7 @@ func main() {
 		cli.StringFlag{
 			Name:   "domain",
 			Usage:  "tunnel host name must be lowercase and between 4 and 63 alphanumeric characters.",
-			EnvVar: "DRONE_JOB_FINISHED",
+			EnvVar: "PLUGIN_DOMAIN,DOMAIN",
 		},
 		cli.BoolFlag{
 			Name:   "autotls",

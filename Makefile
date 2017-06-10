@@ -1,5 +1,3 @@
-.PHONY: test drone-line build fmt vet errcheck lint install update release-dirs release-build release-copy release-check release coverage
-
 DIST := dist
 EXECUTABLE := drone-line
 GOFMT ?= gofmt "-s"
