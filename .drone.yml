@@ -9,21 +9,36 @@ clone:
     tags: true
 
 pipeline:
-  test:
+  lint:
     image: appleboy/golang-testing:1.9
-    secrets: [ codecov_token, line_to, line_channel_secret, line_channel_token ]
+    group: testing
     commands:
       - make vet
       - make lint
       - make test-vendor
       - make misspell-check
+
+  test:
+    image: appleboy/golang-testing:1.9
+    group: testing
+    secrets: [ line_to, line_channel_secret, line_channel_token ]
+    commands:
       - make test
       - make coverage
-      - make build
-      # build binary for docker image
+
+  build:
+    image: appleboy/golang-testing:1.9
+    group: testing
+    commands:
       - make static_build
+
+  codecov:
+    image: robertstettner/drone-codecov
+    secrets: [ codecov_token ]
+    files:
+      - coverage.txt
     when:
-      event: [ push, tag, pull_request ]
+      event: [ push, pull_request ]
 
   release:
     image: appleboy/golang-testing:1.9
