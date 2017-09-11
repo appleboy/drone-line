@@ -1,6 +1,6 @@
 workspace:
-  base: /go
-  path: src/github.com/appleboy/drone-line
+  base: /go/src
+  path: github.com/appleboy/drone-line
 
 clone:
   git:
@@ -10,10 +10,7 @@ clone:
 
 pipeline:
   test:
-    image: appleboy/golang-testing
-    pull: true
-    environment:
-      TAGS: netgo
+    image: appleboy/golang-testing:1.9
     secrets: [ codecov_token, line_to, line_channel_secret, line_channel_token ]
     commands:
       - make vet
@@ -29,11 +26,7 @@ pipeline:
       event: [ push, tag, pull_request ]
 
   release:
-    image: appleboy/golang-testing
-    pull: true
-    environment:
-      TAGS: netgo
-      GOPATH: /srv/app
+    image: appleboy/golang-testing:1.9
     commands:
       - make release
     when:
