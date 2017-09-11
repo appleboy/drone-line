@@ -9,15 +9,20 @@ clone:
     tags: true
 
 pipeline:
-  test:
+  lint:
     image: appleboy/golang-testing:1.9
     group: testing
-    secrets: [ line_to, line_channel_secret, line_channel_token ]
     commands:
       - make vet
       - make lint
       - make test-vendor
       - make misspell-check
+
+  test:
+    image: appleboy/golang-testing:1.9
+    group: testing
+    secrets: [ line_to, line_channel_secret, line_channel_token ]
+    commands:
       - make test
       - make coverage
 
