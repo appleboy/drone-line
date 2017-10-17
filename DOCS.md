@@ -28,6 +28,7 @@ pipeline:
     image: appleboy/drone-line
     channel_secret: xxxxxxxxxx
     channel_token: xxxxxxxxxx
+-   to: line_user_id
 +   to:
 +     - user id 1
 +     - user id 2
@@ -39,8 +40,10 @@ Example for using repository secret store
 > first, [add secrets](http://docs.drone.io/cli-secret-add/) to store
 
 ```sh
-docker run --rm drone/cli secret add --repository your/repo --name line_channel_secret --value xxxxxxxxxx
-docker run --rm drone/cli secret add --repository your/repo --name line_channel_token --value xxxxxxxxxx
+# for security reason, you should always be with option "--image appleboy/drone-line"
+
+docker run --rm drone/cli secret add --image appleboy/drone-line --repository your/repo --name line_channel_secret --value xxxxxxxxxx
+docker run --rm drone/cli secret add --image appleboy/drone-line --repository your/repo --name line_channel_token --value xxxxxxxxxx
 ```
 
 > then
@@ -52,6 +55,7 @@ pipeline:
 -   channel_secret: xxxxxxxxxx
 -   channel_token: xxxxxxxxxx
 +   secrets: [ line_channel_secret, line_channel_token ]
+    to: line_user_id
 ```
 
 Example configuration with image message:
