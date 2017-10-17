@@ -19,6 +19,45 @@ pipeline:
     to: line_user_id
 ```
 
+<!-- https://github.com/appleboy/drone-line/issues/72#issuecomment-323929502 -->
+Example to multiple line ids:
+
+```diff
+pipeline:
+  line:
+    image: appleboy/drone-line
+    channel_secret: xxxxxxxxxx
+    channel_token: xxxxxxxxxx
+-   to: line_user_id
++   to:
++     - user id 1
++     - user id 2
+```
+
+<!-- https://github.com/appleboy/drone-line/issues/72#issuecomment-323959234 -->
+Example for using repository secret store
+
+> first, [add secrets](http://docs.drone.io/cli-secret-add/) to store
+
+```sh
+# for security reason, you should always be with option "--image appleboy/drone-line"
+
+docker run --rm drone/cli secret add --image appleboy/drone-line --repository your/repo --name line_channel_secret --value xxxxxxxxxx
+docker run --rm drone/cli secret add --image appleboy/drone-line --repository your/repo --name line_channel_token --value xxxxxxxxxx
+```
+
+> then
+
+```diff
+pipeline:
+  line:
+    image: appleboy/drone-line
+-   channel_secret: xxxxxxxxxx
+-   channel_token: xxxxxxxxxx
++   secrets: [ line_channel_secret, line_channel_token ]
+    to: line_user_id
+```
+
 Example configuration with image message:
 
 ```diff
