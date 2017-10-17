@@ -19,6 +19,20 @@ pipeline:
     to: line_user_id
 ```
 
+<!-- https://github.com/appleboy/drone-line/issues/72#issuecomment-323929502 -->
+Example to multiple line ids:
+
+```diff
+pipeline:
+  line:
+    image: appleboy/drone-line
+    channel_secret: xxxxxxxxxx
+    channel_token: xxxxxxxxxx
++   to:
++     - user id 1
++     - user id 2
+```
+
 Example configuration with image message:
 
 ```diff
