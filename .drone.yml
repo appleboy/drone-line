@@ -10,7 +10,7 @@ clone:
 
 pipeline:
   lint:
-    image: appleboy/golang-testing:1.9
+    image: appleboy/golang-testing:1.9.1
     group: testing
     commands:
       - make vet
@@ -19,7 +19,7 @@ pipeline:
       - make misspell-check
 
   test:
-    image: appleboy/golang-testing:1.9
+    image: appleboy/golang-testing:1.9.1
     group: testing
     secrets: [ line_to, line_channel_secret, line_channel_token ]
     commands:
@@ -27,7 +27,7 @@ pipeline:
       - make coverage
 
   build:
-    image: appleboy/golang-testing:1.9
+    image: appleboy/golang-testing:1.9.1
     group: testing
     commands:
       - make static_build
@@ -41,7 +41,7 @@ pipeline:
       event: [ push, pull_request ]
 
   release:
-    image: appleboy/golang-testing:1.9
+    image: appleboy/golang-testing:1.9.1
     commands:
       - make release
     when:
