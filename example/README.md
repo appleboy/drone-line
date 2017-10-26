@@ -1,6 +1,6 @@
 # Start Line Bot
 
-There are two ways to start line boot webhook service.
+There are two ways to start line bot webhook service.
 
 ## Start webhook service
 
