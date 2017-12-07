@@ -49,6 +49,8 @@ type (
 		ChannelToken  string
 		ChannelSecret string
 		To            []string
+		ToRoom        string
+		ToGroup       string
 		Delimiter     string
 		Message       []string
 		Image         []string
@@ -273,6 +275,9 @@ func (p Plugin) Handler(bot *linebot.Client) *http.ServeMux {
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
 					log.Printf("User ID is %v\n", event.Source.UserID)
+					log.Printf("Room ID is %v\n", event.Source.RoomID)
+					log.Printf("Group ID is %v\n", event.Source.GroupID)
+
 					ReceiveCount++
 					if message.Text == "test" {
 						SendCount++
@@ -363,7 +368,7 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	if len(p.Config.To) == 0 {
+	if len(p.Config.To) == 0 && len(p.Config.ToRoom) == 0 && len(p.Config.ToGroup) == 0 {
 		log.Println("missing line user config")
 
 		return errors.New("missing line user config")
@@ -435,11 +440,29 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
 	}
 
-	ids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
+	uids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
 
 	// Send messages to multiple users at any time.
-	if _, err := bot.Multicast(ids, messages...).Do(); err != nil {
-		log.Println(err.Error())
+	if len(uids) > 0 {
+		if _, err := bot.Multicast(uids, messages...).Do(); err != nil {
+			log.Println(err.Error())
+		}
+	}
+
+	// Send messages to single room at any time.
+	rid := p.Config.ToRoom
+	if rid != "" {
+		if _, err := bot.PushMessage(rid, messages...).Do(); err != nil {
+			log.Println(err.Error())
+		}
+	}
+
+	// Send messages to single group at any time.
+	gid := p.Config.ToGroup
+	if gid != "" {
+		if _, err := bot.PushMessage(gid, messages...).Do(); err != nil {
+			log.Println(err.Error())
+		}
 	}
 
 	return nil

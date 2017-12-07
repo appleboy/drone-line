@@ -40,6 +40,16 @@ func main() {
 			Usage:  "line user ID",
 			EnvVar: "PLUGIN_TO,LINE_TO",
 		},
+		cli.StringFlag{
+			Name:   "toroom, r",
+			Usage:  "line room ID",
+			EnvVar: "PLUGIN_TO_ROOM,LINE_TO_ROOM",
+		},
+		cli.StringFlag{
+			Name:   "togroup, g",
+			Usage:  "line group ID",
+			EnvVar: "PLUGIN_TO_GROUP,LINE_TO_GROUP",
+		},
 		cli.StringSliceFlag{
 			Name:   "message, m",
 			Usage:  "line message",
@@ -254,6 +264,8 @@ func run(c *cli.Context) error {
 			ChannelSecret: c.String("secret"),
 			ChannelToken:  c.String("token"),
 			To:            c.StringSlice("to"),
+			ToRoom:        c.String("toroom"),
+			ToGroup:       c.String("togroup"),
 			Delimiter:     c.String("delimiter"),
 			MatchEmail:    c.Bool("match.email"),
 			Message:       c.StringSlice("message"),
