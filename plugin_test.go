@@ -69,6 +69,35 @@ func TestSendTextError(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestSendRoomAndGroup(t *testing.T) {
+	plugin := Plugin{
+		Repo: Repo{
+			Name:  "go-hello",
+			Owner: "appleboy",
+		},
+		Build: Build{
+			Number:  102,
+			Status:  "failed",
+			Link:    "https://github.com/appleboy/go-hello",
+			Author:  "Bo-Yi Wu",
+			Branch:  "master",
+			Message: "support send message to room or to group.",
+			Commit:  "e02d0cf1b1fc6ecc5d03bb72a83697e85ea23f54",
+		},
+		Config: Config{
+			ChannelToken:  "1465486347",
+			ChannelSecret: "ChannelSecret",
+			ToRoom:        "1234567890",
+			ToGroup:       "0123456789",
+			Message:       []string{"Test"},
+		},
+	}
+
+	// enable message
+	err := plugin.Exec()
+	assert.Nil(t, err)
+}
+
 func TestDefaultMessageFormat(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
