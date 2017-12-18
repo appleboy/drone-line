@@ -27,6 +27,7 @@ Please refer to [LINE Business Center](https://business.line.me/en/services/bot)
 * [x] Support [prometheus](https://prometheus.io) metrics API.
 * [x] Automatically install TLS certificates from [Let's Encrypt](https://letsencrypt.org/).
 * [x] Support [Localtunnel](https://localtunnel.github.io/www/) for webhook tunnel.
+* [x] Support [Line Notify](https://notify-bot.line.me/en/).
 
 > Localtunnel allows you to easily share a web service on your local development machine without messing with DNS and firewall settings.
 
@@ -142,6 +143,18 @@ drone-line \
   --token xxxx \
   --to xxxx \
   --message "Test Message"
+```
+
+#### Send LINE Notify
+
+If you connect your service with LINE Notify, LINE users can easily receive notifications from it.
+See the [documentation](https://notify-bot.line.me/en/).
+
+```
+drone-line \
+  --token xxxx \
+  --message "Test Message" \
+  notify
 ```
 
 <a name="usage-from-docker"></a>
