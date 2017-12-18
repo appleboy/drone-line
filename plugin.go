@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -354,6 +355,53 @@ func (p Plugin) Webhook() error {
 	if p.Config.AutoTLS && len(p.Config.Host) != 0 {
 		log.Println("Line Webhook Server Listin on 443 port, hostname: " + strings.Join(p.Config.Host, ", "))
 		return http.Serve(autocert.NewListener(p.Config.Host...), mux)
+	}
+
+	return nil
+}
+
+// Notify for Line notify service
+// https://notify-bot.line.me
+func (p Plugin) Notify() error {
+	data := url.Values{}
+	data.Add("message", "test")
+
+	u, _ := url.ParseRequestURI("https://notify-api.line.me/api/notify")
+	urlStr := u.String()
+	log.Println(urlStr)
+
+	req, err := http.NewRequest(
+		"POST",
+		urlStr,
+		strings.NewReader(data.Encode()),
+	)
+
+	if err != nil {
+		log.Println(err)
+		return errors.New("failed to create request:" + err.Error())
+	}
+
+	req.Header.Add("Authorization", "Bearer tQUxp4RhIfRGHwPoi7EYgFC44g0Qb1IaM8rLZ3W05GC")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+
+	if err != nil {
+		log.Println(err)
+		return errors.New("failed to process request:" + err.Error())
+	}
+
+	defer res.Body.Close()
+
+	log.Printf("%#v\n", res)
+	if res.Status == "200 OK" {
+		log.Printf("successfully uploaded coverage report")
+	}
+
+	if err != nil {
+		return errors.New("failed to create request:" + err.Error())
 	}
 
 	return nil

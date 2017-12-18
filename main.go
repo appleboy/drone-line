@@ -285,8 +285,11 @@ func run(c *cli.Context) error {
 
 	command := c.Args().Get(0)
 
-	if command == "webhook" {
+	switch command {
+	case "webhook":
 		return plugin.Webhook()
+	case "notify":
+		return plugin.Notify()
 	}
 
 	return plugin.Exec()
