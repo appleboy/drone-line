@@ -368,7 +368,6 @@ func (p Plugin) Notify() error {
 
 	u, _ := url.ParseRequestURI("https://notify-api.line.me/api/notify")
 	urlStr := u.String()
-	log.Println(urlStr)
 
 	req, err := http.NewRequest(
 		"POST",
@@ -377,11 +376,10 @@ func (p Plugin) Notify() error {
 	)
 
 	if err != nil {
-		log.Println(err)
 		return errors.New("failed to create request:" + err.Error())
 	}
 
-	req.Header.Add("Authorization", "Bearer tQUxp4RhIfRGHwPoi7EYgFC44g0Qb1IaM8rLZ3W05GC")
+	req.Header.Add("Authorization", "Bearer TESmfQyRO94Qc6z2orlJNyHzRja6eTajXbW7wK1yYRx")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
@@ -389,15 +387,19 @@ func (p Plugin) Notify() error {
 	res, err := client.Do(req)
 
 	if err != nil {
-		log.Println(err)
 		return errors.New("failed to process request:" + err.Error())
 	}
 
 	defer res.Body.Close()
 
-	log.Printf("%#v\n", res)
+	if p.Config.Debug {
+		log.Println("=================================")
+		log.Printf("%#v\n", res)
+		log.Println("=================================")
+	}
+
 	if res.Status == "200 OK" {
-		log.Printf("successfully uploaded coverage report")
+		log.Printf("successfully send notfiy")
 	}
 
 	if err != nil {
