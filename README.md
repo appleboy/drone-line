@@ -1,4 +1,4 @@
-<img src="line.png">
+<img src="images/line.png">
 
 # drone-line
 
