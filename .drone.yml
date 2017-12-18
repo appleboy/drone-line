@@ -46,7 +46,6 @@ pipeline:
       - make release
     when:
       event: [ tag ]
-      branch: [ refs/tags/* ]
 
   docker:
     image: plugins/docker
@@ -55,7 +54,6 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     when:
       event: [ tag ]
-      branch: [ refs/tags/* ]
 
   docker:
     image: plugins/docker
@@ -73,7 +71,6 @@ pipeline:
       - dist/release/*
     when:
       event: [ tag ]
-      branch: [ refs/tags/* ]
 
   discord:
     image: appleboy/drone-discord
