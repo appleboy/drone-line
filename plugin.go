@@ -363,8 +363,22 @@ func (p Plugin) Webhook() error {
 // Notify for Line notify service
 // https://notify-bot.line.me
 func (p Plugin) Notify() error {
+	if p.Config.ChannelToken == "" || len(p.Config.Message) == 0 {
+		return errors.New("missing token or message")
+	}
+
+	for _, m := range p.Config.Message {
+		if err := p.notify(m, p.Config.ChannelToken); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (p Plugin) notify(message, token string) error {
 	data := url.Values{}
-	data.Add("message", "test")
+	data.Add("message", message)
 
 	u, _ := url.ParseRequestURI("https://notify-api.line.me/api/notify")
 	urlStr := u.String()
@@ -379,7 +393,7 @@ func (p Plugin) Notify() error {
 		return errors.New("failed to create request:" + err.Error())
 	}
 
-	req.Header.Add("Authorization", "Bearer TESmfQyRO94Qc6z2orlJNyHzRja6eTajXbW7wK1yYRx")
+	req.Header.Add("Authorization", "Bearer "+token)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
@@ -399,7 +413,7 @@ func (p Plugin) Notify() error {
 	}
 
 	if res.Status == "200 OK" {
-		log.Printf("successfully send notfiy")
+		log.Println("successfully send notfiy")
 	}
 
 	if err != nil {
