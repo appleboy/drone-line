@@ -26,11 +26,33 @@ pipeline:
       - make test
       - make coverage
 
-  build:
-    image: appleboy/golang-testing:1.9.1
-    group: testing
+  build_linux_amd64:
+    image: appleboy/golang-testing:1.9.2
+    pull: true
+    group: build
     commands:
-      - make static_build
+      - make build_linux_amd64
+
+  build_linux_i386:
+    image: appleboy/golang-testing:1.9.2
+    pull: true
+    group: build
+    commands:
+      - make build_linux_i386
+
+  build_linux_arm64:
+    image: appleboy/golang-testing:1.9.2
+    pull: true
+    group: build
+    commands:
+      - make build_linux_arm64
+
+  build_linux_arm:
+    image: appleboy/golang-testing:1.9.2
+    pull: true
+    group: build
+    commands:
+      - make build_linux_arm
 
   codecov:
     image: robertstettner/drone-codecov
