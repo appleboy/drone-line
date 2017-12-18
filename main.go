@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -233,7 +234,10 @@ VERSION:
 REPOSITORY:
     Github: https://github.com/appleboy/drone-line
 `
-	app.Run(os.Args)
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func run(c *cli.Context) error {
@@ -285,8 +289,11 @@ func run(c *cli.Context) error {
 
 	command := c.Args().Get(0)
 
-	if command == "webhook" {
+	switch command {
+	case "webhook":
 		return plugin.Webhook()
+	case "notify":
+		return plugin.Notify()
 	}
 
 	return plugin.Exec()

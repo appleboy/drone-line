@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -354,6 +355,69 @@ func (p Plugin) Webhook() error {
 	if p.Config.AutoTLS && len(p.Config.Host) != 0 {
 		log.Println("Line Webhook Server Listin on 443 port, hostname: " + strings.Join(p.Config.Host, ", "))
 		return http.Serve(autocert.NewListener(p.Config.Host...), mux)
+	}
+
+	return nil
+}
+
+// Notify for Line notify service
+// https://notify-bot.line.me
+func (p Plugin) Notify() error {
+	if p.Config.ChannelToken == "" || len(p.Config.Message) == 0 {
+		return errors.New("missing token or message")
+	}
+
+	for _, m := range p.Config.Message {
+		if err := p.notify(m, p.Config.ChannelToken); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (p Plugin) notify(message, token string) error {
+	data := url.Values{}
+	data.Add("message", message)
+
+	u, _ := url.ParseRequestURI("https://notify-api.line.me/api/notify")
+	urlStr := u.String()
+
+	req, err := http.NewRequest(
+		"POST",
+		urlStr,
+		strings.NewReader(data.Encode()),
+	)
+
+	if err != nil {
+		return errors.New("failed to create request:" + err.Error())
+	}
+
+	req.Header.Add("Authorization", "Bearer "+token)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+
+	if err != nil {
+		return errors.New("failed to process request:" + err.Error())
+	}
+
+	defer res.Body.Close()
+
+	if p.Config.Debug {
+		log.Println("=================================")
+		log.Printf("%#v\n", res)
+		log.Println("=================================")
+	}
+
+	if res.Status == "200 OK" {
+		log.Println("successfully send notfiy")
+	}
+
+	if err != nil {
+		return errors.New("failed to create request:" + err.Error())
 	}
 
 	return nil
