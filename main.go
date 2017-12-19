@@ -10,7 +10,10 @@ import (
 )
 
 // Version set at compile-time
-var Version string
+var (
+	Version  string
+	BuildNum string
+)
 
 func main() {
 	app := cli.NewApp()
@@ -24,7 +27,6 @@ func main() {
 		},
 	}
 	app.Action = run
-	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "secret, s",
@@ -234,6 +236,13 @@ VERSION:
 REPOSITORY:
     Github: https://github.com/appleboy/drone-line
 `
+
+	app.Version = Version
+
+	if BuildNum != "" {
+		app.Version = app.Version + "+" + BuildNum
+	}
+
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Println(err)
