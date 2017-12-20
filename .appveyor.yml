@@ -26,14 +26,13 @@ install:
 
 build_script:
   - ps: |
-      go build -v -a -o drone-line.exe
-      dir
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
-        go build -ldflags "-X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o drone-line.exe
+        go build -v -ldflags "-X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o drone-line.exe
       } else {
         $version = $env:APPVEYOR_REPO_TAG_NAME
-        go build -ldflags "-X main.Version=$version -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o drone-line.exe
+        go build -v -ldflags "-X main.Version=$version -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o drone-line.exe
       }
+      dir
       docker pull microsoft/nanoserver:10.0.14393.1884
       docker build -f Dockerfile.windows -t appleboy/drone-line:windows .
 
