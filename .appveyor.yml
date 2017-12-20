@@ -26,6 +26,7 @@ install:
 
 build_script:
   - ps: |
+      go build -v -a -o drone-line.exe
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
         go build -ldflags "-X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o drone-line.exe
       } else {
