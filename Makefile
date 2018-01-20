@@ -152,6 +152,3 @@ coverage:
 clean:
 	go clean -x -i ./...
 	rm -rf coverage.txt $(EXECUTABLE) $(DIST)
-
-version:
-	@echo $(VERSION)
