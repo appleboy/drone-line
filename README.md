@@ -9,6 +9,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/drone-line.svg)](https://hub.docker.com/r/appleboy/drone-line/)
 [![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
 [![Release](https://github-release-version.herokuapp.com/github/appleboy/drone-line/release.svg?style=flat)](https://github.com/appleboy/drone-line/releases/latest)
+[![Build status](https://ci.appveyor.com/api/projects/status/pmkfbnwtlf1fm45l/branch/master?svg=true)](https://ci.appveyor.com/project/appleboy/drone-line/branch/master)
 
 Sending line notifications using a binary, docker or [Drone CI](http://readme.drone.io/0.5/).
 
