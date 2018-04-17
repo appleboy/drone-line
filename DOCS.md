@@ -156,12 +156,12 @@ pipeline:
     channel_secret: xxxxxxxxxx
     channel_token: xxxxxxxxxx
     to: line_user_id
-+   message: |
-+     {{ #success build.status }}
-+       build {{ build.number }} succeeded. Good job.
-+     {{ else }}
-+       build {{ build.number }} failed. Fix me please.
-+     {{ /success }}
++   message: >
++     {{#success build.status}}
++       build {{build.number}} succeeded. Good job.
++     {{else}}
++       build {{build.number}} failed. Fix me please.
++     {{/success}}
 ```
 
 # Parameter Reference
