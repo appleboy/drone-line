@@ -134,19 +134,6 @@ pipeline:
 +     - title2::address2::latitude2::longitude2
 ```
 
-Example configuration for success and failure messages:
-
-```diff
-pipeline:
-  line:
-    image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   when:
-+     status: [ success, failure ]
-```
-
 Example configuration with a custom message template:
 
 ```diff
@@ -164,13 +151,15 @@ pipeline:
 +     {{/success}}
 ```
 
-# Parameter Reference
+# Secret Reference
 
 channel_secret
 : line channel secret from [line developer center](https://developers.line.me)
 
 channel_token
 : line channel token from [line developer center](https://developers.line.me)
+
+# Parameter Reference
 
 to
 : line user id
