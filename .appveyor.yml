@@ -27,10 +27,10 @@ install:
 build_script:
   - ps: |
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
-        go build -ldflags "-X main.Version=$env:APPVEYOR_REPO_COMMIT -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
+        go build -ldflags "-X main.version=$env:APPVEYOR_REPO_COMMIT -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
       } else {
         $version = $env:APPVEYOR_REPO_TAG_NAME
-        go build -ldflags "-X main.Version=$version -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
+        go build -ldflags "-X main.version=$version -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
       }
       dir
       docker pull microsoft/nanoserver:10.0.14393.1884

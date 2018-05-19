@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -11,15 +12,16 @@ import (
 
 // Version set at compile-time
 var (
-	Version  string
-	BuildNum string
+	version = "0.0.0"
+	build   = "0"
 )
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "Drone LINE"
 	app.Usage = "Send LINE notification"
-	app.Copyright = "Copyright (c) 2017 Bo-Yi Wu"
+	app.Copyright = "Copyright (c) 2018 Bo-Yi Wu"
+	app.Version = fmt.Sprintf("%s+%s", version, build)
 	app.Authors = []cli.Author{
 		{
 			Name:  "Bo-Yi Wu",
@@ -237,15 +239,8 @@ REPOSITORY:
     Github: https://github.com/appleboy/drone-line
 `
 
-	app.Version = Version
-
-	if BuildNum != "" {
-		app.Version = app.Version + "+" + BuildNum
-	}
-
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Println(err)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
 }
 
