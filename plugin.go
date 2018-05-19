@@ -43,6 +43,7 @@ type (
 		Link     string
 		Started  float64
 		Finished float64
+		DeployTo string
 	}
 
 	// Config for the plugin.

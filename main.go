@@ -176,6 +176,11 @@ func main() {
 			EnvVar: "DRONE_JOB_FINISHED",
 		},
 		cli.StringFlag{
+			Name:   "build.deployTo",
+			Usage:  "environment deployed to",
+			EnvVar: "DRONE_DEPLOY_TO",
+		},
+		cli.StringFlag{
 			Name:  "env-file",
 			Usage: "source env file",
 		},
@@ -267,6 +272,7 @@ func run(c *cli.Context) error {
 			Link:     c.String("build.link"),
 			Started:  c.Float64("job.started"),
 			Finished: c.Float64("job.finished"),
+			DeployTo: c.String("build.deployTo"),
 		},
 		Config: Config{
 			ChannelSecret: c.String("secret"),
