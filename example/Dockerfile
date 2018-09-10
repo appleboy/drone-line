@@ -9,7 +9,7 @@ RUN apk update && apk upgrade && \
   apk add --no-cache git && \
   rm -rf /var/cache/apk/*
 
-ADD example/server.go $app/
+ADD server.go $app/
 WORKDIR $app
 RUN go get -t -v ./...
 
