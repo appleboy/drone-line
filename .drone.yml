@@ -27,6 +27,15 @@ pipeline:
       - make test
       - make coverage
 
+  build_linux_amd64_with_module:
+    image: golang:1.11
+    pull: true
+    group: build
+    environment:
+      GO111MODULE: "on"
+    commands:
+      - make build_linux_amd64
+
   build_linux_amd64:
     image: golang:1.11
     pull: true
