@@ -17,28 +17,26 @@ branches:
     - master
 
 install:
-  - echo %PATH%
-  - echo %GOPATH%
-  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
-  - go version
-  - go env
-  - docker version
+  - ps: |
+      docker version
+      go version
+  - ps: |
+      $env:Path = "c:\go\bin;$env:Path"
 
 build_script:
   - ps: |
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
-        go build -ldflags "-X main.version=$env:APPVEYOR_REPO_COMMIT -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
+        go build -ldflags "-X main.Version=$env:APPVEYOR_REPO_COMMIT -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
       } else {
         $version = $env:APPVEYOR_REPO_TAG_NAME
-        go build -ldflags "-X main.version=$version -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
+        go build -ldflags "-X main.Version=$version -X main.BuildNum=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-line.exe
       }
-      dir
       docker pull microsoft/nanoserver:10.0.14393.1884
-      docker build -f Dockerfile.windows -t appleboy/drone-line:windows .
+      docker build -f Dockerfile.windows -t appleboy/drone-line:windows-amd64 .
 
 test_script:
   - ps: |
-      docker run --rm appleboy/drone-line:windows --version
+      docker run --rm appleboy/drone-line:windows-amd64 --version
 
 deploy_script:
   - ps: |
@@ -49,16 +47,19 @@ deploy_script:
         echo $env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USERNAME --password-stdin
         if ( $env:APPVEYOR_REPO_TAG -eq 'true' ) {
           $major,$minor,$patch = $env:APPVEYOR_REPO_TAG_NAME.split('.')
-          docker push appleboy/drone-line:windows
-          docker tag appleboy/drone-line:windows appleboy/drone-line:$major.$minor.$patch-windows
-          docker push appleboy/drone-line:$major.$minor.$patch-windows
-          docker tag appleboy/drone-line:windows appleboy/drone-line:$major.$minor-windows
-          docker push appleboy/drone-line:$major.$minor-windows
-          docker tag appleboy/drone-line:windows appleboy/drone-line:$major-windows
-          docker push appleboy/drone-line:$major-windows
+          docker push appleboy/drone-line:windows-amd64
+
+          docker tag appleboy/drone-line:windows-amd64 appleboy/drone-line:$major.$minor.$patch-windows-amd64
+          docker push appleboy/drone-line:$major.$minor.$patch-windows-amd64
+
+          docker tag appleboy/drone-line:windows-amd64 appleboy/drone-line:$major.$minor-windows-amd64
+          docker push appleboy/drone-line:$major.$minor-windows-amd64
+
+          docker tag appleboy/drone-line:windows-amd64 appleboy/drone-line:$major-windows-amd64
+          docker push appleboy/drone-line:$major-windows-amd64
         } else {
           if ( $env:APPVEYOR_REPO_BRANCH -eq 'master' ) {
-            docker push appleboy/drone-line:windows
+            docker push appleboy/drone-line:windows-amd64
           }
         }
       }
