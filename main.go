@@ -99,7 +99,7 @@ func main() {
 		cli.IntFlag{
 			Name:   "port, P",
 			Usage:  "webhook port",
-			EnvVar: "LINE_WEBHOOK_PORT",
+			EnvVar: "LINE_PORT",
 			Value:  8088,
 		},
 		cli.StringFlag{
