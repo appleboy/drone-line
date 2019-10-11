@@ -1,21 +1,21 @@
-<img src="images/line.png">
-
 # drone-line
 
+![drone-line](./images/line.png)
+
 [![GoDoc](https://godoc.org/github.com/appleboy/drone-line?status.svg)](https://godoc.org/github.com/appleboy/drone-line)
-[![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-line/status.svg)](http://drone.wu-boy.com/appleboy/drone-line)
+[![Build Status](https://cloud.drone.io/api/badges/appleboy/drone-line/status.svg)](https://cloud.drone.io/appleboy/drone-line)
 [![codecov](https://codecov.io/gh/appleboy/drone-line/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-line)
 [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-line)](https://goreportcard.com/report/github.com/appleboy/drone-line)
 [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/drone-line.svg)](https://hub.docker.com/r/appleboy/drone-line/)
-[![](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
+[![microbadger](https://images.microbadger.com/badges/image/appleboy/drone-line.svg)](https://microbadger.com/images/appleboy/drone-line "Get your own image badge on microbadger.com")
 [![Release](https://github-release-version.herokuapp.com/github/appleboy/drone-line/release.svg?style=flat)](https://github.com/appleboy/drone-line/releases/latest)
 [![Build status](https://ci.appveyor.com/api/projects/status/pmkfbnwtlf1fm45l/branch/master?svg=true)](https://ci.appveyor.com/project/appleboy/drone-line/branch/master)
 
-Sending line notifications using a binary, docker or [Drone CI](http://readme.drone.io/0.5/).
+Sending line notifications using a binary, docker or [Drone CI](https://docs.drone.io/).
 
 ## Register Line BOT API Trial
 
-Please refer to [LINE Business Center](https://business.line.me/en/services/bot).
+Please refer to [LINE Business Center](https://at.line.me/en/).
 
 ## Feature
 
@@ -50,30 +50,22 @@ The pre-compiled binaries can be downloaded from [release page](https://github.c
 
 With `Go` installed
 
+```sh
+go get -u -v github.com/appleboy/drone-line
 ```
-$ go get -u -v github.com/appleboy/drone-line
-``` 
 
 or build the binary with the following command:
 
-```
-$ make build
+```sh
+make build
 ```
 
 ## Docker
 
 Build the docker image with the following commands:
 
-```
-$ make docker
-```
-
-Please note incorrectly building the image for the correct x64 linux and with
-CGO disabled will result in an error when running the Docker image:
-
-```
-docker: Error response from daemon: Container command
-'/bin/drone-line' not found or does not exist..
+```sh
+make docker
 ```
 
 ## Usage
@@ -84,10 +76,9 @@ There are three ways to send notification.
 * [usage from docker](#usage-from-docker)
 * [usage from drone ci](#usage-from-drone-ci)
 
-<a name="usage-from-binary"></a>
-### Usage from binary
+## Usage from binary
 
-#### Setup Webhook service
+### Setup Webhook service
 
 Setup Webhook service as default port `8088`.
 
@@ -151,17 +142,14 @@ drone-line \
 If you connect your service with LINE Notify, LINE users can easily receive notifications from it.
 See the [documentation](https://notify-bot.line.me/en/).
 
-```
+```sh
 drone-line \
   --token xxxx \
   --message "Test Message" \
   notify
 ```
 
-<a name="usage-from-docker"></a>
-### Usage from docker
-
-#### Setup Webhook service
+## Usage from docker
 
 Setup Webhook service as default port `8088`.
 
@@ -184,7 +172,7 @@ docker run --rm \
 
 **Tips:** Use [ngrok](https://ngrok.com/) to tunnel your locally running bot so that Line can reach the webhook.
 
-#### Send Notification
+Send Notification
 
 ```bash
 docker run --rm \
@@ -201,10 +189,7 @@ docker run --rm \
   appleboy/drone-line
 ```
 
-<a name="usage-from-drone-ci"></a>
-### Usage from drone ci
-
-#### Send Notification
+## Usage from drone ci
 
 Execute from the working directory:
 
@@ -244,6 +229,6 @@ You can get more [information](DOCS.md) about how to use scp plugin in drone.
 
 Test the package with the following command:
 
-```
-$ make test
+```sh
+make test
 ```
