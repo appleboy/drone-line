@@ -447,7 +447,7 @@ func (p Plugin) Exec() error {
 	}
 
 	// Initial messages array.
-	var messages []linebot.Message
+	var messages []linebot.SendingMessage
 
 	for _, value := range trimElement(message) {
 		txt, err := template.RenderTrim(value, p)
