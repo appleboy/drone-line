@@ -8,8 +8,7 @@ DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
 
 TARGETS ?= linux darwin windows
-PACKAGES ?= $(shell $(GO) list ./... | grep -v /vendor/)
-GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
+PACKAGES ?= $(shell $(GO) list ./...)
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
 LDFLAGS ?= -X 'main.Version=$(VERSION)'
@@ -30,58 +29,42 @@ endif
 all: build
 
 fmt:
-	$(GOFMT) -w $(GOFILES)
+	$(GOFMT) -w $(SOURCES)
 
 vet:
 	$(GO) vet $(PACKAGES)
 
 lint:
-	@which golint > /dev/null; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/golang/lint/golint; \
+	@hash revive > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		$(GO) get -u github.com/mgechev/revive; \
 	fi
-	for PKG in $(PACKAGES); do golint -set_exit_status $$PKG || exit 1; done;
+	revive -config .revive.toml ./... || exit 1
 
 .PHONY: misspell-check
 misspell-check:
 	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
 	fi
-	misspell -error $(GOFILES)
+	misspell -error $(SOURCES)
 
 .PHONY: misspell
 misspell:
 	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
 	fi
-	misspell -w $(GOFILES)
+	misspell -w $(SOURCES)
 
 .PHONY: fmt-check
 fmt-check:
-	@diff=$$($(GOFMT) -d $(GOFILES)); \
+	@diff=$$($(GOFMT) -d $(SOURCES)); \
 	if [ -n "$$diff" ]; then \
 		echo "Please run 'make fmt' and commit the result:"; \
 		echo "$${diff}"; \
 		exit 1; \
 	fi;
 
-.PHONY: test-vendor
-test-vendor:
-	@hash govendor > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/kardianos/govendor; \
-	fi
-	govendor list +unused | tee "$(TMPDIR)/wc-gitea-unused"
-	[ $$(cat "$(TMPDIR)/wc-gitea-unused" | wc -l) -eq 0 ] || echo "Warning: /!\\ Some vendor are not used /!\\"
-
-	govendor list +outside | tee "$(TMPDIR)/wc-gitea-outside"
-	[ $$(cat "$(TMPDIR)/wc-gitea-outside" | wc -l) -eq 0 ] || exit 1
-
-	govendor status || exit 1
-
 test: fmt-check
-	for PKG in $(PACKAGES); do $(GO) test -v -cover -coverprofile $$GOPATH/src/$$PKG/coverage.txt $$PKG || exit 1; done;
-
-html:
-	$(GO) tool cover -html=coverage.txt
+	@$(GO) test -v -cover -coverprofile coverage.txt $(PACKAGES) && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 install: $(SOURCES)
 	$(GO) install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)'
