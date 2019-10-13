@@ -29,20 +29,28 @@ type (
 		Name  string
 	}
 
+	// Commit information.
+	Commit struct {
+		Sha     string
+		Ref     string
+		Branch  string
+		Link    string
+		Author  string
+		Avatar  string
+		Email   string
+		Message string
+	}
+
 	// Build information.
 	Build struct {
 		Tag      string
 		Event    string
 		Number   int
-		Commit   string
-		Branch   string
-		Author   string
-		Email    string
-		Message  string
 		Status   string
 		Link     string
 		Started  int64
 		Finished int64
+		PR       string
 		DeployTo string
 	}
 
@@ -74,6 +82,7 @@ type (
 		Repo   Repo
 		Build  Build
 		Config Config
+		Commit Commit
 	}
 
 	// Audio format
@@ -443,7 +452,7 @@ func (p Plugin) Exec() error {
 	if len(p.Config.Message) > 0 {
 		message = p.Config.Message
 	} else {
-		message = p.Message(p.Repo, p.Build)
+		message = p.Message(p.Repo, p.Build, p.Commit)
 	}
 
 	// Initial messages array.
@@ -505,7 +514,7 @@ func (p Plugin) Exec() error {
 		messages = append(messages, linebot.NewLocationMessage(location.Title, location.Address, location.Latitude, location.Longitude))
 	}
 
-	uids := parseTo(p.Config.To, p.Build.Email, p.Config.MatchEmail, p.Config.Delimiter)
+	uids := parseTo(p.Config.To, p.Commit.Email, p.Config.MatchEmail, p.Config.Delimiter)
 
 	// Send messages to multiple users at any time.
 	if len(uids) > 0 {
@@ -534,12 +543,12 @@ func (p Plugin) Exec() error {
 }
 
 // Message is line default message.
-func (p Plugin) Message(repo Repo, build Build) []string {
+func (p Plugin) Message(repo Repo, build Build, commit Commit) []string {
 	return []string{fmt.Sprintf("[%s] <%s> (%s)『%s』by %s",
 		build.Status,
 		build.Link,
-		build.Branch,
-		build.Message,
-		build.Author,
+		commit.Branch,
+		commit.Message,
+		commit.Author,
 	)}
 }

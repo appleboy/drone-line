@@ -47,14 +47,15 @@ func TestSendTextError(t *testing.T) {
 			Name:  "go-hello",
 			Owner: "appleboy",
 		},
-		Build: Build{
-			Number:  101,
-			Status:  "success",
-			Link:    "https://github.com/appleboy/go-hello",
+		Commit: Commit{
 			Author:  "Bo-Yi Wu",
 			Branch:  "master",
 			Message: "update by drone line plugin.",
-			Commit:  "e7c4f0a63ceeb42a39ac7806f7b51f3f0d204fd2",
+		},
+		Build: Build{
+			Number: 101,
+			Status: "success",
+			Link:   "https://github.com/appleboy/go-hello",
 		},
 		Config: Config{
 			ChannelToken:  "1465486347",
@@ -75,14 +76,15 @@ func TestSendRoomAndGroup(t *testing.T) {
 			Name:  "go-hello",
 			Owner: "appleboy",
 		},
-		Build: Build{
-			Number:  102,
-			Status:  "failed",
-			Link:    "https://github.com/appleboy/go-hello",
+		Commit: Commit{
 			Author:  "Bo-Yi Wu",
 			Branch:  "master",
 			Message: "support send message to room or to group.",
-			Commit:  "e02d0cf1b1fc6ecc5d03bb72a83697e85ea23f54",
+		},
+		Build: Build{
+			Number: 102,
+			Status: "failed",
+			Link:   "https://github.com/appleboy/go-hello",
 		},
 		Config: Config{
 			ChannelToken:  "1465486347",
@@ -104,18 +106,19 @@ func TestDefaultMessageFormat(t *testing.T) {
 			Name:  "go-hello",
 			Owner: "appleboy",
 		},
-		Build: Build{
-			Number:  101,
-			Status:  "success",
-			Link:    "https://github.com/appleboy/go-hello",
+		Commit: Commit{
 			Author:  "Bo-Yi Wu",
 			Branch:  "master",
 			Message: "update by drone line plugin.",
-			Commit:  "e7c4f0a63ceeb42a39ac7806f7b51f3f0d204fd2",
+		},
+		Build: Build{
+			Number: 101,
+			Status: "success",
+			Link:   "https://github.com/appleboy/go-hello",
 		},
 	}
 
-	message := plugin.Message(plugin.Repo, plugin.Build)
+	message := plugin.Message(plugin.Repo, plugin.Build, plugin.Commit)
 
 	assert.Equal(t, []string{"[success] <https://github.com/appleboy/go-hello> (master)『update by drone line plugin.』by Bo-Yi Wu"}, message)
 }
@@ -126,14 +129,15 @@ func TestErrorSendMessage(t *testing.T) {
 			Name:  "go-hello",
 			Owner: "appleboy",
 		},
-		Build: Build{
-			Number:  101,
-			Status:  "success",
-			Link:    "https://github.com/appleboy/go-hello",
+		Commit: Commit{
 			Author:  "Bo-Yi Wu",
 			Branch:  "master",
 			Message: "update by drone line plugin.",
-			Commit:  "e7c4f0a63ceeb42a39ac7806f7b51f3f0d204fd2",
+		},
+		Build: Build{
+			Number: 101,
+			Status: "success",
+			Link:   "https://github.com/appleboy/go-hello",
 		},
 
 		Config: Config{

@@ -115,13 +115,23 @@ func main() {
 		cli.StringFlag{
 			Name:   "commit.sha",
 			Usage:  "git commit sha",
-			EnvVar: "DRONE_COMMIT_SHA",
+			EnvVar: "DRONE_COMMIT_SHA,GITHUB_SHA",
+		},
+		cli.StringFlag{
+			Name:   "commit.ref",
+			Usage:  "git commit ref",
+			EnvVar: "DRONE_COMMIT_REF,GITHUB_REF",
 		},
 		cli.StringFlag{
 			Name:   "commit.branch",
 			Value:  "master",
 			Usage:  "git commit branch",
 			EnvVar: "DRONE_COMMIT_BRANCH",
+		},
+		cli.StringFlag{
+			Name:   "commit.link",
+			Usage:  "git commit link",
+			EnvVar: "DRONE_COMMIT_LINK",
 		},
 		cli.StringFlag{
 			Name:   "commit.author",
@@ -132,6 +142,11 @@ func main() {
 			Name:   "commit.author.email",
 			Usage:  "git author email",
 			EnvVar: "DRONE_COMMIT_AUTHOR_EMAIL",
+		},
+		cli.StringFlag{
+			Name:   "commit.author.avatar",
+			Usage:  "git author avatar",
+			EnvVar: "DRONE_COMMIT_AUTHOR_AVATAR",
 		},
 		cli.StringFlag{
 			Name:   "commit.message",
@@ -165,6 +180,11 @@ func main() {
 			Usage:  "build tag",
 			EnvVar: "DRONE_TAG",
 		},
+		cli.StringFlag{
+			Name:   "pull.request",
+			Usage:  "pull request",
+			EnvVar: "DRONE_PULL_REQUEST",
+		},
 		cli.Int64Flag{
 			Name:   "job.started",
 			Usage:  "job started",
@@ -176,8 +196,8 @@ func main() {
 			EnvVar: "DRONE_BUILD_FINISHED",
 		},
 		cli.StringFlag{
-			Name:   "build.deployTo",
-			Usage:  "environment deployed to",
+			Name:   "deploy.to",
+			Usage:  "Provides the target deployment environment for the running build. This value is only available to promotion and rollback pipelines.",
 			EnvVar: "DRONE_DEPLOY_TO",
 		},
 		cli.StringFlag{
@@ -259,20 +279,26 @@ func run(c *cli.Context) error {
 			Owner: c.String("repo.owner"),
 			Name:  c.String("repo.name"),
 		},
+		Commit: Commit{
+			Sha:     c.String("commit.sha"),
+			Ref:     c.String("commit.ref"),
+			Branch:  c.String("commit.branch"),
+			Link:    c.String("commit.link"),
+			Author:  c.String("commit.author"),
+			Email:   c.String("commit.author.email"),
+			Avatar:  c.String("commit.author.avatar"),
+			Message: c.String("commit.message"),
+		},
 		Build: Build{
 			Tag:      c.String("build.tag"),
 			Number:   c.Int("build.number"),
 			Event:    c.String("build.event"),
 			Status:   c.String("build.status"),
-			Commit:   c.String("commit.sha"),
-			Branch:   c.String("commit.branch"),
-			Author:   c.String("commit.author"),
-			Email:    c.String("commit.author.email"),
-			Message:  c.String("commit.message"),
 			Link:     c.String("build.link"),
 			Started:  c.Int64("job.started"),
 			Finished: c.Int64("job.finished"),
-			DeployTo: c.String("build.deployTo"),
+			PR:       c.String("pull.request"),
+			DeployTo: c.String("deploy.to"),
 		},
 		Config: Config{
 			ChannelSecret: c.String("secret"),
