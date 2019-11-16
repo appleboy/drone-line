@@ -54,8 +54,9 @@
         image: 'golang:1.13',
         pull: 'always',
         environment: {
-          WEBHOOK_ID: { 'from_secret': 'webhook_id' },
-          WEBHOOK_TOKEN: { 'from_secret': 'webhook_token' },
+          LINE_CHANNEL_SECRET: { 'from_secret': 'LINE_CHANNEL_SECRET' },
+          LINE_CHANNEL_TOKEN: { 'from_secret': 'LINE_CHANNEL_TOKEN' },
+          LINE_TO: { 'from_secret': 'LINE_TO' },
         },
         commands: [
           'make test',
