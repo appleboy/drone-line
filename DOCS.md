@@ -139,15 +139,13 @@ pipeline:
 +     {{/success}}
 ```
 
-# Secret Reference
+## Parameter Reference
 
 channel_secret
 : line channel secret from [line developer center](https://developers.line.me)
 
 channel_token
 : line channel token from [line developer center](https://developers.line.me)
-
-# Parameter Reference
 
 to
 : line user id
