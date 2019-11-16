@@ -97,7 +97,7 @@ func TestSendRoomAndGroup(t *testing.T) {
 
 	// enable message
 	err := plugin.Exec()
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 }
 
 func TestDefaultMessageFormat(t *testing.T) {
