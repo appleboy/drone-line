@@ -523,6 +523,15 @@ func (p Plugin) Exec() error {
 		}
 	}
 
+	// Send messages to single user.
+	for _, uid := range p.Config.To {
+		if uid != "" {
+			if _, err := bot.PushMessage(uid, messages...).Do(); err != nil {
+				log.Println(err.Error())
+			}
+		}
+	}
+
 	// Send messages to single room at any time.
 	rid := p.Config.ToRoom
 	if rid != "" {

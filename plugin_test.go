@@ -97,7 +97,7 @@ func TestSendRoomAndGroup(t *testing.T) {
 
 	// enable message
 	err := plugin.Exec()
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 }
 
 func TestDefaultMessageFormat(t *testing.T) {
@@ -143,7 +143,7 @@ func TestErrorSendMessage(t *testing.T) {
 		Config: Config{
 			ChannelToken:  os.Getenv("LINE_CHANNEL_TOKEN"),
 			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
-			To:            []string{os.Getenv("LINE_TO")},
+			ToRoom:        os.Getenv("LINE_TO"),
 			Delimiter:     "::",
 			Message:       []string{"Test Line Bot From Travis or Local", "commit message: 『{{ build.message }}』", " "},
 			Image:         []string{"https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-128.png"},
