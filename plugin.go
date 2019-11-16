@@ -23,10 +23,20 @@ import (
 const defaultPreviewImageURL = "https://cdn4.iconfinder.com/data/icons/miu/24/device-camera-recorder-video-glyph-256.png"
 
 type (
+	// GitHub information.
+	GitHub struct {
+		Workflow  string
+		Workspace string
+		Action    string
+		EventName string
+		EventPath string
+	}
+
 	// Repo information.
 	Repo struct {
-		Owner string
-		Name  string
+		FullName  string
+		Namespace string
+		Name      string
 	}
 
 	// Commit information.
@@ -48,8 +58,8 @@ type (
 		Number   int
 		Status   string
 		Link     string
-		Started  int64
-		Finished int64
+		Started  float64
+		Finished float64
 		PR       string
 		DeployTo string
 	}
@@ -83,6 +93,7 @@ type (
 		Build  Build
 		Config Config
 		Commit Commit
+		GitHub GitHub
 	}
 
 	// Audio format

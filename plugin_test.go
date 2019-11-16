@@ -44,8 +44,8 @@ func TestMissingUserConfig(t *testing.T) {
 func TestSendTextError(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
-			Name:  "go-hello",
-			Owner: "appleboy",
+			Name:     "go-hello",
+			FullName: "appleboy",
 		},
 		Commit: Commit{
 			Author:  "Bo-Yi Wu",
@@ -73,8 +73,8 @@ func TestSendTextError(t *testing.T) {
 func TestSendRoomAndGroup(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
-			Name:  "go-hello",
-			Owner: "appleboy",
+			Name:     "go-hello",
+			FullName: "appleboy",
 		},
 		Commit: Commit{
 			Author:  "Bo-Yi Wu",
@@ -103,8 +103,8 @@ func TestSendRoomAndGroup(t *testing.T) {
 func TestDefaultMessageFormat(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
-			Name:  "go-hello",
-			Owner: "appleboy",
+			Name:     "go-hello",
+			FullName: "appleboy",
 		},
 		Commit: Commit{
 			Author:  "Bo-Yi Wu",
@@ -126,8 +126,8 @@ func TestDefaultMessageFormat(t *testing.T) {
 func TestErrorSendMessage(t *testing.T) {
 	plugin := Plugin{
 		Repo: Repo{
-			Name:  "go-hello",
-			Owner: "appleboy",
+			Name:     "go-hello",
+			FullName: "appleboy",
 		},
 		Commit: Commit{
 			Author:  "Bo-Yi Wu",
