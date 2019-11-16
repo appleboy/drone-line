@@ -244,8 +244,6 @@ func parseTo(to []string, authorEmail string, matchEmail bool, delimiter string)
 // Bot is new Line Bot clien.
 func (p Plugin) Bot() (*linebot.Client, error) {
 	if len(p.Config.ChannelToken) == 0 || len(p.Config.ChannelSecret) == 0 {
-		log.Println("missing line bot config")
-
 		return nil, errors.New("missing line bot config")
 	}
 
@@ -285,6 +283,7 @@ func (p Plugin) Handler(bot *linebot.Client) *http.ServeMux {
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
+					log.Printf("%#v", event.Source)
 					log.Printf("User ID is %v\n", event.Source.UserID)
 					log.Printf("Room ID is %v\n", event.Source.RoomID)
 					log.Printf("Group ID is %v\n", event.Source.GroupID)
@@ -443,8 +442,6 @@ func (p Plugin) Exec() error {
 	}
 
 	if len(p.Config.To) == 0 && len(p.Config.ToRoom) == 0 && len(p.Config.ToGroup) == 0 {
-		log.Println("missing line user config")
-
 		return errors.New("missing line user config")
 	}
 
@@ -520,15 +517,6 @@ func (p Plugin) Exec() error {
 	if len(uids) > 0 {
 		if _, err := bot.Multicast(uids, messages...).Do(); err != nil {
 			log.Println(err.Error())
-		}
-	}
-
-	// Send messages to single user.
-	for _, uid := range p.Config.To {
-		if uid != "" {
-			if _, err := bot.PushMessage(uid, messages...).Do(); err != nil {
-				log.Println(err.Error())
-			}
 		}
 	}
 

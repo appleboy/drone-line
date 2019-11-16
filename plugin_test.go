@@ -355,7 +355,7 @@ func TestDefaultRouter(t *testing.T) {
 		Config: Config{
 			ChannelToken:  os.Getenv("LINE_CHANNEL_TOKEN"),
 			ChannelSecret: os.Getenv("LINE_CHANNEL_SECRET"),
-			To:            []string{os.Getenv("LINE_TO")},
+			ToRoom:        os.Getenv("LINE_TO"),
 		},
 	}
 
