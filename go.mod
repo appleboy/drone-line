@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/NoahShen/gotunnelme v0.0.0-20180106044115-fbc9b0b77df8
 	github.com/appleboy/com v0.0.2
-	github.com/appleboy/drone-facebook v1.5.3
+	github.com/drone/drone-template-lib v1.0.0
 	github.com/fatih/color v1.7.0
 	github.com/joho/godotenv v1.3.0
 	github.com/line/line-bot-sdk-go v6.4.0+incompatible

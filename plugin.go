@@ -12,7 +12,7 @@ import (
 
 	"github.com/NoahShen/gotunnelme/src/gotunnelme"
 	"github.com/appleboy/com/random"
-	"github.com/appleboy/drone-facebook/template"
+	"github.com/drone/drone-template-lib/template"
 	"github.com/fatih/color"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/prometheus/client_golang/prometheus"
