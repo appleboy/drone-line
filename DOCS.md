@@ -14,11 +14,12 @@ The Line plugin posts build status messages to your channel. The below pipeline 
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-    to_room: line_room_id
-    to_group: line_group_id
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
+      to_room: line_room_id
+      to_group: line_group_id
 ```
 
 <!-- https://github.com/appleboy/drone-line/issues/72#issuecomment-323929502 -->
@@ -28,24 +29,13 @@ Example to multiple line ids:
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
--   to: line_user_id
-+   to:
-+     - user id 1
-+     - user id 2
-```
-
-Example to use drone secret
-
-```diff
-pipeline:
-  line:
-    image: appleboy/drone-line
--   channel_secret: xxxxxxxxxx
--   channel_token: xxxxxxxxxx
-+   secrets: [ line_channel_secret, line_channel_token ]
-    to: line_user_id
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+-     to: line_user_id
++     to:
++       - user id 1
++       - user id 2
 ```
 
 Example configuration with image message:
@@ -54,12 +44,13 @@ Example configuration with image message:
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   images:
-+     - https://example.com/1.png
-+     - https://example.com/2.png
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     images:
++       - https://example.com/1.png
++       - https://example.com/2.png
 ```
 
 Example configuration with video message:
@@ -68,12 +59,13 @@ Example configuration with video message:
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   videos:
-+     - https://example.com/1.mp4
-+     - https://example.com/2.mp4
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     videos:
++       - https://example.com/1.mp4
++       - https://example.com/2.mp4
 ```
 
 Example configuration with audio message:
@@ -84,12 +76,13 @@ format: `audio_url::audio_length`
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   audios:
-+     - https://example.com/1.mp3::300
-+     - https://example.com/2.mp3::400
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     audios:
++       - https://example.com/1.mp3::300
++       - https://example.com/2.mp3::400
 ```
 
 Example configuration with sticker message:
@@ -98,12 +91,13 @@ Example configuration with sticker message:
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   stickers:
-+     - 1::1
-+     - 1::2
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     stickers:
++       - 1::1
++       - 1::2
 ```
 
 Example configuration with location message:
@@ -114,12 +108,13 @@ format: `title::address::latitude::longitude`
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   locations:
-+     - title1::address1::latitude1::longitude1
-+     - title2::address2::latitude2::longitude2
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     locations:
++       - title1::address1::latitude1::longitude1
++       - title2::address2::latitude2::longitude2
 ```
 
 Example configuration with a custom message template:
@@ -128,15 +123,16 @@ Example configuration with a custom message template:
 pipeline:
   line:
     image: appleboy/drone-line
-    channel_secret: xxxxxxxxxx
-    channel_token: xxxxxxxxxx
-    to: line_user_id
-+   message: >
-+     {{#success build.status}}
-+       build {{build.number}} succeeded. Good job.
-+     {{else}}
-+       build {{build.number}} failed. Fix me please.
-+     {{/success}}
+    settings:
+      channel_secret: xxxxxxxxxx
+      channel_token: xxxxxxxxxx
+      to: line_user_id
++     message: >
++       {{#success build.status}}
++         build {{build.number}} succeeded. Good job.
++       {{else}}
++         build {{build.number}} failed. Fix me please.
++       {{/success}}
 ```
 
 ## Parameter Reference
